@@ -1254,9 +1254,11 @@
     "redaction_report_sha256": "739362a09db5f7d610267af6993345360eaff7058209681f242479c4c0aab1c3",
     "draft_episode_sha256": "4fad9599f561e9101c46f48de44268139182d2db68432e80cc891b6f6e730f6d",
     "approved_episode_sha256": "4fad9599f561e9101c46f48de44268139182d2db68432e80cc891b6f6e730f6d",
-    "approval_manifest_sha256": "92bee26f2ffb97c3847bbca80c1c1dcbf23884aae4047b6ab4ef901a624a411d",
-    "approval_trace_sha256": "8293d526a2ee4b1a25113a0d06f10d0f51cbfbb9dbceed729ebb5e06903c9e19",
+    "approval_manifest_sha256": "6b04e844bdb401db4e00d38d122b74e76d430f2fec7b2361973e8ca595b9a158",
+    "approval_trace_sha256": "0e94162803c4dd50ffdd04102a310f4715220402c6952ecb54f8c9ea6f86831a",
     "raw_input_sha256": "bc433cd0e9898905e8147b60c14536436643767f39d635ef38d37e54fe8d3427",
-    "selected_review_question": "disposition_information_sufficiency"
+    "selected_review_question": "disposition_information_sufficiency",
+    "run_manifest_sha256": "2be1dd22cc118e37a0b481dd1789f124dc7dd310b8df4b2d3fc6cc9cd8d1075f",
+    "node_audit_review_manifest_sha256": "8f5954336fa5316738698ae2016a1202fdf14fc8dfee719c98b40377f089afee"
   }
 }

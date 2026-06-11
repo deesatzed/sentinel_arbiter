@@ -122,6 +122,12 @@ def test_local_demo_http_app_prepares_approves_runs_and_reviews_constructed_inpu
         assert "Adjust" in prepare_html
         assert "Re-check Selected Nodes" in prepare_html
         assert "Are you sure?" in prepare_html
+        assert 'name="node_audit_checkpoint" value="ok"' in prepare_html
+        assert 'name="node_audit_checkpoint" value="adjust"' in prepare_html
+        assert 'name="node_audit_checkpoint" value="recheck"' in prepare_html
+        assert "selected_node_ids" in prepare_html
+        assert "adjustment_note" in prepare_html
+        assert "confirm_adjustment" in prepare_html
         assert (prepared_dir / "run_manifest.json").exists()
         manifest = json.loads((prepared_dir / "run_manifest.json").read_text(encoding="utf-8"))
         assert manifest["selected_review_question"] == "disposition_information_sufficiency"
@@ -157,6 +163,84 @@ def test_local_demo_http_app_prepares_approves_runs_and_reviews_constructed_inpu
             .read_text(encoding="utf-8")
         )
         assert receipt_json["workflow_artifacts"]["selected_review_question"] == "disposition_information_sufficiency"
+        assert scan_forbidden_content(review_html, allow_safety_rule_lists=False) == []
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=5)
+
+
+def test_local_demo_records_adjustment_and_recheck_manifest_before_processing(tmp_path):
+    server = create_demo_server(
+        host="127.0.0.1",
+        port=0,
+        workspace_dir=tmp_path,
+        static_inputs_path=STATIC_INPUTS,
+    )
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    base_url = f"http://{server.server_address[0]}:{server.server_address[1]}"
+    try:
+        _post_form(
+            f"{base_url}/prepare",
+            {
+                "episode_id": "adjust_recheck_case",
+                "title": "Adjust recheck case",
+                "review_question": "ai_response_use_sufficiency",
+                "clinical_text": _constructed_text(),
+            },
+        )
+        prepared_dir = tmp_path / "prepared_inputs" / "adjust_recheck_case"
+        draft_json = (prepared_dir / "draft_episode.json").read_text(encoding="utf-8")
+
+        blocked_html = _post_form_allow_error(
+            f"{base_url}/approve-and-run",
+            {
+                "prepared_dir": str(prepared_dir),
+                "review_question": "ai_response_use_sufficiency",
+                "node_audit_checkpoint": "adjust",
+                "selected_node_ids": "material_gap_strength,omission_risk",
+                "adjustment_note": "Reviewer wants the selected uncertainty nodes rechecked before processing.",
+                "reviewer_id": "reviewer_adjust",
+                "approval_note": "Attempt without confirmation.",
+                "approved_episode_json": draft_json,
+            },
+        )
+        assert "Validation Error" in blocked_html
+        assert "adjustments require confirmation" in blocked_html
+        assert not (prepared_dir / "node_audit_review_manifest.json").exists()
+
+        review_html = _post_form(
+            f"{base_url}/approve-and-run",
+            {
+                "prepared_dir": str(prepared_dir),
+                "review_question": "ai_response_use_sufficiency",
+                "node_audit_checkpoint": "recheck",
+                "selected_node_ids": "material_gap_strength,omission_risk",
+                "adjustment_note": "Reviewer wants the selected uncertainty nodes rechecked before processing.",
+                "confirm_adjustment": "1",
+                "reviewer_id": "reviewer_adjust",
+                "approval_note": "Confirmed re-check of selected nodes.",
+                "approved_episode_json": draft_json,
+            },
+        )
+
+        manifest_path = prepared_dir / "node_audit_review_manifest.json"
+        assert manifest_path.exists()
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        assert manifest["checkpoint_status"] == "recheck"
+        assert manifest["confirmation"] is True
+        assert manifest["selected_node_ids"] == ["material_gap_strength", "omission_risk"]
+        assert manifest["recheck_results"]
+        assert all(item["node_id"] in {"material_gap_strength", "omission_risk"} for item in manifest["recheck_results"])
+
+        receipt_json = json.loads(
+            (prepared_dir / "analysis" / "receipts" / "json" / "receipt_adjust_recheck_case_T3_deterministic.json")
+            .read_text(encoding="utf-8")
+        )
+        assert receipt_json["workflow_artifacts"]["node_audit_review_manifest_sha256"]
+        assert receipt_json["workflow_artifacts"]["selected_review_question"] == "ai_response_use_sufficiency"
+        assert "Clinician Summary" in review_html
         assert scan_forbidden_content(review_html, allow_safety_rule_lists=False) == []
     finally:
         server.shutdown()

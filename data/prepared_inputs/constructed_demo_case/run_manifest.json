@@ -1,0 +1,7 @@
+{
+  "selected_review_question": "disposition_information_sufficiency",
+  "selected_review_question_label": "Disposition Information Sufficiency",
+  "episode_id": "constructed_demo_case",
+  "stage": "preprocessed",
+  "node_audit_checkpoint_required": true
+}

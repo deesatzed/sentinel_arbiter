@@ -1,0 +1,44 @@
+{
+  "manifest_type": "node_audit_review_manifest",
+  "checkpoint_status": "recheck",
+  "selected_node_ids": [
+    "material_gap_strength",
+    "omission_risk"
+  ],
+  "adjustment_note": "Reviewer requested selected uncertainty node re-check before processing.",
+  "confirmation": true,
+  "reviewer_id": "reviewer_demo",
+  "recheck_results": [
+    {
+      "node_id": "material_gap_strength",
+      "value": 0.8,
+      "range_min": 0.7,
+      "range_max": 0.9,
+      "median": 0.8,
+      "confidence": 0.7,
+      "method": "deterministic_fixture_field_mapping_v0.1",
+      "evidence_refs": [
+        "gap:constructed_review_required"
+      ],
+      "sensitivity_note": "Posture sensitivity should be reviewed if the estimate range crosses a graph threshold."
+    },
+    {
+      "node_id": "omission_risk",
+      "value": 0.8,
+      "range_min": 0.7,
+      "range_max": 0.9,
+      "median": 0.8,
+      "confidence": 0.7,
+      "method": "deterministic_fixture_field_mapping_v0.1",
+      "evidence_refs": [
+        "gap:constructed_review_required"
+      ],
+      "sensitivity_note": "Posture sensitivity should be reviewed if the estimate range crosses a graph threshold."
+    }
+  ],
+  "graph_authority_preserved": true,
+  "notes": [
+    "Reviewer checkpoint is recorded separately from generated facts.",
+    "Re-check results recompute deterministic node audit values; they do not invent unsupported facts."
+  ]
+}

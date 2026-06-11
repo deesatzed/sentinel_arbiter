@@ -231,6 +231,9 @@ def _workflow_artifacts(
     run_manifest = prepared_dir / "run_manifest.json"
     if run_manifest.exists():
         artifacts["run_manifest_sha256"] = sha256_file(run_manifest)
+    node_audit_manifest = prepared_dir / "node_audit_review_manifest.json"
+    if node_audit_manifest.exists():
+        artifacts["node_audit_review_manifest_sha256"] = sha256_file(node_audit_manifest)
     return artifacts
 
 

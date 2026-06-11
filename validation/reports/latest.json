@@ -102,6 +102,9 @@
     "review_question_choice_visible": true,
     "preprocess_control_visible": true,
     "node_audit_checkpoint_visible": true,
+    "adjustment_controls_visible": true,
+    "node_audit_review_manifest_supported": true,
+    "selected_node_recheck_supported": true,
     "review_html_has_clinician_summary": true,
     "review_html_has_deeper_dive": true,
     "review_html_forbidden_phrase_violations": 0

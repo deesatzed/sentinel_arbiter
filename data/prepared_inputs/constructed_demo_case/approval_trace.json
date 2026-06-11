@@ -17,11 +17,11 @@
       "event_payload": {
         "approved_episode_sha256": "4fad9599f561e9101c46f48de44268139182d2db68432e80cc891b6f6e730f6d",
         "reviewer_id": "reviewer_demo",
-        "approval_note": "Demo structured episode reviewed for local deterministic workflow.",
+        "approval_note": "Demo structured episode reviewed with selected-node re-check.",
         "episode_changed_from_draft": false
       },
       "prev_hash": "12cdb2959ff9aba58872bda55e55246a188b812f0aebcb7cb87e17a6e35b6bad",
-      "event_hash": "25eee52f9a4fe84013e7c4f3b15c8986f6580077b504f32cde8dc7e6536ae097"
+      "event_hash": "4fd721b4bef1d0ed2394120a072dd28f36aca24b0e5877d5758cf258584f43f6"
     }
   ]
 }

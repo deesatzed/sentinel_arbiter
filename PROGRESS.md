@@ -726,3 +726,28 @@
 
 - Phase H is partially implemented and verifiable for paste-based local input.
 - Full multipart file upload handling and durable adjustment/re-check trace artifacts remain future work for later Phase H/I completion.
+
+## 2026-06-11 - Phase I Node Audit Adjustment And Re-check Trace Started
+
+### Completed So Far
+
+- Converted the display-only `OK`, `Adjust`, and `Re-check Selected Nodes` controls into posted checkpoint values.
+- Added `selected_node_ids`, `adjustment_note`, and `confirm_adjustment` fields to the local app review form.
+- Added confirmation gating: `adjust` and `recheck` checkpoints are blocked unless the reviewer confirms the methodology-changing action.
+- Added `node_audit_review_manifest.json` with checkpoint status, selected node IDs, reviewer note, confirmation state, deterministic re-check results, and `graph_authority_preserved=true`.
+- Added receipt propagation via `workflow_artifacts.node_audit_review_manifest_sha256`.
+- Strengthened `local_app_completeness` to verify adjustment controls, manifest support, and selected-node re-check support.
+- Regenerated the constructed demo through the local app path with a selected-node re-check for `material_gap_strength` and `omission_risk`.
+
+### Verification Evidence
+
+- `python3 -m pytest tests/test_phase_g_local_demo_app.py -q` passed: `5 passed`.
+- `python3 -m pytest tests/test_phase3_evaluation_report.py::test_evaluation_report_covers_redaction_workbench_and_local_app_completeness -q` passed: `1 passed`.
+- `python3 -m pytest -q` passed: `66 passed`.
+- `data/prepared_inputs/constructed_demo_case/node_audit_review_manifest.json` contains `checkpoint_status=recheck`, selected nodes `material_gap_strength` and `omission_risk`, and two deterministic re-check results.
+- `data/prepared_inputs/constructed_demo_case/analysis/receipts/json/receipt_constructed_demo_case_T3_deterministic.json` includes `workflow_artifacts.node_audit_review_manifest_sha256`.
+
+### Current State
+
+- Phase I is partially implemented for artifact-backed adjustment and selected-node re-check traceability.
+- Reviewer edits to actual node estimates remain intentionally non-authoritative; the current implementation records the reviewer checkpoint and deterministic re-check values without replacing graph-derived node estimates.

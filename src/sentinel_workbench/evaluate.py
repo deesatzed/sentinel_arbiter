@@ -167,6 +167,12 @@ def local_app_completeness_payload(
         "preprocess_control_visible": "Pre-process" in local_app_source,
         "node_audit_checkpoint_visible": "node_audit_checkpoint" in local_app_source
         and "Re-check Selected Nodes" in local_app_source,
+        "adjustment_controls_visible": "selected_node_ids" in local_app_source
+        and "adjustment_note" in local_app_source
+        and "confirm_adjustment" in local_app_source,
+        "node_audit_review_manifest_supported": "node_audit_review_manifest.json" in local_app_source,
+        "selected_node_recheck_supported": "recheck_results" in local_app_source
+        and "_parse_selected_node_ids" in local_app_source,
         "review_html_has_clinician_summary": "Clinician Summary" in review_html,
         "review_html_has_deeper_dive": "Deeper Dive" in review_html,
         "review_html_forbidden_phrase_violations": len(scan_forbidden_content(review_html, allow_safety_rule_lists=False)),

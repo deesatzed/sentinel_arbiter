@@ -8,3 +8,4 @@ dist/
 build/
 .sentinel_local_demo/
 artifacts/
+data/prepared_inputs/**/reviewer_edited_episode.json

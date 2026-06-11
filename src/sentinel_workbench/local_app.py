@@ -12,6 +12,7 @@ from .approval import approve_prepared_input
 from .constructed_intake import prepare_constructed_text
 from .demo_run import run_approved_demo
 from .ensemble import build_ensemble_contribution_bundle
+from .graph import REQUIRED_GRAPH_METRICS
 from .loader import load_episode
 from .node_audit import build_node_audit_bundle
 from .safety import scan_forbidden_content
@@ -151,7 +152,15 @@ def _handle_prepare(fields: dict[str, str], workspace: Path, static_inputs_path:
           <form method="post" action="/approve-and-run">
             <input type="hidden" name="prepared_dir" value="{_esc(prepared_dir)}">
             <input type="hidden" name="review_question" value="{_esc(review_question)}">
-            <input type="hidden" name="node_audit_checkpoint" value="ok">
+            <fieldset>
+              <legend>Node Audit Checkpoint</legend>
+              <label class="checkbox"><input type="radio" name="node_audit_checkpoint" value="ok" checked> OK</label>
+              <label class="checkbox"><input type="radio" name="node_audit_checkpoint" value="adjust"> Adjust</label>
+              <label class="checkbox"><input type="radio" name="node_audit_checkpoint" value="recheck"> Re-check Selected Nodes</label>
+            </fieldset>
+            <label>Selected node IDs<input name="selected_node_ids" value="material_gap_strength,omission_risk"></label>
+            <label>Adjustment or re-check note<input name="adjustment_note" value="No methodology adjustment requested."></label>
+            <label class="checkbox"><input type="checkbox" name="confirm_adjustment" value="1"> Confirm methodology-changing adjustment or selected-node re-check</label>
             <label>Reviewer ID<input name="reviewer_id" value="reviewer_local"></label>
             <label>Approval Note<input name="approval_note" value="Local demo review completed."></label>
             <textarea name="approved_episode_json" rows="28">{_esc(draft_episode)}</textarea>
@@ -166,6 +175,9 @@ def _handle_approve_and_run(fields: dict[str, str], static_inputs_path: Path) ->
     prepared_dir = Path(fields.get("prepared_dir", ""))
     review_question = _review_question_from_fields_or_manifest(fields, prepared_dir)
     checkpoint = fields.get("node_audit_checkpoint", "")
+    selected_node_ids = _parse_selected_node_ids(fields.get("selected_node_ids", ""))
+    adjustment_note = fields.get("adjustment_note", "").strip()
+    confirmed = fields.get("confirm_adjustment") == "1"
     reviewer_id = fields.get("reviewer_id", "").strip() or "reviewer_local"
     approval_note = fields.get("approval_note", "").strip() or "Local demo review completed."
     approved_episode_json = fields.get("approved_episode_json", "")
@@ -173,12 +185,24 @@ def _handle_approve_and_run(fields: dict[str, str], static_inputs_path: Path) ->
         raise ValueError("prepared_dir is required")
     if not approved_episode_json.strip():
         raise ValueError("approved episode JSON is required")
-    if checkpoint != "ok":
+    if checkpoint not in {"ok", "adjust", "recheck"}:
         raise ValueError("node audit checkpoint must be completed before processing")
+    if checkpoint in {"adjust", "recheck"} and not confirmed:
+        raise ValueError("methodology adjustments require confirmation before processing")
 
     edited_episode_path = prepared_dir / "reviewer_edited_episode.json"
     payload = json.loads(approved_episode_json)
     edited_episode_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    _write_node_audit_review_manifest(
+        prepared_dir=prepared_dir,
+        edited_episode_path=edited_episode_path,
+        static_inputs_path=static_inputs_path,
+        checkpoint=checkpoint,
+        selected_node_ids=selected_node_ids,
+        adjustment_note=adjustment_note,
+        confirmed=confirmed,
+        reviewer_id=reviewer_id,
+    )
     approve_prepared_input(
         prepared_dir=prepared_dir,
         reviewer_id=reviewer_id,
@@ -301,6 +325,65 @@ def _review_question_from_fields_or_manifest(fields: dict[str, str], prepared_di
         if manifest_value in REVIEW_QUESTION_LABELS:
             return manifest_value
     raise ValueError("review question is required before processing")
+
+
+def _parse_selected_node_ids(value: str) -> list[str]:
+    node_ids = [item.strip() for item in value.replace("\n", ",").split(",") if item.strip()]
+    invalid = [node_id for node_id in node_ids if node_id not in REQUIRED_GRAPH_METRICS]
+    if invalid:
+        raise ValueError(f"unknown selected node id: {invalid[0]}")
+    return node_ids
+
+
+def _write_node_audit_review_manifest(
+    *,
+    prepared_dir: Path,
+    edited_episode_path: Path,
+    static_inputs_path: Path,
+    checkpoint: str,
+    selected_node_ids: list[str],
+    adjustment_note: str,
+    confirmed: bool,
+    reviewer_id: str,
+) -> Path:
+    episode = load_episode(edited_episode_path)
+    static_bundle = load_static_input_bundle(static_inputs_path)
+    audit_bundle = build_node_audit_bundle(episode, static_bundle=static_bundle)
+    selected = set(selected_node_ids)
+    recheck_results = []
+    if checkpoint == "recheck":
+        for audit in audit_bundle.node_audits:
+            if audit.node_id in selected:
+                recheck_results.append(
+                    {
+                        "node_id": audit.node_id,
+                        "value": audit.estimate.value,
+                        "range_min": audit.estimate.range_min,
+                        "range_max": audit.estimate.range_max,
+                        "median": audit.estimate.median,
+                        "confidence": audit.estimate.confidence,
+                        "method": audit.estimate.method,
+                        "evidence_refs": audit.estimate.evidence_refs,
+                        "sensitivity_note": audit.sensitivity_note,
+                    }
+                )
+    manifest = {
+        "manifest_type": "node_audit_review_manifest",
+        "checkpoint_status": checkpoint,
+        "selected_node_ids": selected_node_ids,
+        "adjustment_note": adjustment_note,
+        "confirmation": confirmed,
+        "reviewer_id": reviewer_id,
+        "recheck_results": recheck_results,
+        "graph_authority_preserved": True,
+        "notes": [
+            "Reviewer checkpoint is recorded separately from generated facts.",
+            "Re-check results recompute deterministic node audit values; they do not invent unsupported facts.",
+        ],
+    }
+    manifest_path = prepared_dir / "node_audit_review_manifest.json"
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    return manifest_path
 
 
 def _node_audit_preview_rows(episode: object, static_bundle: object) -> str:
