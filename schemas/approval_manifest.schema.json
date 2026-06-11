@@ -1,0 +1,84 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "approval_status": {
+      "const": "approved",
+      "title": "Approval Status",
+      "type": "string"
+    },
+    "episode_id": {
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "reviewer_id": {
+      "title": "Reviewer Id",
+      "type": "string"
+    },
+    "approval_note": {
+      "title": "Approval Note",
+      "type": "string"
+    },
+    "draft_episode_sha256": {
+      "title": "Draft Episode Sha256",
+      "type": "string"
+    },
+    "approved_episode_sha256": {
+      "title": "Approved Episode Sha256",
+      "type": "string"
+    },
+    "redaction_report_sha256": {
+      "title": "Redaction Report Sha256",
+      "type": "string"
+    },
+    "redacted_input_sha256": {
+      "title": "Redacted Input Sha256",
+      "type": "string"
+    },
+    "raw_input_sha256": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Raw Input Sha256"
+    },
+    "episode_changed_from_draft": {
+      "title": "Episode Changed From Draft",
+      "type": "boolean"
+    },
+    "trace_id": {
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "trace_sha256": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Trace Sha256"
+    }
+  },
+  "required": [
+    "approval_status",
+    "episode_id",
+    "reviewer_id",
+    "approval_note",
+    "draft_episode_sha256",
+    "approved_episode_sha256",
+    "redaction_report_sha256",
+    "redacted_input_sha256",
+    "episode_changed_from_draft",
+    "trace_id"
+  ],
+  "title": "ApprovalManifest",
+  "type": "object"
+}

@@ -2,11 +2,11 @@
 
 ## Project Type
 
-Local deterministic Sentinel Governance Workbench POC. The first build wedge is synthetic Emergency Department disposition replay for governance review, now extended with the first Phase B constructed-input preparation path.
+Local deterministic Sentinel Governance Workbench POC. The first build wedge is synthetic Emergency Department disposition replay for governance review, now extended with constructed-input preparation and reviewer approval artifacts.
 
 ## Tech Stack
 
-Current target folder has a minimal Python substrate plus planning docs, JSON Schema, deterministic artifacts, and a CLI-first constructed-input preparation path.
+Current target folder has a minimal Python substrate plus planning docs, JSON Schema, deterministic artifacts, a CLI-first constructed-input preparation path, and reviewer approval artifacts.
 
 - Python package
 - Pydantic 2 schema models
@@ -15,6 +15,7 @@ Current target folder has a minimal Python substrate plus planning docs, JSON Sc
 - Static JSON fixtures for synthetic cases
 - Static offline reviewer workbench UI generated from deterministic artifacts
 - Deterministic redaction floor and constructed-text draft intake
+- Reviewer approval manifest and hash-chained approval trace
 
 ## Package Manager
 
@@ -32,6 +33,8 @@ Python packaging is defined in `pyproject.toml`.
 | Validate synthetic cases | `PYTHONPATH=src python3 -m sentinel_workbench.validate data/cases` | Yes: `validated=7 errors=0` |
 | Validate static role/EvidenceFlow inputs | `PYTHONPATH=src python3 -m sentinel_workbench.static_inputs --static-inputs data/static_inputs/static_inputs.json --case-dir data/cases` | Yes: `static_inputs cases=7 errors=0` |
 | Prepare constructed input | `PYTHONPATH=src python3 -m sentinel_workbench.constructed_intake --input data/constructed_inputs/constructed_demo_case.txt --out data/prepared_inputs/constructed_demo_case --episode-id constructed_demo_case --title "Constructed demo case"` | Yes: `status=prepared` |
+| Approve constructed input | `PYTHONPATH=src python3 -m sentinel_workbench.approval --prepared-dir data/prepared_inputs/constructed_demo_case --reviewer-id reviewer_demo --approval-note "Demo structured episode reviewed for local deterministic workflow."` | Yes: `status=approved` |
+| Validate approved constructed input | `PYTHONPATH=src python3 -m sentinel_workbench.approval --validate-approved data/prepared_inputs/constructed_demo_case` | Yes: `approved_episode=constructed_demo_case status=approved` |
 | Generate receipts | `PYTHONPATH=src python3 -m sentinel_workbench.receipts --case-dir data/cases --static-inputs data/static_inputs/static_inputs.json --out data/receipts` | Yes: `receipts=7 out=data/receipts` |
 | Export ED schema | `PYTHONPATH=src python3 -m sentinel_workbench.schema_export schemas/ed_decision_episode.schema.json` | Yes |
 | Generate evaluation report | `PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts` | Yes: `cases=7 future_leakage_failures=0` |
@@ -45,6 +48,7 @@ Python packaging is defined in `pyproject.toml`.
 Current runtime entry points:
 
 - `sentinel_workbench.models`: ED disposition replay Pydantic models.
+- `sentinel_workbench.approval`: reviewer approval gate for prepared constructed input, including approved episode loading, manifest validation, and hash-chained trace validation.
 - `sentinel_workbench.case_library`: required case-pattern coverage summary.
 - `sentinel_workbench.constructed_intake`: constructed/deidentified-style text preparation command that emits redacted input, redaction report, and draft episode artifacts.
 - `sentinel_workbench.graph`: deterministic node groups, lanes, preventability-opportunity proxy, and posture taxonomy output.
@@ -84,7 +88,7 @@ Current planning entry points:
 - `src/sentinel_workbench/`: Phase 1 deterministic Python package.
 - `data/cases/`: Phase 1 synthetic fixture seed set.
 - `data/constructed_inputs/`: safe constructed text inputs for Phase B demo preparation.
-- `data/prepared_inputs/`: generated redacted input, redaction reports, and draft episodes from constructed input.
+- `data/prepared_inputs/`: generated redacted input, redaction reports, draft episodes, approved episodes, approval manifests, and approval traces from constructed input.
 - `data/static_inputs/`: Phase 4 static role-output and EvidenceFlow templates plus invalid rejection fixtures.
 - `data/receipts/`: deterministic JSON and Markdown receipts.
 - `data/workbench/`: generated static reviewer workbench HTML.
@@ -100,7 +104,8 @@ Current planning entry points:
 - Future facts must be blocked from current-time replay.
 - Optional LLM mode is deferred until static deterministic paths pass.
 - Constructed/deidentified text must pass deterministic redaction and residual-risk checks before it can become a draft episode.
-- Draft constructed episodes are reviewer-editable artifacts, not approved graph inputs until Phase C adds approval controls.
+- Draft constructed episodes are reviewer-editable artifacts, not approved graph inputs.
+- Approved constructed episodes require `approval_manifest.json`, `approval_trace.json`, hash checks, and trace-chain validation.
 
 ## Reference Patterns Inspected
 
@@ -134,6 +139,9 @@ Current tests cover:
 - residual PHI-risk block/quarantine behavior.
 - constructed text to valid draft `DecisionEpisode` generation.
 - redaction report schema export and constructed-intake console-script registration.
+- reviewer approval artifact generation and validation.
+- unapproved draft rejection through `load_approved_episode`.
+- approval manifest and trace schema export.
 
 Receipt completeness and explicit automated validation categories are tracked in `validation/reports/latest.json`. The generated reviewer workbench is `data/workbench/index.html`.
 
@@ -157,6 +165,7 @@ Receipt completeness and explicit automated validation categories are tracked in
 - `docs/20_emex_admsve_reuse_evaluation.md`
 - `src/sentinel_workbench/redaction.py`
 - `src/sentinel_workbench/constructed_intake.py`
+- `src/sentinel_workbench/approval.py`
 - `data/constructed_inputs/*.txt`
 - `data/prepared_inputs/**/*.json`
 - `data/prepared_inputs/**/*.txt`
@@ -168,11 +177,11 @@ Receipt completeness and explicit automated validation categories are tracked in
 - `tests/test_phase6_receipts.py`
 - `tests/test_phase7_workbench.py`
 - `tests/test_phase_b_constructed_intake.py`
+- `tests/test_phase_c_reviewer_approval.py`
 - `tests/test_full_poc_documentation.py`
 
 ## Unknowns
 
 - Whether a later UI should replace the static offline report with a full local web app.
-- Exact reviewer-approval artifact shape for Phase C is not implemented yet.
 - Node audit, distribution/range/median methodology, and ensemble contribution normalization remain the next major trust-layer work.
 - Exact scoring constants for future graph versions remain intentionally provisional until static role/EvidenceFlow inputs and receipt review exist.

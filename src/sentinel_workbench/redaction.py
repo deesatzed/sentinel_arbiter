@@ -29,6 +29,7 @@ class ResidualFindingRecord(RedactionSchemaModel):
 
 class RedactionReport(RedactionSchemaModel):
     status: Literal["prepared", "quarantined"]
+    input_sha256: str
     redaction_count: int = Field(ge=0)
     findings: list[RedactionFindingRecord] = Field(default_factory=list)
     residual_findings: list[ResidualFindingRecord] = Field(default_factory=list)

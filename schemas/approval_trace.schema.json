@@ -1,0 +1,72 @@
+{
+  "$defs": {
+    "ApprovalTraceEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "sequence_index": {
+          "minimum": 0,
+          "title": "Sequence Index",
+          "type": "integer"
+        },
+        "event_type": {
+          "enum": [
+            "draft_prepared",
+            "reviewer_approved"
+          ],
+          "title": "Event Type",
+          "type": "string"
+        },
+        "event_payload": {
+          "additionalProperties": true,
+          "title": "Event Payload",
+          "type": "object"
+        },
+        "prev_hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prev Hash"
+        },
+        "event_hash": {
+          "title": "Event Hash",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sequence_index",
+        "event_type",
+        "event_payload",
+        "event_hash"
+      ],
+      "title": "ApprovalTraceEvent",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "trace_id": {
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "events": {
+      "items": {
+        "$ref": "#/$defs/ApprovalTraceEvent"
+      },
+      "minItems": 1,
+      "title": "Events",
+      "type": "array"
+    }
+  },
+  "required": [
+    "trace_id",
+    "events"
+  ],
+  "title": "ApprovalTrace",
+  "type": "object"
+}

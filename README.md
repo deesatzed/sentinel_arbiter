@@ -2,7 +2,7 @@
 
 Version: 0.1
 Date: 2026-06-11
-Status: Deterministic ED replay POC with Phase B constructed-input preparation started. No production clinical use implied.
+Status: Deterministic ED replay POC with constructed-input preparation and reviewer approval artifacts started. No production clinical use implied.
 
 Repository: https://github.com/deesatzed/sentinel_arbiter.git
 
@@ -72,6 +72,9 @@ sentinel_codex_handoff/
       markdown/
     prepared_inputs/
       constructed_demo_case/
+        approval_manifest.json
+        approval_trace.json
+        approved_episode.json
         draft_episode.json
         redacted_input.txt
         redaction_report.json
@@ -115,6 +118,8 @@ sentinel_codex_handoff/
     role_assessment.schema.json
     evidenceflow_result.schema.json
     sentinel_receipt.schema.json
+    approval_manifest.schema.json
+    approval_trace.schema.json
     ed_sentinel_receipt.schema.json
     redaction_report.schema.json
     static_role_assessment.schema.json
@@ -122,6 +127,7 @@ sentinel_codex_handoff/
     static_input_bundle.schema.json
   src/
     sentinel_workbench/
+      approval.py
       models.py
       case_library.py
       constructed_intake.py
@@ -145,6 +151,7 @@ sentinel_codex_handoff/
     test_phase6_receipts.py
     test_phase7_workbench.py
     test_phase_b_constructed_intake.py
+    test_phase_c_reviewer_approval.py
     test_full_poc_documentation.py
   prompts/
     01_role_agent_prompt_contracts.md
@@ -158,7 +165,7 @@ sentinel_codex_handoff/
 
 ## Recommended first Codex task
 
-Ask Codex to read `GOAL.md`, this README, `DECISIONS.md`, `PROGRESS.md`, `REPO_MAP.md`, `RISK_NOTES.md`, `docs/20_emex_admsve_reuse_evaluation.md`, and the JSON schemas. Then continue Phase B/C from the constructed-input preparation path before adding a local app endpoint.
+Ask Codex to read `GOAL.md`, this README, `DECISIONS.md`, `PROGRESS.md`, `REPO_MAP.md`, `RISK_NOTES.md`, `docs/20_emex_admsve_reuse_evaluation.md`, and the JSON schemas. Then continue from Phase D node-audit methodology before adding a local app endpoint.
 
 ## Constructed input preparation
 
@@ -180,6 +187,28 @@ The command writes:
 
 The draft episode is not yet a reviewer-approved analysis input. It is an editable structured artifact that must be reviewed before the graph run.
 
+## Reviewer approval
+
+Phase C adds an artifact gate for prepared constructed input:
+
+```bash
+PYTHONPATH=src python3 -m sentinel_workbench.approval \
+  --prepared-dir data/prepared_inputs/constructed_demo_case \
+  --reviewer-id reviewer_demo \
+  --approval-note "Demo structured episode reviewed for local deterministic workflow."
+
+PYTHONPATH=src python3 -m sentinel_workbench.approval \
+  --validate-approved data/prepared_inputs/constructed_demo_case
+```
+
+Approval writes:
+
+- `approved_episode.json`
+- `approval_manifest.json`
+- `approval_trace.json`
+
+`load_approved_episode()` refuses direct draft JSON paths. Constructed input must pass through this approval artifact gate before later analysis commands should treat it as analysis-ready.
+
 ## Current local verification
 
 ```bash
@@ -187,6 +216,8 @@ python3 -m pytest -q
 PYTHONPATH=src python3 -m sentinel_workbench.validate data/cases
 PYTHONPATH=src python3 -m sentinel_workbench.static_inputs --static-inputs data/static_inputs/static_inputs.json --case-dir data/cases
 PYTHONPATH=src python3 -m sentinel_workbench.constructed_intake --input data/constructed_inputs/constructed_demo_case.txt --out data/prepared_inputs/constructed_demo_case --episode-id constructed_demo_case --title "Constructed demo case"
+PYTHONPATH=src python3 -m sentinel_workbench.approval --prepared-dir data/prepared_inputs/constructed_demo_case --reviewer-id reviewer_demo --approval-note "Demo structured episode reviewed for local deterministic workflow."
+PYTHONPATH=src python3 -m sentinel_workbench.approval --validate-approved data/prepared_inputs/constructed_demo_case
 PYTHONPATH=src python3 -m sentinel_workbench.receipts --case-dir data/cases --static-inputs data/static_inputs/static_inputs.json --out data/receipts
 PYTHONPATH=src python3 -m sentinel_workbench.schema_export schemas/ed_decision_episode.schema.json
 PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts

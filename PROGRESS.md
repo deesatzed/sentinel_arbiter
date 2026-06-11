@@ -446,3 +446,30 @@
 
 - Phase B now has a working CLI-first path from constructed text to redacted input, redaction report, and draft structured episode.
 - The draft episode is not yet reviewer-approved for analysis. Phase C still needs explicit reviewer approval artifacts, validation, and trace events before constructed input can feed the graph as a complete demo run.
+
+## 2026-06-11 - Phase C Reviewer Approval Artifact Gate Started
+
+### Completed So Far
+
+- Added `src/sentinel_workbench/approval.py`.
+- Added `tests/test_phase_c_reviewer_approval.py`.
+- Added `sentinel-workbench-approve-constructed-input` console-script registration.
+- Added `schemas/approval_manifest.schema.json` and `schemas/approval_trace.schema.json`.
+- Extended `schema_export.py` to export approval schemas.
+- Extended redaction reports with `input_sha256` so raw constructed input can be hashed without being copied into review artifacts.
+- Generated `data/prepared_inputs/constructed_demo_case/approved_episode.json`, `approval_manifest.json`, and `approval_trace.json`.
+- Updated `README.md`, `REPO_MAP.md`, and `DECISIONS.md` with the approval gate.
+
+### Verification Evidence
+
+- Initial Phase C test run failed with `ModuleNotFoundError: No module named 'sentinel_workbench.approval'`, confirming tests covered missing behavior before implementation.
+- Added failing assertions for raw-input hashing; they failed until `input_sha256` was added to redaction reports and carried into approval manifests.
+- `python3 -m pytest tests/test_phase_b_constructed_intake.py tests/test_phase_c_reviewer_approval.py -q` passed: `14 passed`.
+- Approval generation passed: `status=approved out=data/prepared_inputs/constructed_demo_case`.
+- Approval validation passed: `approved_episode=constructed_demo_case status=approved`.
+
+### Current State
+
+- Constructed input now has a CLI-first path through redaction, draft episode generation, reviewer approval, manifest validation, and hash-chained approval trace.
+- Direct draft JSON is rejected by `load_approved_episode`; later constructed-input analysis should use the approved directory path.
+- Phase D node audit methodology remains the next major trust-layer step.

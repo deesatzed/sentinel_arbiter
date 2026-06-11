@@ -1,5 +1,6 @@
 {
   "status": "prepared",
+  "input_sha256": "bc433cd0e9898905e8147b60c14536436643767f39d635ef38d37e54fe8d3427",
   "redaction_count": 0,
   "findings": [],
   "residual_findings": []

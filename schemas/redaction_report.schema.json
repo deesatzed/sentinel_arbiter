@@ -61,6 +61,10 @@
       "title": "Status",
       "type": "string"
     },
+    "input_sha256": {
+      "title": "Input Sha256",
+      "type": "string"
+    },
     "redaction_count": {
       "minimum": 0,
       "title": "Redaction Count",
@@ -83,6 +87,7 @@
   },
   "required": [
     "status",
+    "input_sha256",
     "redaction_count"
   ],
   "title": "RedactionReport",

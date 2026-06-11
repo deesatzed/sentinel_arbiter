@@ -1,0 +1,27 @@
+{
+  "trace_id": "approval_trace_constructed_demo_case",
+  "events": [
+    {
+      "sequence_index": 0,
+      "event_type": "draft_prepared",
+      "event_payload": {
+        "draft_episode_sha256": "4fad9599f561e9101c46f48de44268139182d2db68432e80cc891b6f6e730f6d",
+        "redaction_report_sha256": "739362a09db5f7d610267af6993345360eaff7058209681f242479c4c0aab1c3"
+      },
+      "prev_hash": null,
+      "event_hash": "12cdb2959ff9aba58872bda55e55246a188b812f0aebcb7cb87e17a6e35b6bad"
+    },
+    {
+      "sequence_index": 1,
+      "event_type": "reviewer_approved",
+      "event_payload": {
+        "approved_episode_sha256": "4fad9599f561e9101c46f48de44268139182d2db68432e80cc891b6f6e730f6d",
+        "reviewer_id": "reviewer_demo",
+        "approval_note": "Demo structured episode reviewed for local deterministic workflow.",
+        "episode_changed_from_draft": false
+      },
+      "prev_hash": "12cdb2959ff9aba58872bda55e55246a188b812f0aebcb7cb87e17a6e35b6bad",
+      "event_hash": "25eee52f9a4fe84013e7c4f3b15c8986f6580077b504f32cde8dc7e6536ae097"
+    }
+  ]
+}

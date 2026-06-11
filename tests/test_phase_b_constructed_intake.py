@@ -84,6 +84,9 @@ def test_prepare_constructed_input_writes_valid_draft_episode(tmp_path):
     assert artifacts.draft_episode_path is not None
     assert artifacts.redacted_input_path.exists()
     assert artifacts.redaction_report_path.exists()
+    report = json.loads(artifacts.redaction_report_path.read_text(encoding="utf-8"))
+    assert report["input_sha256"]
+    assert "Adult constructed patient" not in report["input_sha256"]
 
     episode = load_episode(artifacts.draft_episode_path)
     assert episode.episode_id == "constructed_demo_case"

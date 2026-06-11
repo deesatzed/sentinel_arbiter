@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
@@ -53,6 +54,7 @@ def prepare_constructed_input(
     output_dir.mkdir(parents=True, exist_ok=True)
 
     raw_text = source_path.read_text(encoding="utf-8")
+    input_sha256 = hashlib.sha256(raw_text.encode("utf-8")).hexdigest()
     redaction = DeterministicRedactor().redact(raw_text)
 
     redacted_input_path = output_dir / "redacted_input.txt"
@@ -62,7 +64,7 @@ def prepare_constructed_input(
     redacted_input_path.write_text(redaction.clean_text, encoding="utf-8")
 
     if redaction.residual_findings:
-        _write_redaction_report(redaction_report_path, redaction, status="quarantined")
+        _write_redaction_report(redaction_report_path, redaction, status="quarantined", input_sha256=input_sha256)
         if quarantine_on_residual:
             return ConstructedInputArtifacts(
                 out_dir=output_dir,
@@ -76,7 +78,7 @@ def prepare_constructed_input(
 
     episode = _build_draft_episode(episode_id=episode_id, title=title, redacted_text=redaction.clean_text)
     draft_episode_path.write_text(episode.model_dump_json(indent=2) + "\n", encoding="utf-8")
-    _write_redaction_report(redaction_report_path, redaction, status="prepared")
+    _write_redaction_report(redaction_report_path, redaction, status="prepared", input_sha256=input_sha256)
     return ConstructedInputArtifacts(
         out_dir=output_dir,
         redacted_input_path=redacted_input_path,
@@ -86,9 +88,10 @@ def prepare_constructed_input(
     )
 
 
-def _write_redaction_report(path: Path, result: RedactionResult, *, status: str) -> None:
+def _write_redaction_report(path: Path, result: RedactionResult, *, status: str, input_sha256: str) -> None:
     report = RedactionReport(
         status=status,
+        input_sha256=input_sha256,
         redaction_count=len(result.findings),
         findings=[asdict(finding) for finding in result.findings],
         residual_findings=[asdict(finding) for finding in result.residual_findings],
