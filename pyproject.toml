@@ -23,6 +23,7 @@ sentinel-workbench-evaluate = "sentinel_workbench.evaluate:main"
 sentinel-workbench-validate-static-inputs = "sentinel_workbench.static_inputs:main"
 sentinel-workbench-generate-receipts = "sentinel_workbench.receipts:main"
 sentinel-workbench-generate-ui = "sentinel_workbench.workbench:main"
+sentinel-workbench-prepare-constructed-input = "sentinel_workbench.constructed_intake:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -1,0 +1,4 @@
+Adult constructed patient reports recurrent symptom concern after an initial evaluation.
+Initial structured information is documented as not decisive in this constructed demo.
+Supportive therapy was offered, but response is not clearly reassessed before the decision-time review.
+At decision time, home support and ability to return for reassessment remain unclear.

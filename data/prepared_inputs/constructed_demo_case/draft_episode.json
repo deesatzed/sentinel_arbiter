@@ -1,0 +1,257 @@
+{
+  "episode_id": "constructed_demo_case",
+  "title": "Constructed demo case",
+  "domain": "emergency_department_disposition_replay",
+  "decision_point_type": "other_ed_disposition_review",
+  "case_syntheticity": "deidentified_style_synthetic",
+  "governance_question": "Was the disposition posture warranted at the decision time given only the information then available?",
+  "forbidden_use_notice": "Constructed local governance review draft. Not for patient care, orders, diagnosis, treatment, or disposition instructions.",
+  "description": "Reviewer-editable draft generated from redacted constructed input. Facts require reviewer approval before analysis.",
+  "actors": [
+    {
+      "actor_id": "reviewer_001",
+      "actor_type": "human",
+      "role": "constructing reviewer"
+    }
+  ],
+  "timepoints": [
+    {
+      "timepoint_id": "T0_triage",
+      "sequence_index": 0,
+      "time_label": "Constructed input intake",
+      "available_facts": [
+        {
+          "fact_id": "constructed_fact_001",
+          "text": "Adult constructed patient reports recurrent symptom concern after an initial evaluation.",
+          "source_type": "human_authored_note",
+          "verification_status": "unverified_human_reported",
+          "information_bucket": "known_but_weak",
+          "decision_criticality": 0.5,
+          "ai_provenance_depth": 0,
+          "source_refs": [
+            "redacted_constructed_input"
+          ]
+        }
+      ],
+      "information_gaps": [],
+      "pending_information": [],
+      "offered_therapies": [],
+      "therapy_response_observations": [],
+      "proposed_disposition_posture_under_review": {
+        "posture_under_review_id": "constructed_posture_0",
+        "stated_plan_category": "unclear",
+        "assertiveness": "low",
+        "source_actor": "reviewer_001",
+        "rationale_available_at_time": "Draft intake placeholder pending reviewer approval.",
+        "known_constraints": [
+          "constructed draft",
+          "reviewer approval required"
+        ]
+      },
+      "follow_up_feasibility": {
+        "follow_up_access": "unknown",
+        "home_support": "unknown",
+        "return_access": "unknown",
+        "barrier_facts": [],
+        "barrier_source_refs": [],
+        "barrier_reliability": "unknown"
+      },
+      "hidden_future_facts": []
+    },
+    {
+      "timepoint_id": "T1_initial_workup",
+      "sequence_index": 1,
+      "time_label": "Constructed initial information",
+      "available_facts": [
+        {
+          "fact_id": "constructed_fact_002",
+          "text": "Initial structured information is documented as not decisive in this constructed demo.",
+          "source_type": "human_authored_note",
+          "verification_status": "unverified_human_reported",
+          "information_bucket": "known_but_weak",
+          "decision_criticality": 0.5,
+          "ai_provenance_depth": 0,
+          "source_refs": [
+            "redacted_constructed_input"
+          ]
+        }
+      ],
+      "information_gaps": [],
+      "pending_information": [],
+      "offered_therapies": [],
+      "therapy_response_observations": [],
+      "proposed_disposition_posture_under_review": {
+        "posture_under_review_id": "constructed_posture_1",
+        "stated_plan_category": "unclear",
+        "assertiveness": "low",
+        "source_actor": "reviewer_001",
+        "rationale_available_at_time": "Draft intake placeholder pending reviewer approval.",
+        "known_constraints": [
+          "constructed draft",
+          "reviewer approval required"
+        ]
+      },
+      "follow_up_feasibility": {
+        "follow_up_access": "unknown",
+        "home_support": "unknown",
+        "return_access": "unknown",
+        "barrier_facts": [],
+        "barrier_source_refs": [],
+        "barrier_reliability": "unknown"
+      },
+      "hidden_future_facts": []
+    },
+    {
+      "timepoint_id": "T2_post_treatment_reassessment",
+      "sequence_index": 2,
+      "time_label": "Constructed reassessment information",
+      "available_facts": [
+        {
+          "fact_id": "constructed_fact_003",
+          "text": "Supportive therapy was offered, but response is not clearly reassessed before the decision-time review.",
+          "source_type": "human_authored_note",
+          "verification_status": "unverified_human_reported",
+          "information_bucket": "known_but_weak",
+          "decision_criticality": 0.5,
+          "ai_provenance_depth": 0,
+          "source_refs": [
+            "redacted_constructed_input"
+          ]
+        }
+      ],
+      "information_gaps": [],
+      "pending_information": [],
+      "offered_therapies": [],
+      "therapy_response_observations": [],
+      "proposed_disposition_posture_under_review": {
+        "posture_under_review_id": "constructed_posture_2",
+        "stated_plan_category": "unclear",
+        "assertiveness": "low",
+        "source_actor": "reviewer_001",
+        "rationale_available_at_time": "Draft intake placeholder pending reviewer approval.",
+        "known_constraints": [
+          "constructed draft",
+          "reviewer approval required"
+        ]
+      },
+      "follow_up_feasibility": {
+        "follow_up_access": "unknown",
+        "home_support": "unknown",
+        "return_access": "unknown",
+        "barrier_facts": [],
+        "barrier_source_refs": [],
+        "barrier_reliability": "unknown"
+      },
+      "hidden_future_facts": []
+    },
+    {
+      "timepoint_id": "T3_disposition_decision",
+      "sequence_index": 3,
+      "time_label": "Constructed decision-time review",
+      "available_facts": [
+        {
+          "fact_id": "constructed_fact_004",
+          "text": "At decision time, home support and ability to return for reassessment remain unclear.",
+          "source_type": "human_authored_note",
+          "verification_status": "unverified_human_reported",
+          "information_bucket": "known_but_weak",
+          "decision_criticality": 0.5,
+          "ai_provenance_depth": 0,
+          "source_refs": [
+            "redacted_constructed_input"
+          ]
+        }
+      ],
+      "information_gaps": [
+        {
+          "gap_id": "constructed_review_required",
+          "description": "Reviewer must confirm timepoint assignment, missing inputs, therapy response, and follow-up feasibility before analysis.",
+          "gap_type": "reviewer_approval_required",
+          "knowability": "knowable_now",
+          "time_to_obtain_hours": 0.25,
+          "burden": "low",
+          "decision_relevance_prior": 0.8,
+          "candidate_input_mapping": "review and approve structured episode"
+        }
+      ],
+      "pending_information": [],
+      "offered_therapies": [],
+      "therapy_response_observations": [],
+      "proposed_disposition_posture_under_review": {
+        "posture_under_review_id": "constructed_posture_3",
+        "stated_plan_category": "unclear",
+        "assertiveness": "low",
+        "source_actor": "reviewer_001",
+        "rationale_available_at_time": "Draft intake placeholder pending reviewer approval.",
+        "known_constraints": [
+          "constructed draft",
+          "reviewer approval required"
+        ]
+      },
+      "follow_up_feasibility": {
+        "follow_up_access": "unknown",
+        "home_support": "unknown",
+        "return_access": "unknown",
+        "barrier_facts": [],
+        "barrier_source_refs": [],
+        "barrier_reliability": "unknown"
+      },
+      "hidden_future_facts": []
+    },
+    {
+      "timepoint_id": "T4_follow_up_or_outcome",
+      "sequence_index": 4,
+      "time_label": "Hidden follow-up placeholder",
+      "available_facts": [
+        {
+          "fact_id": "constructed_hidden_future_placeholder",
+          "text": "No outcome fact is supplied in this constructed draft.",
+          "source_type": "unknown",
+          "verification_status": "unknown_provenance",
+          "information_bucket": "unknowable_now",
+          "decision_criticality": 0.0,
+          "ai_provenance_depth": 0,
+          "source_refs": []
+        }
+      ],
+      "information_gaps": [],
+      "pending_information": [],
+      "offered_therapies": [],
+      "therapy_response_observations": [],
+      "proposed_disposition_posture_under_review": {
+        "posture_under_review_id": "constructed_posture_4",
+        "stated_plan_category": "unclear",
+        "assertiveness": "low",
+        "source_actor": "reviewer_001",
+        "rationale_available_at_time": "Draft intake placeholder pending reviewer approval.",
+        "known_constraints": [
+          "constructed draft",
+          "reviewer approval required"
+        ]
+      },
+      "follow_up_feasibility": {
+        "follow_up_access": "unknown",
+        "home_support": "unknown",
+        "return_access": "unknown",
+        "barrier_facts": [],
+        "barrier_source_refs": [],
+        "barrier_reliability": "unknown"
+      },
+      "hidden_future_facts": []
+    }
+  ],
+  "expected_outputs": {
+    "expected_final_posture": "HUMAN_REVIEW_REQUIRED",
+    "covered_case_patterns": [
+      "material_missing_input_before_disposition"
+    ],
+    "expected_material_gaps": [
+      "constructed_review_required"
+    ],
+    "expected_omission_flags": [],
+    "expected_commission_flags": [],
+    "expected_therapy_response_flags": [],
+    "expected_next_best_information": [],
+    "expected_future_leakage_blocked": true
+  }
+}

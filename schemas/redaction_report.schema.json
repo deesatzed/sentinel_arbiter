@@ -1,0 +1,90 @@
+{
+  "$defs": {
+    "RedactionFindingRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "minimum": 0,
+          "title": "End",
+          "type": "integer"
+        },
+        "text_hash": {
+          "title": "Text Hash",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "start",
+        "end",
+        "text_hash"
+      ],
+      "title": "RedactionFindingRecord",
+      "type": "object"
+    },
+    "ResidualFindingRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "pattern": {
+          "title": "Pattern",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "pattern"
+      ],
+      "title": "ResidualFindingRecord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "enum": [
+        "prepared",
+        "quarantined"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "redaction_count": {
+      "minimum": 0,
+      "title": "Redaction Count",
+      "type": "integer"
+    },
+    "findings": {
+      "items": {
+        "$ref": "#/$defs/RedactionFindingRecord"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "residual_findings": {
+      "items": {
+        "$ref": "#/$defs/ResidualFindingRecord"
+      },
+      "title": "Residual Findings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "status",
+    "redaction_count"
+  ],
+  "title": "RedactionReport",
+  "type": "object"
+}

@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .models import DecisionEpisode
 from .receipts import export_receipt_schema
+from .redaction import export_redaction_report_schema
 from .static_inputs import export_static_input_schemas
 
 
@@ -23,6 +24,7 @@ def main() -> None:
     path = export_schema(args.output_path)
     export_static_input_schemas(Path(args.output_path).parent)
     export_receipt_schema(Path(args.output_path).parent / "ed_sentinel_receipt.schema.json")
+    export_redaction_report_schema(Path(args.output_path).parent / "redaction_report.schema.json")
     print(path)
 
 

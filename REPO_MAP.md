@@ -2,11 +2,11 @@
 
 ## Project Type
 
-Planning and handoff package for a local, deterministic Sentinel Governance Workbench POC. The first build wedge is synthetic Emergency Department disposition replay for governance review.
+Local deterministic Sentinel Governance Workbench POC. The first build wedge is synthetic Emergency Department disposition replay for governance review, now extended with the first Phase B constructed-input preparation path.
 
 ## Tech Stack
 
-Current target folder has a minimal Python Phase 1 substrate plus planning docs and JSON Schema.
+Current target folder has a minimal Python substrate plus planning docs, JSON Schema, deterministic artifacts, and a CLI-first constructed-input preparation path.
 
 - Python package
 - Pydantic 2 schema models
@@ -14,6 +14,7 @@ Current target folder has a minimal Python Phase 1 substrate plus planning docs 
 - Pytest validation tests
 - Static JSON fixtures for synthetic cases
 - Static offline reviewer workbench UI generated from deterministic artifacts
+- Deterministic redaction floor and constructed-text draft intake
 
 ## Package Manager
 
@@ -27,16 +28,17 @@ Python packaging is defined in `pyproject.toml`.
 | Inspect project source-of-truth | `sed -n '1,520p' GOAL.md` | Yes |
 | Inspect docs/prompts/validation headings | `for f in docs/*.md prompts/*.md validation/*.md examples/*.md roadmaps/*.md; do rg -n '^(#|##|###) ' "$f"; done` | Yes |
 | Inspect schema top-level properties | `for f in schemas/*.json; do jq -r 'if .properties then (.title // input_filename), (.properties|keys[]) else (.title // input_filename) end' "$f"; done` | Yes |
-| Run tests | `python3 -m pytest -q` | Yes: 22 passed |
+| Run tests | `python3 -m pytest -q` | Yes |
 | Validate synthetic cases | `PYTHONPATH=src python3 -m sentinel_workbench.validate data/cases` | Yes: `validated=7 errors=0` |
 | Validate static role/EvidenceFlow inputs | `PYTHONPATH=src python3 -m sentinel_workbench.static_inputs --static-inputs data/static_inputs/static_inputs.json --case-dir data/cases` | Yes: `static_inputs cases=7 errors=0` |
+| Prepare constructed input | `PYTHONPATH=src python3 -m sentinel_workbench.constructed_intake --input data/constructed_inputs/constructed_demo_case.txt --out data/prepared_inputs/constructed_demo_case --episode-id constructed_demo_case --title "Constructed demo case"` | Yes: `status=prepared` |
 | Generate receipts | `PYTHONPATH=src python3 -m sentinel_workbench.receipts --case-dir data/cases --static-inputs data/static_inputs/static_inputs.json --out data/receipts` | Yes: `receipts=7 out=data/receipts` |
 | Export ED schema | `PYTHONPATH=src python3 -m sentinel_workbench.schema_export schemas/ed_decision_episode.schema.json` | Yes |
 | Generate evaluation report | `PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts` | Yes: `cases=7 future_leakage_failures=0` |
 | Generate reviewer workbench | `PYTHONPATH=src python3 -m sentinel_workbench.workbench --case-dir data/cases --receipt-dir data/receipts --report validation/reports/latest.json --out data/workbench/index.html` | Yes: `workbench=data/workbench/index.html cases=7` |
 | Editable install dry-run | `python3 -m pip install -e . --dry-run --no-deps` | Yes: would install `sentinel-workbench-0.1.0` |
-| Check repository status | `git status --short --branch` | Failed: this folder is not inside a git repository |
-| Whitespace diff check | `git diff --check` | Not applicable until a nearest git repository exists |
+| Check repository status | `git status --short --branch` | Yes |
+| Whitespace diff check | `git diff --check` | Yes |
 
 ## Entry Points
 
@@ -44,9 +46,11 @@ Current runtime entry points:
 
 - `sentinel_workbench.models`: ED disposition replay Pydantic models.
 - `sentinel_workbench.case_library`: required case-pattern coverage summary.
+- `sentinel_workbench.constructed_intake`: constructed/deidentified-style text preparation command that emits redacted input, redaction report, and draft episode artifacts.
 - `sentinel_workbench.graph`: deterministic node groups, lanes, preventability-opportunity proxy, and posture taxonomy output.
 - `sentinel_workbench.loader`: JSON fixture loading and safety preflight.
 - `sentinel_workbench.replay`: current-time replay view and blocked future fact reporting.
+- `sentinel_workbench.redaction`: deterministic redaction floor and redaction report schema.
 - `sentinel_workbench.receipts`: deterministic JSON and Markdown receipt generation.
 - `sentinel_workbench.workbench`: static offline reviewer workbench generation.
 - `sentinel_workbench.safety`: forbidden phrase, named institution, secret, and PHI-pattern scanner.
@@ -56,6 +60,7 @@ Current runtime entry points:
 - `sentinel_workbench.evaluate`: deterministic evaluation report command.
 - `docs/18_deterministic_poc_status.md`: implemented/deferred/pre-real-use status boundary.
 - `docs/19_repository_publishing.md`: GitHub remote, branch, and pre-push verification notes.
+- `docs/20_emex_admsve_reuse_evaluation.md`: reuse evaluation for EMEX and AdmSVE donor patterns.
 
 Current planning entry points:
 
@@ -78,6 +83,8 @@ Current planning entry points:
 - `examples/`: synthetic case templates, minimal case ideas, and illustrative receipt shape.
 - `src/sentinel_workbench/`: Phase 1 deterministic Python package.
 - `data/cases/`: Phase 1 synthetic fixture seed set.
+- `data/constructed_inputs/`: safe constructed text inputs for Phase B demo preparation.
+- `data/prepared_inputs/`: generated redacted input, redaction reports, and draft episodes from constructed input.
 - `data/static_inputs/`: Phase 4 static role-output and EvidenceFlow templates plus invalid rejection fixtures.
 - `data/receipts/`: deterministic JSON and Markdown receipts.
 - `data/workbench/`: generated static reviewer workbench HTML.
@@ -92,6 +99,8 @@ Current planning entry points:
 - Reconstructable receipts are core artifacts, not an afterthought.
 - Future facts must be blocked from current-time replay.
 - Optional LLM mode is deferred until static deterministic paths pass.
+- Constructed/deidentified text must pass deterministic redaction and residual-risk checks before it can become a draft episode.
+- Draft constructed episodes are reviewer-editable artifacts, not approved graph inputs until Phase C adds approval controls.
 
 ## Reference Patterns Inspected
 
@@ -99,6 +108,8 @@ Current planning entry points:
 - `../OE_dotflows2.md`: patient-safety expert framing and error-correction emphasis, treated as reference only because the tone is too broad for direct POC output.
 - `../finESS`: local-first app discipline, explicit verification commands, environment preflight pattern, and honest non-advice boundaries.
 - `../clinclaw-firewall`: fail-closed clinical safety boundaries, hash-chained traces, receipts, most-restrictive-wins posture, synthetic-only demos, and local pytest verification.
+- `../AdmSVE`: local app pattern, deterministic redaction floor, intake extraction, trace, tiered provenance output, metrics, and reporting.
+- `../EMEX`: artifact-first prepare/ingest workflow, conservative prose ingestion, packet building, leakage reporting, and static demo flow.
 
 ## Tests and Verification
 
@@ -119,6 +130,10 @@ Current tests cover:
 - JSON and Markdown receipt completeness across all seven cases.
 - static reviewer workbench panel coverage, receipt export links, visible POC warning, and forbidden-phrase screening.
 - explicit status documentation for implemented, deferred, pre-real-use, and not-claimed boundaries.
+- deterministic redaction of PHI-like spans.
+- residual PHI-risk block/quarantine behavior.
+- constructed text to valid draft `DecisionEpisode` generation.
+- redaction report schema export and constructed-intake console-script registration.
 
 Receipt completeness and explicit automated validation categories are tracked in `validation/reports/latest.json`. The generated reviewer workbench is `data/workbench/index.html`.
 
@@ -139,6 +154,12 @@ Receipt completeness and explicit automated validation categories are tracked in
 - `data/workbench/index.html`
 - `docs/18_deterministic_poc_status.md`
 - `docs/19_repository_publishing.md`
+- `docs/20_emex_admsve_reuse_evaluation.md`
+- `src/sentinel_workbench/redaction.py`
+- `src/sentinel_workbench/constructed_intake.py`
+- `data/constructed_inputs/*.txt`
+- `data/prepared_inputs/**/*.json`
+- `data/prepared_inputs/**/*.txt`
 - `tests/test_phase1_models.py`
 - `tests/test_phase2_case_library.py`
 - `tests/test_phase3_prudence_graph.py`
@@ -146,10 +167,12 @@ Receipt completeness and explicit automated validation categories are tracked in
 - `tests/test_phase4_static_inputs.py`
 - `tests/test_phase6_receipts.py`
 - `tests/test_phase7_workbench.py`
+- `tests/test_phase_b_constructed_intake.py`
 - `tests/test_full_poc_documentation.py`
 
 ## Unknowns
 
-- Whether this folder will become its own git repository or be copied into a larger repository later.
 - Whether a later UI should replace the static offline report with a full local web app.
+- Exact reviewer-approval artifact shape for Phase C is not implemented yet.
+- Node audit, distribution/range/median methodology, and ensemble contribution normalization remain the next major trust-layer work.
 - Exact scoring constants for future graph versions remain intentionally provisional until static role/EvidenceFlow inputs and receipt review exist.

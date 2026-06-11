@@ -421,3 +421,28 @@
 
 - The new `GOAL.md` is now the source-of-truth contract for the next build phase.
 - The next implementation should start with a CLI-first redaction and constructed-text intake path, then add reviewer approval, node audit objects, ensemble contribution handling, upgraded receipts, workbench rendering, and only then a local app endpoint.
+
+## 2026-06-11 - Phase B Constructed Input Preparation Started
+
+### Completed So Far
+
+- Added `src/sentinel_workbench/redaction.py` with a deterministic stdlib redaction floor for MRN, DOB, phone, and email-like spans plus residual PHI-pattern reporting.
+- Added `src/sentinel_workbench/constructed_intake.py` with a CLI-first preparation command that redacts input, writes a redaction report, and emits a reviewer-editable draft `DecisionEpisode`.
+- Added `tests/test_phase_b_constructed_intake.py` covering redaction, residual-risk blocking, residual-risk quarantine, valid draft episode generation, module command behavior, schema export, and console-script registration.
+- Added `schemas/redaction_report.schema.json`.
+- Added `data/constructed_inputs/constructed_demo_case.txt`.
+- Generated `data/prepared_inputs/constructed_demo_case/redacted_input.txt`, `redaction_report.json`, and `draft_episode.json` from the new command.
+- Updated `README.md` with the constructed-input preparation workflow.
+
+### Verification Evidence
+
+- Initial Phase B test run failed with `ModuleNotFoundError: No module named 'sentinel_workbench.constructed_intake'`, confirming the tests covered missing behavior before implementation.
+- Expanded integration tests failed until `redaction_report.schema.json` export and the `sentinel-workbench-prepare-constructed-input` console script were added.
+- `python3 -m pytest tests/test_phase_b_constructed_intake.py -q` passed: `7 passed`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.constructed_intake --input data/constructed_inputs/constructed_demo_case.txt --out data/prepared_inputs/constructed_demo_case --episode-id constructed_demo_case --title "Constructed demo case"` passed with `status=prepared`.
+- The generated draft episode loaded successfully as `constructed_demo_case` with five timepoints.
+
+### Current State
+
+- Phase B now has a working CLI-first path from constructed text to redacted input, redaction report, and draft structured episode.
+- The draft episode is not yet reviewer-approved for analysis. Phase C still needs explicit reviewer approval artifacts, validation, and trace events before constructed input can feed the graph as a complete demo run.

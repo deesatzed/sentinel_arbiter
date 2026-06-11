@@ -2,7 +2,7 @@
 
 Version: 0.1
 Date: 2026-06-11
-Status: Deterministic ED replay POC with static reviewer workbench and status boundary. No production clinical use implied.
+Status: Deterministic ED replay POC with Phase B constructed-input preparation started. No production clinical use implied.
 
 Repository: https://github.com/deesatzed/sentinel_arbiter.git
 
@@ -19,6 +19,8 @@ Sentinel is a governance workbench for AI-assisted healthcare decisions. It does
 7. what a prudent layperson, prudent provider, and prudent healthcare AI would be expected to do.
 
 The POC should demonstrate a **shadow-mode/replay-mode Sentinel Governance Workbench** that creates committee-ready evidence for AI governance, monitoring, auditability, and lifecycle assurance.
+
+The current next milestone is a transparent local demo: constructed or governance-approved deidentified text is redacted first, converted into a reviewer-editable draft episode, approved by a reviewer, then analyzed with node-level evidence, ranges, medians, ensemble contribution, and reconstructable receipts.
 
 ## Current need being addressed
 
@@ -50,6 +52,8 @@ sentinel_codex_handoff/
   RISK_NOTES.md
   pyproject.toml
   data/
+    constructed_inputs/
+      constructed_demo_case.txt
     cases/
       invalid_missing_timepoint_case.json
       valid_ai_weak_fact_case.json
@@ -66,6 +70,11 @@ sentinel_codex_handoff/
     receipts/
       json/
       markdown/
+    prepared_inputs/
+      constructed_demo_case/
+        draft_episode.json
+        redacted_input.txt
+        redaction_report.json
     workbench/
       index.html
   docs/
@@ -107,6 +116,7 @@ sentinel_codex_handoff/
     evidenceflow_result.schema.json
     sentinel_receipt.schema.json
     ed_sentinel_receipt.schema.json
+    redaction_report.schema.json
     static_role_assessment.schema.json
     static_evidenceflow_result.schema.json
     static_input_bundle.schema.json
@@ -114,9 +124,11 @@ sentinel_codex_handoff/
     sentinel_workbench/
       models.py
       case_library.py
+      constructed_intake.py
       graph.py
       loader.py
       replay.py
+      redaction.py
       receipts.py
       safety.py
       schema_export.py
@@ -132,6 +144,7 @@ sentinel_codex_handoff/
     test_phase4_static_inputs.py
     test_phase6_receipts.py
     test_phase7_workbench.py
+    test_phase_b_constructed_intake.py
     test_full_poc_documentation.py
   prompts/
     01_role_agent_prompt_contracts.md
@@ -145,7 +158,27 @@ sentinel_codex_handoff/
 
 ## Recommended first Codex task
 
-Ask Codex to read `GOAL.md`, this README, `DECISIONS.md`, `PROGRESS.md`, `REPO_MAP.md`, `RISK_NOTES.md`, `docs/00_hard_decisions.md`, `roadmaps/01_short_term_poc_roadmap.md`, `roadmaps/04_phase_0_ed_disposition_implementation_plan.md`, `docs/03_methodology_prudence_calculus.md`, `docs/05_agent_to_node_conversion.md`, and the JSON schemas. Then start Phase 1 with schema and fixture tests before writing graph or clinical logic.
+Ask Codex to read `GOAL.md`, this README, `DECISIONS.md`, `PROGRESS.md`, `REPO_MAP.md`, `RISK_NOTES.md`, `docs/20_emex_admsve_reuse_evaluation.md`, and the JSON schemas. Then continue Phase B/C from the constructed-input preparation path before adding a local app endpoint.
+
+## Constructed input preparation
+
+The first Phase B command prepares constructed or governance-approved deidentified text for reviewer-controlled analysis:
+
+```bash
+PYTHONPATH=src python3 -m sentinel_workbench.constructed_intake \
+  --input data/constructed_inputs/constructed_demo_case.txt \
+  --out data/prepared_inputs/constructed_demo_case \
+  --episode-id constructed_demo_case \
+  --title "Constructed demo case"
+```
+
+The command writes:
+
+- `redacted_input.txt`
+- `redaction_report.json`
+- `draft_episode.json`
+
+The draft episode is not yet a reviewer-approved analysis input. It is an editable structured artifact that must be reviewed before the graph run.
 
 ## Current local verification
 
@@ -153,6 +186,7 @@ Ask Codex to read `GOAL.md`, this README, `DECISIONS.md`, `PROGRESS.md`, `REPO_M
 python3 -m pytest -q
 PYTHONPATH=src python3 -m sentinel_workbench.validate data/cases
 PYTHONPATH=src python3 -m sentinel_workbench.static_inputs --static-inputs data/static_inputs/static_inputs.json --case-dir data/cases
+PYTHONPATH=src python3 -m sentinel_workbench.constructed_intake --input data/constructed_inputs/constructed_demo_case.txt --out data/prepared_inputs/constructed_demo_case --episode-id constructed_demo_case --title "Constructed demo case"
 PYTHONPATH=src python3 -m sentinel_workbench.receipts --case-dir data/cases --static-inputs data/static_inputs/static_inputs.json --out data/receipts
 PYTHONPATH=src python3 -m sentinel_workbench.schema_export schemas/ed_decision_episode.schema.json
 PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts
