@@ -234,6 +234,10 @@ def local_app_completeness_payload(
         and "_parse_selected_node_ids" in local_app_source,
         "review_html_has_clinician_summary": "Clinician Summary" in review_html,
         "review_html_has_deeper_dive": "Deeper Dive" in review_html,
+        "review_html_has_validation_status": "Validation Status" in review_html,
+        "review_html_has_trace_hashes": "Trace Hashes" in review_html and "approval_trace_sha256" in review_html,
+        "review_html_has_raw_artifact_links": 'href="receipts/json/' in review_html
+        and 'href="receipts/markdown/' in review_html,
         "review_html_forbidden_phrase_violations": len(scan_forbidden_content(review_html, allow_safety_rule_lists=False)),
     }
     complete = all(value for key, value in checks.items() if key != "review_html_forbidden_phrase_violations") and checks[

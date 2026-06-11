@@ -112,4 +112,7 @@ def test_evaluation_report_covers_redaction_workbench_and_local_app_completeness
     assert local_app["selected_node_recheck_supported"] is True
     assert local_app["review_html_has_clinician_summary"] is True
     assert local_app["review_html_has_deeper_dive"] is True
+    assert local_app["review_html_has_validation_status"] is True
+    assert local_app["review_html_has_trace_hashes"] is True
+    assert local_app["review_html_has_raw_artifact_links"] is True
     assert local_app["review_html_forbidden_phrase_violations"] == 0

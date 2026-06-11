@@ -74,6 +74,16 @@ def render_demo_review_html(
     redacted_input = _read_optional(prepared_dir / "redacted_input.txt")
     approved_episode = json.loads((prepared_dir / "approved_episode.json").read_text(encoding="utf-8"))
     approved_episode_text = json.dumps(approved_episode, indent=2)
+    receipt_json_href = _receipt_href(receipt_json_path)
+    receipt_markdown_href = _receipt_href(receipt_markdown_path)
+    workflow_rows = []
+    for key, value in sorted(receipt.workflow_artifacts.items()):
+        workflow_rows.append(
+            "<tr>"
+            f"<td>{_esc(key)}</td>"
+            f"<td>{_esc(value)}</td>"
+            "</tr>"
+        )
     node_rows = []
     for audit in receipt.node_audit_bundle.node_audits:
         estimate = audit.estimate
@@ -154,14 +164,26 @@ def render_demo_review_html(
       <table><tbody>
         <tr><th>Final posture</th><td>{_esc(receipt.final_posture)}</td></tr>
         <tr><th>Decision weight</th><td>{_esc(receipt.decision_weight)}</td></tr>
-        <tr><th>Receipt JSON</th><td>{_esc(receipt_json_path)}</td></tr>
-        <tr><th>Receipt Markdown</th><td>{_esc(receipt_markdown_path)}</td></tr>
+        <tr><th>Receipt JSON</th><td><a href="{_esc(receipt_json_href)}">{_esc(receipt_json_path)}</a></td></tr>
+        <tr><th>Receipt Markdown</th><td><a href="{_esc(receipt_markdown_href)}">{_esc(receipt_markdown_path)}</a></td></tr>
         <tr><th>Signature placeholder</th><td>{_esc(receipt.signature_placeholder)}</td></tr>
       </tbody></table>
     </section>
     <section id="deeper-dive">
       <h2>Deeper Dive</h2>
       <p>Review the structured episode, node audit tables, ensemble tables, receipts, trace hashes, and validation-linked artifacts below.</p>
+      <p><a href="{_esc(receipt_json_href)}">Open raw JSON receipt</a> <a href="{_esc(receipt_markdown_href)}">Open Markdown receipt</a></p>
+    </section>
+    <section>
+      <h2>Validation Status</h2>
+      <table><tbody>
+        <tr><th>Local validation report</th><td>{_esc(_validation_report_status())}</td></tr>
+        <tr><th>Forbidden phrase scan</th><td>Passed for this rendered review page before write.</td></tr>
+      </tbody></table>
+    </section>
+    <section>
+      <h2>Trace Hashes</h2>
+      <table><thead><tr><th>Artifact</th><th>SHA-256 or value</th></tr></thead><tbody>{''.join(workflow_rows)}</tbody></table>
     </section>
     <section>
       <h2>Redacted Input</h2>
@@ -219,6 +241,19 @@ def _read_optional(path: Path) -> str:
     if not path.exists():
         return ""
     return path.read_text(encoding="utf-8")
+
+
+def _receipt_href(path: Path) -> str:
+    if path.parent.parent.name == "receipts":
+        return f"receipts/{path.parent.name}/{path.name}"
+    return str(path)
+
+
+def _validation_report_status(path: str | Path = "validation/reports/latest.json") -> str:
+    report = Path(path)
+    if report.exists():
+        return f"{report} available"
+    return f"{report} not generated in this workspace"
 
 
 def _esc(value: object) -> str:

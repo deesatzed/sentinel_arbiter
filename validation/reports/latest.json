@@ -116,6 +116,9 @@
     "selected_node_recheck_supported": true,
     "review_html_has_clinician_summary": true,
     "review_html_has_deeper_dive": true,
+    "review_html_has_validation_status": true,
+    "review_html_has_trace_hashes": true,
+    "review_html_has_raw_artifact_links": true,
     "review_html_forbidden_phrase_violations": 0
   },
   "case_results": [

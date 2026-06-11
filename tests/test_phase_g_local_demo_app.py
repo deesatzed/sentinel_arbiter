@@ -117,6 +117,11 @@ def test_run_approved_demo_writes_receipts_review_html_and_workflow_refs(tmp_pat
     assert "Node Audit Methodology" in html
     assert "Ensemble Contributions" in html
     assert "Receipt JSON" in html
+    assert 'href="receipts/json/' in html
+    assert 'href="receipts/markdown/' in html
+    assert "Validation Status" in html
+    assert "Trace Hashes" in html
+    assert "approval_trace_sha256" in html
     assert scan_forbidden_content(html, allow_safety_rule_lists=False) == []
 
 

@@ -827,3 +827,28 @@
 
 - The static workbench now satisfies the summary/deeper-dive artifact portion of `GOAL.md` proof item 22 more directly.
 - Remaining full-goal completion still requires a final requirement-by-requirement audit before marking the active goal complete.
+
+## 2026-06-11 - Phase J Local App Deeper-Dive Links And Trace Proof Added
+
+### Completed So Far
+
+- Converted constructed-demo receipt JSON and Markdown paths in the app result page into clickable local artifact links.
+- Added explicit `Validation Status` and `Trace Hashes` sections to the app result deeper-dive surface.
+- Rendered receipt workflow artifact hashes in the app result, including approval trace, redaction report, run manifest, selected review question, and node-audit review manifest hashes when present.
+- Strengthened `local_app_completeness` in `validation/reports/latest.json` to require validation status, trace hashes, and raw JSON/Markdown artifact links.
+- Added regression tests covering those deeper-dive requirements.
+- Regenerated `data/prepared_inputs/constructed_demo_case/analysis/review.html`, its receipt output, `validation/reports/latest.json`, and `data/workbench/index.html`.
+
+### Verification Evidence
+
+- `python3 -m pytest tests/test_phase_g_local_demo_app.py::test_run_approved_demo_writes_receipts_review_html_and_workflow_refs tests/test_phase3_evaluation_report.py::test_evaluation_report_covers_redaction_workbench_and_local_app_completeness -q` passed: `2 passed`.
+- `python3 -m pytest -q` passed: `68 passed`.
+- `git diff --check` passed.
+- JSON syntax checks passed for schemas, generated receipt JSON, constructed-demo receipt JSON, and `validation/reports/latest.json`.
+- Forbidden disposition-phrase scan found only the explicit `GOAL.md` safety list, `src/sentinel_workbench/safety.py`, and the scanner fixture in `tests/test_phase1_models.py`.
+- `validation/reports/latest.json` reports `local_app_completeness.review_html_has_validation_status=true`, `review_html_has_trace_hashes=true`, and `review_html_has_raw_artifact_links=true`.
+
+### Current State
+
+- The local app deeper-dive result now exposes receipt links, validation status, and trace hashes directly, reducing the remaining gap for `GOAL.md` proof item 19.
+- The active goal remains open pending a fresh 25-item completion audit against current artifacts.
