@@ -33,6 +33,40 @@ def test_receipt_contains_required_reconstructable_fields():
     assert receipt.signature_placeholder == "UNSIGNED_DETERMINISTIC_POC"
 
 
+def test_receipt_exposes_node_audit_methodology_and_ensemble_dispositions():
+    episode = load_case_library(CASE_DIR)[0]
+
+    receipt = build_receipt(episode, STATIC_INPUTS)
+    payload = receipt.model_dump(mode="json")
+
+    assert "node_audit_bundle" in payload
+    assert "ensemble_contribution_bundle" in payload
+    assert "methodology_summary" in payload
+    assert payload["methodology_summary"]["node_audit_complete"] is True
+    assert payload["methodology_summary"]["ensemble_contributions_visible"] is True
+
+    audits = payload["node_audit_bundle"]["node_audits"]
+    assert len(audits) == len(payload["node_values"])
+    for audit in audits:
+        estimate = audit["estimate"]
+        assert audit["definition"]["dependent_inputs"]
+        assert audit["evidence"]
+        assert estimate["range_min"] <= estimate["median"] <= estimate["range_max"]
+        assert estimate["distribution_kind"]
+        assert estimate["method"]
+        assert set(estimate["evidence_refs"]).issubset({item["ref_id"] for item in audit["evidence"]})
+        assert audit["sensitivity_note"]
+
+    assert payload["ensemble_contribution_bundle"]["contributions"]
+    dispositions = {
+        contribution["disposition"]
+        for contribution in payload["ensemble_contribution_bundle"]["contributions"]
+    }
+    assert "accepted" in dispositions
+    assert "downgraded" in dispositions
+    assert payload["ensemble_contribution_bundle"]["rejected_inputs"]
+
+
 def test_markdown_receipt_has_required_human_readable_sections_without_forbidden_phrases():
     episode = load_case_library(CASE_DIR)[0]
     receipt = build_receipt(episode, STATIC_INPUTS)
@@ -52,6 +86,15 @@ def test_markdown_receipt_has_required_human_readable_sections_without_forbidden
     ]
     for section in required_sections:
         assert f"## {section}" in markdown
+    assert "## Node Audit Methodology" in markdown
+    assert "Distribution" in markdown
+    assert "Median" in markdown
+    assert "Range" in markdown
+    assert "Evidence refs" in markdown
+    assert "## Ensemble Contributions" in markdown
+    assert "accepted" in markdown
+    assert "downgraded" in markdown
+    assert "Rejected ensemble inputs" in markdown
     assert scan_forbidden_content(markdown, allow_safety_rule_lists=False) == []
 
 

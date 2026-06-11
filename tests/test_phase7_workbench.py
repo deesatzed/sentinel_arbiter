@@ -32,6 +32,8 @@ def test_generate_static_reviewer_workbench_with_required_panels(tmp_path):
         "two-clock-panel",
         "next-best-input-panel",
         "graph-inspector",
+        "node-audit-methodology",
+        "ensemble-contribution-panel",
         "receipt-viewer-export",
         "evaluation-dashboard",
     ]
@@ -49,4 +51,13 @@ def test_generate_static_reviewer_workbench_with_required_panels(tmp_path):
     assert "receipts/markdown/receipt_" in html
     assert "Final posture" in html
     assert "Hidden future facts blocked" in html
+    assert "Dependent inputs" in html
+    assert "Distribution" in html
+    assert "Median" in html
+    assert "Range" in html
+    assert "Evidence refs" in html
+    assert "Sensitivity" in html
+    assert "accepted" in html
+    assert "downgraded" in html
+    assert "Rejected ensemble inputs" in html
     assert scan_forbidden_content(html, allow_safety_rule_lists=False) == []

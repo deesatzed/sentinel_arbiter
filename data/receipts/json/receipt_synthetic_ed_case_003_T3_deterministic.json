@@ -127,5 +127,1307 @@
     "why_the_graph_selected_the_posture": [
       "The graph selected OBTAIN_SPECIFIC_INFORMATION_FIRST from bounded node values, with decision weight 0.71 and preventability opportunity 0.4171."
     ]
+  },
+  "node_audit_bundle": {
+    "episode_id": "synthetic_ed_case_003",
+    "timepoint_id": "T3_disposition_decision",
+    "graph_version": "deterministic_graph_v0.1",
+    "node_library_version": "ed_node_library_v0.2",
+    "node_audits": [
+      {
+        "node_id": "information_sufficiency",
+        "definition": {
+          "id": "information_sufficiency",
+          "lane": "information_state",
+          "question": "How complete is the current-time information state for governance review?",
+          "dependent_inputs": [
+            "current_time_information_gaps"
+          ],
+          "output_scale": "0_to_1",
+          "version": "ed_node_library_v0.2"
+        },
+        "definition_version": "ed_node_library_v0.2",
+        "dependencies": [
+          "current_time_information_gaps"
+        ],
+        "evidence": [
+          {
+            "ref_id": "gap:c003_gap_therapy_considered",
+            "node_id": "information_sufficiency",
+            "source_type": "information_gap",
+            "source_timepoint": "T1_initial_workup",
+            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          },
+          {
+            "ref_id": "gap:c003_gap_response_absent",
+            "node_id": "information_sufficiency",
+            "source_type": "information_gap",
+            "source_timepoint": "T2_post_treatment_reassessment",
+            "quoted_or_structured_fact": "Therapy-response information is absent.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          }
+        ],
+        "estimate": {
+          "node_id": "information_sufficiency",
+          "value": 0.2,
+          "range_min": 0.1,
+          "range_max": 0.3,
+          "median": 0.2,
+          "distribution_kind": "bounded_deterministic_interval",
+          "confidence": 0.7,
+          "method": "deterministic_fixture_field_mapping_v0.1",
+          "evidence_refs": [
+            "gap:c003_gap_therapy_considered",
+            "gap:c003_gap_response_absent"
+          ]
+        },
+        "ensemble_contributions": [
+          {
+            "node_id": "information_sufficiency",
+            "contributor_role": "prudent_provider",
+            "proposed_value": 0.5,
+            "proposed_range_min": 0.4,
+            "proposed_range_max": 0.6,
+            "evidence_refs": [
+              "T3_disposition_decision"
+            ],
+            "rationale": "Static fixture maps provider review to information sufficiency and action-balance nodes without making a disposition order.",
+            "disposition": "accepted",
+            "disposition_reason": "Accepted static role contribution at confidence 0.7."
+          }
+        ],
+        "conflicts": [],
+        "sensitivity_note": "Posture sensitivity should be reviewed if the estimate range crosses a graph threshold."
+      },
+      {
+        "node_id": "material_gap_strength",
+        "definition": {
+          "id": "material_gap_strength",
+          "lane": "information_state",
+          "question": "How decision-relevant are unresolved current-time gaps?",
+          "dependent_inputs": [
+            "current_time_information_gaps"
+          ],
+          "output_scale": "0_to_1",
+          "version": "ed_node_library_v0.2"
+        },
+        "definition_version": "ed_node_library_v0.2",
+        "dependencies": [
+          "current_time_information_gaps"
+        ],
+        "evidence": [
+          {
+            "ref_id": "gap:c003_gap_therapy_considered",
+            "node_id": "material_gap_strength",
+            "source_type": "information_gap",
+            "source_timepoint": "T1_initial_workup",
+            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          },
+          {
+            "ref_id": "gap:c003_gap_response_absent",
+            "node_id": "material_gap_strength",
+            "source_type": "information_gap",
+            "source_timepoint": "T2_post_treatment_reassessment",
+            "quoted_or_structured_fact": "Therapy-response information is absent.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          }
+        ],
+        "estimate": {
+          "node_id": "material_gap_strength",
+          "value": 0.8,
+          "range_min": 0.7,
+          "range_max": 0.9,
+          "median": 0.8,
+          "distribution_kind": "bounded_deterministic_interval",
+          "confidence": 0.7,
+          "method": "deterministic_fixture_field_mapping_v0.1",
+          "evidence_refs": [
+            "gap:c003_gap_therapy_considered",
+            "gap:c003_gap_response_absent"
+          ]
+        },
+        "ensemble_contributions": [
+          {
+            "node_id": "material_gap_strength",
+            "contributor_role": "evidenceflow:guideline_dependency",
+            "proposed_value": 0.4,
+            "proposed_range_min": 0.2,
+            "proposed_range_max": 0.6,
+            "evidence_refs": [
+              "synthetic_fixture_current_time"
+            ],
+            "rationale": "Static EvidenceFlow uses curated synthetic fixture fields only.",
+            "disposition": "accepted",
+            "disposition_reason": "Accepted EvidenceFlow contribution at confidence 0.65."
+          }
+        ],
+        "conflicts": [],
+        "sensitivity_note": "Posture sensitivity should be reviewed if the estimate range crosses a graph threshold."
+      },
+      {
+        "node_id": "harm_clock",
+        "definition": {
+          "id": "harm_clock",
+          "lane": "timing",
+          "question": "How time-sensitive is the uncertainty posture?",
+          "dependent_inputs": [
+            "current_time_information_gaps",
+            "therapy_response",
+            "ai_provenance"
+          ],
+          "output_scale": "0_to_1",
+          "version": "ed_node_library_v0.2"
+        },
+        "definition_version": "ed_node_library_v0.2",
+        "dependencies": [
+          "current_time_information_gaps",
+          "therapy_response",
+          "ai_provenance"
+        ],
+        "evidence": [
+          {
+            "ref_id": "gap:c003_gap_therapy_considered",
+            "node_id": "harm_clock",
+            "source_type": "information_gap",
+            "source_timepoint": "T1_initial_workup",
+            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          },
+          {
+            "ref_id": "gap:c003_gap_response_absent",
+            "node_id": "harm_clock",
+            "source_type": "information_gap",
+            "source_timepoint": "T2_post_treatment_reassessment",
+            "quoted_or_structured_fact": "Therapy-response information is absent.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          },
+          {
+            "ref_id": "therapy:c003_therapy_not_considered",
+            "node_id": "harm_clock",
+            "source_type": "offered_therapy",
+            "source_timepoint": "T1_initial_workup",
+            "quoted_or_structured_fact": "unknown",
+            "provenance": "unknown",
+            "supports": "therapy_response",
+            "weight": 0.75,
+            "quality": "unknown",
+            "limitations": [
+              "Therapy response source refs are limited or absent."
+            ]
+          }
+        ],
+        "estimate": {
+          "node_id": "harm_clock",
+          "value": 0.82,
+          "range_min": 0.67,
+          "range_max": 0.97,
+          "median": 0.82,
+          "distribution_kind": "bounded_deterministic_interval",
+          "confidence": 0.5667,
+          "method": "deterministic_fixture_field_mapping_v0.1",
+          "evidence_refs": [
+            "gap:c003_gap_therapy_considered",
+            "gap:c003_gap_response_absent",
+            "therapy:c003_therapy_not_considered"
+          ]
+        },
+        "ensemble_contributions": [
+          {
+            "node_id": "harm_clock",
+            "contributor_role": "risk_horizon",
+            "proposed_value": 0.6,
+            "proposed_range_min": 0.4,
+            "proposed_range_max": 0.8,
+            "evidence_refs": [
+              "T3_disposition_decision"
+            ],
+            "rationale": "Static fixture estimates time and recoverability dimensions from current-time case fields.",
+            "disposition": "accepted",
+            "disposition_reason": "Accepted static role contribution at confidence 0.65."
+          },
+          {
+            "node_id": "harm_clock",
+            "contributor_role": "evidenceflow:high_risk_alternative",
+            "proposed_value": 0.5,
+            "proposed_range_min": 0.3,
+            "proposed_range_max": 0.7,
+            "evidence_refs": [
+              "synthetic_fixture_current_time"
+            ],
+            "rationale": "High-risk alternative remains a structured concern, not a diagnosis.",
+            "disposition": "downgraded",
+            "disposition_reason": "Downgraded EvidenceFlow contribution because confidence 0.6 is below acceptance threshold."
+          }
+        ],
+        "conflicts": [],
+        "sensitivity_note": "Posture sensitivity should be reviewed if the estimate range crosses a graph threshold."
+      },
+      {
+        "node_id": "information_clock",
+        "definition": {
+          "id": "information_clock",
+          "lane": "timing",
+          "question": "How quickly can useful information plausibly be obtained?",
+          "dependent_inputs": [
+            "current_time_information_gaps"
+          ],
+          "output_scale": "0_to_1",
+          "version": "ed_node_library_v0.2"
+        },
+        "definition_version": "ed_node_library_v0.2",
+        "dependencies": [
+          "current_time_information_gaps"
+        ],
+        "evidence": [
+          {
+            "ref_id": "gap:c003_gap_therapy_considered",
+            "node_id": "information_clock",
+            "source_type": "information_gap",
+            "source_timepoint": "T1_initial_workup",
+            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          },
+          {
+            "ref_id": "gap:c003_gap_response_absent",
+            "node_id": "information_clock",
+            "source_type": "information_gap",
+            "source_timepoint": "T2_post_treatment_reassessment",
+            "quoted_or_structured_fact": "Therapy-response information is absent.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          }
+        ],
+        "estimate": {
+          "node_id": "information_clock",
+          "value": 0.9792,
+          "range_min": 0.8792,
+          "range_max": 1.0,
+          "median": 0.9792,
+          "distribution_kind": "bounded_deterministic_interval",
+          "confidence": 0.7,
+          "method": "deterministic_fixture_field_mapping_v0.1",
+          "evidence_refs": [
+            "gap:c003_gap_therapy_considered",
+            "gap:c003_gap_response_absent"
+          ]
+        },
+        "ensemble_contributions": [
+          {
+            "node_id": "information_clock",
+            "contributor_role": "duty_to_inquire",
+            "proposed_value": 0.75,
+            "proposed_range_min": 0.65,
+            "proposed_range_max": 0.85,
+            "evidence_refs": [
+              "T3_disposition_decision"
+            ],
+            "rationale": "Static fixture maps case-specific knowable gaps to material-gap and information-clock nodes.",
+            "disposition": "accepted",
+            "disposition_reason": "Accepted static role contribution at confidence 0.75."
+          },
+          {
+            "node_id": "information_clock",
+            "contributor_role": "risk_horizon",
+            "proposed_value": 0.6,
+            "proposed_range_min": 0.4,
+            "proposed_range_max": 0.8,
+            "evidence_refs": [
+              "T3_disposition_decision"
+            ],
+            "rationale": "Static fixture estimates time and recoverability dimensions from current-time case fields.",
+            "disposition": "accepted",
+            "disposition_reason": "Accepted static role contribution at confidence 0.65."
+          }
+        ],
+        "conflicts": [],
+        "sensitivity_note": "Posture sensitivity should be reviewed if the estimate range crosses a graph threshold."
+      },
+      {
+        "node_id": "recoverability",
+        "definition": {
+          "id": "recoverability",
+          "lane": "timing",
+          "question": "How recoverable is the decision posture if uncertainty later resolves?",
+          "dependent_inputs": [
+            "current_time_information_gaps",
+            "therapy_response"
+          ],
+          "output_scale": "0_to_1",
+          "version": "ed_node_library_v0.2"
+        },
+        "definition_version": "ed_node_library_v0.2",
+        "dependencies": [
+          "current_time_information_gaps",
+          "therapy_response"
+        ],
+        "evidence": [
+          {
+            "ref_id": "gap:c003_gap_therapy_considered",
+            "node_id": "recoverability",
+            "source_type": "information_gap",
+            "source_timepoint": "T1_initial_workup",
+            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          },
+          {
+            "ref_id": "gap:c003_gap_response_absent",
+            "node_id": "recoverability",
+            "source_type": "information_gap",
+            "source_timepoint": "T2_post_treatment_reassessment",
+            "quoted_or_structured_fact": "Therapy-response information is absent.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          },
+          {
+            "ref_id": "therapy:c003_therapy_not_considered",
+            "node_id": "recoverability",
+            "source_type": "offered_therapy",
+            "source_timepoint": "T1_initial_workup",
+            "quoted_or_structured_fact": "unknown",
+            "provenance": "unknown",
+            "supports": "therapy_response",
+            "weight": 0.75,
+            "quality": "unknown",
+            "limitations": [
+              "Therapy response source refs are limited or absent."
+            ]
+          }
+        ],
+        "estimate": {
+          "node_id": "recoverability",
+          "value": 0.42,
+          "range_min": 0.27,
+          "range_max": 0.57,
+          "median": 0.42,
+          "distribution_kind": "bounded_deterministic_interval",
+          "confidence": 0.5667,
+          "method": "deterministic_fixture_field_mapping_v0.1",
+          "evidence_refs": [
+            "gap:c003_gap_therapy_considered",
+            "gap:c003_gap_response_absent",
+            "therapy:c003_therapy_not_considered"
+          ]
+        },
+        "ensemble_contributions": [
+          {
+            "node_id": "recoverability",
+            "contributor_role": "risk_horizon",
+            "proposed_value": 0.5,
+            "proposed_range_min": 0.3,
+            "proposed_range_max": 0.7,
+            "evidence_refs": [
+              "T3_disposition_decision"
+            ],
+            "rationale": "Static fixture estimates time and recoverability dimensions from current-time case fields.",
+            "disposition": "accepted",
+            "disposition_reason": "Accepted static role contribution at confidence 0.65."
+          }
+        ],
+        "conflicts": [],
+        "sensitivity_note": "Posture sensitivity should be reviewed if the estimate range crosses a graph threshold."
+      },
+      {
+        "node_id": "future_correction_opportunity",
+        "definition": {
+          "id": "future_correction_opportunity",
+          "lane": "timing",
+          "question": "Is there a represented opportunity to correct course later?",
+          "dependent_inputs": [
+            "follow_up_feasibility"
+          ],
+          "output_scale": "0_to_1",
+          "version": "ed_node_library_v0.2"
+        },
+        "definition_version": "ed_node_library_v0.2",
+        "dependencies": [
+          "follow_up_feasibility"
+        ],
+        "evidence": [
+          {
+            "ref_id": "follow_up:synthetic_ed_case_003:T3_disposition_decision",
+            "node_id": "future_correction_opportunity",
+            "source_type": "follow_up_feasibility",
+            "source_timepoint": "T3_disposition_decision",
+            "quoted_or_structured_fact": "follow_up_access=unknown; home_support=unknown; return_access=unknown",
+            "provenance": "unknown",
+            "supports": "future_correction_opportunity",
+            "weight": 0.5,
+            "quality": "unknown",
+            "limitations": [
+              "Follow-up feasibility source refs are limited or absent."
+            ]
+          }
+        ],
+        "estimate": {
+          "node_id": "future_correction_opportunity",
+          "value": 0.35,
+          "range_min": 0.2,
+          "range_max": 0.5,
+          "median": 0.35,
+          "distribution_kind": "bounded_deterministic_interval",
+          "confidence": 0.3,
+          "method": "deterministic_fixture_field_mapping_v0.1",
+          "evidence_refs": [
+            "follow_up:synthetic_ed_case_003:T3_disposition_decision"
+          ]
+        },
+        "ensemble_contributions": [
+          {
+            "node_id": "future_correction_opportunity",
+            "contributor_role": "risk_horizon",
+            "proposed_value": 0.4,
+            "proposed_range_min": 0.2,
+            "proposed_range_max": 0.6,
+            "evidence_refs": [
+              "T3_disposition_decision"
+            ],
+            "rationale": "Static fixture estimates time and recoverability dimensions from current-time case fields.",
+            "disposition": "accepted",
+            "disposition_reason": "Accepted static role contribution at confidence 0.65."
+          },
+          {
+            "node_id": "future_correction_opportunity",
+            "contributor_role": "defense",
+            "proposed_value": 0.4,
+            "proposed_range_min": 0.2,
+            "proposed_range_max": 0.6,
+            "evidence_refs": [
+              "T3_disposition_decision"
+            ],
+            "rationale": "Static defense output keeps burden and future correction visible without dismissing high-weight gaps.",
+            "disposition": "downgraded",
+            "disposition_reason": "Downgraded static role contribution because confidence 0.6 is below acceptance threshold."
+          }
+        ],
+        "conflicts": [],
+        "sensitivity_note": "Posture sensitivity should be reviewed if the estimate range crosses a graph threshold."
+      },
+      {
+        "node_id": "decision_weight",
+        "definition": {
+          "id": "decision_weight",
+          "lane": "posture_weight",
+          "question": "How much should the represented uncertainty influence posture?",
+          "dependent_inputs": [
+            "current_time_information_gaps",
+            "therapy_response",
+            "ai_provenance"
+          ],
+          "output_scale": "0_to_1",
+          "version": "ed_node_library_v0.2"
+        },
+        "definition_version": "ed_node_library_v0.2",
+        "dependencies": [
+          "current_time_information_gaps",
+          "therapy_response",
+          "ai_provenance"
+        ],
+        "evidence": [
+          {
+            "ref_id": "gap:c003_gap_therapy_considered",
+            "node_id": "decision_weight",
+            "source_type": "information_gap",
+            "source_timepoint": "T1_initial_workup",
+            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          },
+          {
+            "ref_id": "gap:c003_gap_response_absent",
+            "node_id": "decision_weight",
+            "source_type": "information_gap",
+            "source_timepoint": "T2_post_treatment_reassessment",
+            "quoted_or_structured_fact": "Therapy-response information is absent.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          },
+          {
+            "ref_id": "therapy:c003_therapy_not_considered",
+            "node_id": "decision_weight",
+            "source_type": "offered_therapy",
+            "source_timepoint": "T1_initial_workup",
+            "quoted_or_structured_fact": "unknown",
+            "provenance": "unknown",
+            "supports": "therapy_response",
+            "weight": 0.75,
+            "quality": "unknown",
+            "limitations": [
+              "Therapy response source refs are limited or absent."
+            ]
+          }
+        ],
+        "estimate": {
+          "node_id": "decision_weight",
+          "value": 0.71,
+          "range_min": 0.56,
+          "range_max": 0.86,
+          "median": 0.71,
+          "distribution_kind": "bounded_deterministic_interval",
+          "confidence": 0.5667,
+          "method": "deterministic_fixture_field_mapping_v0.1",
+          "evidence_refs": [
+            "gap:c003_gap_therapy_considered",
+            "gap:c003_gap_response_absent",
+            "therapy:c003_therapy_not_considered"
+          ]
+        },
+        "ensemble_contributions": [
+          {
+            "node_id": "decision_weight",
+            "contributor_role": "risk_horizon",
+            "proposed_value": 0.6,
+            "proposed_range_min": 0.4,
+            "proposed_range_max": 0.8,
+            "evidence_refs": [
+              "T3_disposition_decision"
+            ],
+            "rationale": "Static fixture estimates time and recoverability dimensions from current-time case fields.",
+            "disposition": "accepted",
+            "disposition_reason": "Accepted static role contribution at confidence 0.65."
+          }
+        ],
+        "conflicts": [],
+        "sensitivity_note": "Posture sensitivity should be reviewed if the estimate range crosses a graph threshold."
+      },
+      {
+        "node_id": "ai_provenance_risk",
+        "definition": {
+          "id": "ai_provenance_risk",
+          "lane": "provenance",
+          "question": "How much does unverified AI-derived information drive the posture?",
+          "dependent_inputs": [
+            "available_facts"
+          ],
+          "output_scale": "0_to_1",
+          "version": "ed_node_library_v0.2"
+        },
+        "definition_version": "ed_node_library_v0.2",
+        "dependencies": [
+          "available_facts"
+        ],
+        "evidence": [
+          {
+            "ref_id": "node:ai_provenance_risk:no_direct_evidence",
+            "node_id": "ai_provenance_risk",
+            "source_type": "derived_node",
+            "source_timepoint": "T3_disposition_decision",
+            "quoted_or_structured_fact": "No direct current-time evidence item was mapped to this node.",
+            "provenance": "deterministic_graph_derivation",
+            "supports": "ai_provenance_risk",
+            "weight": 0.0,
+            "quality": "unknown",
+            "limitations": [
+              "Derived from absence or low materiality of represented current-time inputs."
+            ]
+          }
+        ],
+        "estimate": {
+          "node_id": "ai_provenance_risk",
+          "value": 0.0,
+          "range_min": 0.0,
+          "range_max": 0.15,
+          "median": 0.0,
+          "distribution_kind": "bounded_deterministic_interval",
+          "confidence": 0.3,
+          "method": "deterministic_fixture_field_mapping_v0.1",
+          "evidence_refs": [
+            "node:ai_provenance_risk:no_direct_evidence"
+          ]
+        },
+        "ensemble_contributions": [
+          {
+            "node_id": "ai_provenance_risk",
+            "contributor_role": "evidenceflow:prudent_ai_conduct",
+            "proposed_value": 0.5,
+            "proposed_range_min": 0.4,
+            "proposed_range_max": 0.6,
+            "evidence_refs": [
+              "synthetic_fixture_current_time"
+            ],
+            "rationale": "Static output requires limited, provenance-aware AI conduct.",
+            "disposition": "accepted",
+            "disposition_reason": "Accepted EvidenceFlow contribution at confidence 0.75."
+          }
+        ],
+        "conflicts": [],
+        "sensitivity_note": "Posture sensitivity should be reviewed if the estimate range crosses a graph threshold."
+      },
+      {
+        "node_id": "commission_risk",
+        "definition": {
+          "id": "commission_risk",
+          "lane": "commission",
+          "question": "How much risk is introduced by overconfident or low-added-value action?",
+          "dependent_inputs": [
+            "proposed_posture",
+            "current_time_information_gaps",
+            "ai_provenance"
+          ],
+          "output_scale": "0_to_1",
+          "version": "ed_node_library_v0.2"
+        },
+        "definition_version": "ed_node_library_v0.2",
+        "dependencies": [
+          "proposed_posture",
+          "current_time_information_gaps",
+          "ai_provenance"
+        ],
+        "evidence": [
+          {
+            "ref_id": "gap:c003_gap_therapy_considered",
+            "node_id": "commission_risk",
+            "source_type": "information_gap",
+            "source_timepoint": "T1_initial_workup",
+            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          },
+          {
+            "ref_id": "gap:c003_gap_response_absent",
+            "node_id": "commission_risk",
+            "source_type": "information_gap",
+            "source_timepoint": "T2_post_treatment_reassessment",
+            "quoted_or_structured_fact": "Therapy-response information is absent.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          }
+        ],
+        "estimate": {
+          "node_id": "commission_risk",
+          "value": 0.75,
+          "range_min": 0.65,
+          "range_max": 0.85,
+          "median": 0.75,
+          "distribution_kind": "bounded_deterministic_interval",
+          "confidence": 0.7,
+          "method": "deterministic_fixture_field_mapping_v0.1",
+          "evidence_refs": [
+            "gap:c003_gap_therapy_considered",
+            "gap:c003_gap_response_absent"
+          ]
+        },
+        "ensemble_contributions": [],
+        "conflicts": [],
+        "sensitivity_note": "Posture sensitivity should be reviewed if the estimate range crosses a graph threshold."
+      },
+      {
+        "node_id": "omission_risk",
+        "definition": {
+          "id": "omission_risk",
+          "lane": "omission",
+          "question": "How much risk is introduced by unresolved material missing information?",
+          "dependent_inputs": [
+            "current_time_information_gaps",
+            "follow_up_feasibility",
+            "ai_provenance"
+          ],
+          "output_scale": "0_to_1",
+          "version": "ed_node_library_v0.2"
+        },
+        "definition_version": "ed_node_library_v0.2",
+        "dependencies": [
+          "current_time_information_gaps",
+          "follow_up_feasibility",
+          "ai_provenance"
+        ],
+        "evidence": [
+          {
+            "ref_id": "gap:c003_gap_therapy_considered",
+            "node_id": "omission_risk",
+            "source_type": "information_gap",
+            "source_timepoint": "T1_initial_workup",
+            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          },
+          {
+            "ref_id": "gap:c003_gap_response_absent",
+            "node_id": "omission_risk",
+            "source_type": "information_gap",
+            "source_timepoint": "T2_post_treatment_reassessment",
+            "quoted_or_structured_fact": "Therapy-response information is absent.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          }
+        ],
+        "estimate": {
+          "node_id": "omission_risk",
+          "value": 0.8,
+          "range_min": 0.7,
+          "range_max": 0.9,
+          "median": 0.8,
+          "distribution_kind": "bounded_deterministic_interval",
+          "confidence": 0.7,
+          "method": "deterministic_fixture_field_mapping_v0.1",
+          "evidence_refs": [
+            "gap:c003_gap_therapy_considered",
+            "gap:c003_gap_response_absent"
+          ]
+        },
+        "ensemble_contributions": [],
+        "conflicts": [],
+        "sensitivity_note": "Posture sensitivity should be reviewed if the estimate range crosses a graph threshold."
+      },
+      {
+        "node_id": "therapy_response_relevance",
+        "definition": {
+          "id": "therapy_response_relevance",
+          "lane": "therapy_response",
+          "question": "How relevant is represented therapy response or nonresponse to posture?",
+          "dependent_inputs": [
+            "offered_therapies",
+            "therapy_response_observations"
+          ],
+          "output_scale": "0_to_1",
+          "version": "ed_node_library_v0.2"
+        },
+        "definition_version": "ed_node_library_v0.2",
+        "dependencies": [
+          "offered_therapies",
+          "therapy_response_observations"
+        ],
+        "evidence": [
+          {
+            "ref_id": "therapy:c003_therapy_not_considered",
+            "node_id": "therapy_response_relevance",
+            "source_type": "offered_therapy",
+            "source_timepoint": "T1_initial_workup",
+            "quoted_or_structured_fact": "unknown",
+            "provenance": "unknown",
+            "supports": "therapy_response",
+            "weight": 0.75,
+            "quality": "unknown",
+            "limitations": [
+              "Therapy response source refs are limited or absent."
+            ]
+          }
+        ],
+        "estimate": {
+          "node_id": "therapy_response_relevance",
+          "value": 0.9,
+          "range_min": 0.75,
+          "range_max": 1.0,
+          "median": 0.9,
+          "distribution_kind": "bounded_deterministic_interval",
+          "confidence": 0.3,
+          "method": "deterministic_fixture_field_mapping_v0.1",
+          "evidence_refs": [
+            "therapy:c003_therapy_not_considered"
+          ]
+        },
+        "ensemble_contributions": [],
+        "conflicts": [],
+        "sensitivity_note": "Posture sensitivity should be reviewed if the estimate range crosses a graph threshold."
+      },
+      {
+        "node_id": "next_best_information_rank",
+        "definition": {
+          "id": "next_best_information_rank",
+          "lane": "information_state",
+          "question": "How many next-best information items clear the materiality threshold?",
+          "dependent_inputs": [
+            "current_time_information_gaps"
+          ],
+          "output_scale": "count",
+          "version": "ed_node_library_v0.2"
+        },
+        "definition_version": "ed_node_library_v0.2",
+        "dependencies": [
+          "current_time_information_gaps"
+        ],
+        "evidence": [
+          {
+            "ref_id": "gap:c003_gap_therapy_considered",
+            "node_id": "next_best_information_rank",
+            "source_type": "information_gap",
+            "source_timepoint": "T1_initial_workup",
+            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          },
+          {
+            "ref_id": "gap:c003_gap_response_absent",
+            "node_id": "next_best_information_rank",
+            "source_type": "information_gap",
+            "source_timepoint": "T2_post_treatment_reassessment",
+            "quoted_or_structured_fact": "Therapy-response information is absent.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          }
+        ],
+        "estimate": {
+          "node_id": "next_best_information_rank",
+          "value": 2,
+          "range_min": 1.0,
+          "range_max": 3.0,
+          "median": 2.0,
+          "distribution_kind": "deterministic_count_with_neighbor_range",
+          "confidence": 0.7,
+          "method": "deterministic_fixture_field_mapping_v0.1",
+          "evidence_refs": [
+            "gap:c003_gap_therapy_considered",
+            "gap:c003_gap_response_absent"
+          ]
+        },
+        "ensemble_contributions": [
+          {
+            "node_id": "next_best_information_rank",
+            "contributor_role": "evidenceflow:next_best_input",
+            "proposed_value": 2,
+            "proposed_range_min": 0.0,
+            "proposed_range_max": 3.0,
+            "evidence_refs": [
+              "synthetic_ed_case_003_candidate_input_001"
+            ],
+            "rationale": "Resolve the highest-relevance current-time gap named in the synthetic fixture.",
+            "disposition": "accepted",
+            "disposition_reason": "EvidenceFlow candidate normalized with expected posture shift 0.6."
+          }
+        ],
+        "conflicts": [],
+        "sensitivity_note": "Posture sensitivity depends on whether additional gaps cross the materiality threshold."
+      },
+      {
+        "node_id": "preventability_opportunity_score",
+        "definition": {
+          "id": "preventability_opportunity_score",
+          "lane": "preventability_proxy",
+          "question": "What is the proxy opportunity for improving the governance discussion?",
+          "dependent_inputs": [
+            "material_gap_strength",
+            "decision_weight",
+            "information_clock",
+            "burden_modifier"
+          ],
+          "output_scale": "0_to_1",
+          "version": "ed_node_library_v0.2"
+        },
+        "definition_version": "ed_node_library_v0.2",
+        "dependencies": [
+          "material_gap_strength",
+          "decision_weight",
+          "information_clock",
+          "burden_modifier"
+        ],
+        "evidence": [
+          {
+            "ref_id": "gap:c003_gap_therapy_considered",
+            "node_id": "preventability_opportunity_score",
+            "source_type": "information_gap",
+            "source_timepoint": "T1_initial_workup",
+            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          },
+          {
+            "ref_id": "gap:c003_gap_response_absent",
+            "node_id": "preventability_opportunity_score",
+            "source_type": "information_gap",
+            "source_timepoint": "T2_post_treatment_reassessment",
+            "quoted_or_structured_fact": "Therapy-response information is absent.",
+            "provenance": "structured_gap_field",
+            "supports": "therapy_response",
+            "weight": 0.8,
+            "quality": "moderate",
+            "limitations": []
+          }
+        ],
+        "estimate": {
+          "node_id": "preventability_opportunity_score",
+          "value": 0.4171,
+          "range_min": 0.3171,
+          "range_max": 0.5171,
+          "median": 0.4171,
+          "distribution_kind": "bounded_deterministic_interval",
+          "confidence": 0.7,
+          "method": "deterministic_fixture_field_mapping_v0.1",
+          "evidence_refs": [
+            "gap:c003_gap_therapy_considered",
+            "gap:c003_gap_response_absent"
+          ]
+        },
+        "ensemble_contributions": [
+          {
+            "node_id": "preventability_opportunity_score",
+            "contributor_role": "evidenceflow:next_best_input",
+            "proposed_value": 0.5,
+            "proposed_range_min": 0.35,
+            "proposed_range_max": 0.65,
+            "evidence_refs": [
+              "synthetic_ed_case_003_candidate_input_001"
+            ],
+            "rationale": "Resolve the highest-relevance current-time gap named in the synthetic fixture.",
+            "disposition": "accepted",
+            "disposition_reason": "EvidenceFlow candidate normalized with preventability leverage 0.5."
+          }
+        ],
+        "conflicts": [],
+        "sensitivity_note": "Posture sensitivity should be reviewed if the estimate range crosses a graph threshold."
+      }
+    ]
+  },
+  "ensemble_contribution_bundle": {
+    "episode_id": "synthetic_ed_case_003",
+    "timepoint_id": "T3_disposition_decision",
+    "contribution_version": "static_ensemble_normalizer_v0.1",
+    "contributions": [
+      {
+        "node_id": "information_sufficiency",
+        "contributor_role": "prudent_provider",
+        "proposed_value": 0.5,
+        "proposed_range_min": 0.4,
+        "proposed_range_max": 0.6,
+        "evidence_refs": [
+          "T3_disposition_decision"
+        ],
+        "rationale": "Static fixture maps provider review to information sufficiency and action-balance nodes without making a disposition order.",
+        "disposition": "accepted",
+        "disposition_reason": "Accepted static role contribution at confidence 0.7."
+      },
+      {
+        "node_id": "information_clock",
+        "contributor_role": "duty_to_inquire",
+        "proposed_value": 0.75,
+        "proposed_range_min": 0.65,
+        "proposed_range_max": 0.85,
+        "evidence_refs": [
+          "T3_disposition_decision"
+        ],
+        "rationale": "Static fixture maps case-specific knowable gaps to material-gap and information-clock nodes.",
+        "disposition": "accepted",
+        "disposition_reason": "Accepted static role contribution at confidence 0.75."
+      },
+      {
+        "node_id": "harm_clock",
+        "contributor_role": "risk_horizon",
+        "proposed_value": 0.6,
+        "proposed_range_min": 0.4,
+        "proposed_range_max": 0.8,
+        "evidence_refs": [
+          "T3_disposition_decision"
+        ],
+        "rationale": "Static fixture estimates time and recoverability dimensions from current-time case fields.",
+        "disposition": "accepted",
+        "disposition_reason": "Accepted static role contribution at confidence 0.65."
+      },
+      {
+        "node_id": "information_clock",
+        "contributor_role": "risk_horizon",
+        "proposed_value": 0.6,
+        "proposed_range_min": 0.4,
+        "proposed_range_max": 0.8,
+        "evidence_refs": [
+          "T3_disposition_decision"
+        ],
+        "rationale": "Static fixture estimates time and recoverability dimensions from current-time case fields.",
+        "disposition": "accepted",
+        "disposition_reason": "Accepted static role contribution at confidence 0.65."
+      },
+      {
+        "node_id": "recoverability",
+        "contributor_role": "risk_horizon",
+        "proposed_value": 0.5,
+        "proposed_range_min": 0.3,
+        "proposed_range_max": 0.7,
+        "evidence_refs": [
+          "T3_disposition_decision"
+        ],
+        "rationale": "Static fixture estimates time and recoverability dimensions from current-time case fields.",
+        "disposition": "accepted",
+        "disposition_reason": "Accepted static role contribution at confidence 0.65."
+      },
+      {
+        "node_id": "future_correction_opportunity",
+        "contributor_role": "risk_horizon",
+        "proposed_value": 0.4,
+        "proposed_range_min": 0.2,
+        "proposed_range_max": 0.6,
+        "evidence_refs": [
+          "T3_disposition_decision"
+        ],
+        "rationale": "Static fixture estimates time and recoverability dimensions from current-time case fields.",
+        "disposition": "accepted",
+        "disposition_reason": "Accepted static role contribution at confidence 0.65."
+      },
+      {
+        "node_id": "decision_weight",
+        "contributor_role": "risk_horizon",
+        "proposed_value": 0.6,
+        "proposed_range_min": 0.4,
+        "proposed_range_max": 0.8,
+        "evidence_refs": [
+          "T3_disposition_decision"
+        ],
+        "rationale": "Static fixture estimates time and recoverability dimensions from current-time case fields.",
+        "disposition": "accepted",
+        "disposition_reason": "Accepted static role contribution at confidence 0.65."
+      },
+      {
+        "node_id": "future_correction_opportunity",
+        "contributor_role": "defense",
+        "proposed_value": 0.4,
+        "proposed_range_min": 0.2,
+        "proposed_range_max": 0.6,
+        "evidence_refs": [
+          "T3_disposition_decision"
+        ],
+        "rationale": "Static defense output keeps burden and future correction visible without dismissing high-weight gaps.",
+        "disposition": "downgraded",
+        "disposition_reason": "Downgraded static role contribution because confidence 0.6 is below acceptance threshold."
+      },
+      {
+        "node_id": "material_gap_strength",
+        "contributor_role": "evidenceflow:guideline_dependency",
+        "proposed_value": 0.4,
+        "proposed_range_min": 0.2,
+        "proposed_range_max": 0.6,
+        "evidence_refs": [
+          "synthetic_fixture_current_time"
+        ],
+        "rationale": "Static EvidenceFlow uses curated synthetic fixture fields only.",
+        "disposition": "accepted",
+        "disposition_reason": "Accepted EvidenceFlow contribution at confidence 0.65."
+      },
+      {
+        "node_id": "next_best_information_rank",
+        "contributor_role": "evidenceflow:next_best_input",
+        "proposed_value": 2,
+        "proposed_range_min": 0.0,
+        "proposed_range_max": 3.0,
+        "evidence_refs": [
+          "synthetic_ed_case_003_candidate_input_001"
+        ],
+        "rationale": "Resolve the highest-relevance current-time gap named in the synthetic fixture.",
+        "disposition": "accepted",
+        "disposition_reason": "EvidenceFlow candidate normalized with expected posture shift 0.6."
+      },
+      {
+        "node_id": "preventability_opportunity_score",
+        "contributor_role": "evidenceflow:next_best_input",
+        "proposed_value": 0.5,
+        "proposed_range_min": 0.35,
+        "proposed_range_max": 0.65,
+        "evidence_refs": [
+          "synthetic_ed_case_003_candidate_input_001"
+        ],
+        "rationale": "Resolve the highest-relevance current-time gap named in the synthetic fixture.",
+        "disposition": "accepted",
+        "disposition_reason": "EvidenceFlow candidate normalized with preventability leverage 0.5."
+      },
+      {
+        "node_id": "harm_clock",
+        "contributor_role": "evidenceflow:high_risk_alternative",
+        "proposed_value": 0.5,
+        "proposed_range_min": 0.3,
+        "proposed_range_max": 0.7,
+        "evidence_refs": [
+          "synthetic_fixture_current_time"
+        ],
+        "rationale": "High-risk alternative remains a structured concern, not a diagnosis.",
+        "disposition": "downgraded",
+        "disposition_reason": "Downgraded EvidenceFlow contribution because confidence 0.6 is below acceptance threshold."
+      },
+      {
+        "node_id": "ai_provenance_risk",
+        "contributor_role": "evidenceflow:prudent_ai_conduct",
+        "proposed_value": 0.5,
+        "proposed_range_min": 0.4,
+        "proposed_range_max": 0.6,
+        "evidence_refs": [
+          "synthetic_fixture_current_time"
+        ],
+        "rationale": "Static output requires limited, provenance-aware AI conduct.",
+        "disposition": "accepted",
+        "disposition_reason": "Accepted EvidenceFlow contribution at confidence 0.75."
+      }
+    ],
+    "rejected_inputs": [
+      {
+        "contributor_role": "prudent_layperson",
+        "source_target": "prudent_layperson_threshold",
+        "source_id": "synthetic_ed_case_003_layperson_threshold",
+        "disposition": "rejected",
+        "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
+      },
+      {
+        "contributor_role": "prudent_layperson",
+        "source_target": "safety_net_need",
+        "source_id": "synthetic_ed_case_003_layperson_threshold",
+        "disposition": "rejected",
+        "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
+      },
+      {
+        "contributor_role": "prudent_provider",
+        "source_target": "prudent_provider_threshold",
+        "source_id": "synthetic_ed_case_003_provider_information",
+        "disposition": "rejected",
+        "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
+      },
+      {
+        "contributor_role": "prudent_provider",
+        "source_target": "over_action_risk",
+        "source_id": "synthetic_ed_case_003_provider_information",
+        "disposition": "rejected",
+        "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
+      },
+      {
+        "contributor_role": "prudent_provider",
+        "source_target": "under_action_risk",
+        "source_id": "synthetic_ed_case_003_provider_information",
+        "disposition": "rejected",
+        "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
+      },
+      {
+        "contributor_role": "prudent_healthcare_ai",
+        "source_target": "prudent_ai_threshold",
+        "source_id": "synthetic_ed_case_003_ai_conduct",
+        "disposition": "rejected",
+        "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
+      },
+      {
+        "contributor_role": "prudent_healthcare_ai",
+        "source_target": "uncertainty_disclosure_need",
+        "source_id": "synthetic_ed_case_003_ai_conduct",
+        "disposition": "rejected",
+        "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
+      },
+      {
+        "contributor_role": "prudent_healthcare_ai",
+        "source_target": "primary_source_confirmation_need",
+        "source_id": "synthetic_ed_case_003_ai_conduct",
+        "disposition": "rejected",
+        "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
+      },
+      {
+        "contributor_role": "prudent_healthcare_ai",
+        "source_target": "ai_provenance_warning",
+        "source_id": "synthetic_ed_case_003_ai_conduct",
+        "disposition": "rejected",
+        "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
+      },
+      {
+        "contributor_role": "duty_to_inquire",
+        "source_target": "material_gap_present",
+        "source_id": "synthetic_ed_case_003_material_gap",
+        "disposition": "rejected",
+        "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
+      },
+      {
+        "contributor_role": "duty_to_inquire",
+        "source_target": "gap_decision_relevance",
+        "source_id": "synthetic_ed_case_003_material_gap",
+        "disposition": "rejected",
+        "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
+      },
+      {
+        "contributor_role": "red_team",
+        "source_target": "evidence_conflict",
+        "source_id": "synthetic_ed_case_003_red_team_risk",
+        "disposition": "rejected",
+        "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
+      },
+      {
+        "contributor_role": "red_team",
+        "source_target": "escalation_need",
+        "source_id": "synthetic_ed_case_003_red_team_risk",
+        "disposition": "rejected",
+        "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
+      },
+      {
+        "contributor_role": "red_team",
+        "source_target": "under_action_risk",
+        "source_id": "synthetic_ed_case_003_red_team_risk",
+        "disposition": "rejected",
+        "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
+      },
+      {
+        "contributor_role": "defense",
+        "source_target": "over_action_risk",
+        "source_id": "synthetic_ed_case_003_defense_balance",
+        "disposition": "rejected",
+        "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
+      },
+      {
+        "contributor_role": "defense",
+        "source_target": "safety_net_need",
+        "source_id": "synthetic_ed_case_003_defense_balance",
+        "disposition": "rejected",
+        "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
+      }
+    ]
+  },
+  "methodology_summary": {
+    "node_audit_complete": true,
+    "ensemble_contributions_visible": true,
+    "rejected_ensemble_inputs_visible": true,
+    "final_posture_source": "deterministic_graph_node_values",
+    "trust_boundary": "Static role and EvidenceFlow inputs are normalized as bounded contributions; they do not decide final posture."
   }
 }

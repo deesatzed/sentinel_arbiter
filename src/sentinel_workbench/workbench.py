@@ -241,6 +241,8 @@ def render_graph_panels(episodes: list[DecisionEpisode], receipt_dir: Path, outp
     clock_blocks: list[str] = []
     next_best_blocks: list[str] = []
     graph_blocks: list[str] = []
+    node_audit_blocks: list[str] = []
+    ensemble_blocks: list[str] = []
     receipt_blocks: list[str] = []
     for episode in episodes:
         graph = compute_prudence_graph(episode, RequiredTimepoint.T3_DISPOSITION_DECISION)
@@ -294,6 +296,65 @@ def render_graph_panels(episodes: list[DecisionEpisode], receipt_dir: Path, outp
             f"<p>Final posture: <strong>{esc(graph.final_posture.value)}</strong></p>"
             f"<table><tbody>{node_rows}</tbody></table></article>"
         )
+        audit_rows: list[str] = []
+        for audit in receipt.node_audit_bundle.node_audits:
+            estimate = audit.estimate
+            evidence_refs = ", ".join(estimate.evidence_refs) or "No direct evidence refs"
+            dependencies = ", ".join(audit.dependencies)
+            audit_rows.append(
+                "<tr>"
+                f"<td>{esc(audit.node_id)}</td>"
+                f"<td>{esc(dependencies)}</td>"
+                f"<td>{esc(estimate.value)}</td>"
+                f"<td>{esc(f'{estimate.range_min} to {estimate.range_max}')}</td>"
+                f"<td>{esc(estimate.median)}</td>"
+                f"<td>{esc(estimate.distribution_kind)}</td>"
+                f"<td>{esc(estimate.method)}</td>"
+                f"<td>{esc(evidence_refs)}</td>"
+                f"<td>{esc(audit.sensitivity_note)}</td>"
+                "</tr>"
+            )
+        node_audit_blocks.append(
+            '<article class="case-block">'
+            f"<h3>{esc(episode.episode_id)}</h3>"
+            "<table><thead><tr><th>Node</th><th>Dependent inputs</th><th>Value</th><th>Range</th>"
+            "<th>Median</th><th>Distribution</th><th>Method</th><th>Evidence refs</th><th>Sensitivity</th>"
+            f"</tr></thead><tbody>{''.join(audit_rows)}</tbody></table></article>"
+        )
+        contribution_rows: list[str] = []
+        for contribution in receipt.ensemble_contribution_bundle.contributions:
+            contribution_rows.append(
+                "<tr>"
+                f"<td>{esc(contribution.node_id)}</td>"
+                f"<td>{esc(contribution.contributor_role)}</td>"
+                f"<td>{esc(contribution.proposed_value)}</td>"
+                f"<td>{esc(f'{contribution.proposed_range_min} to {contribution.proposed_range_max}')}</td>"
+                f"<td>{esc(contribution.disposition)}</td>"
+                f"<td>{esc(contribution.disposition_reason)}</td>"
+                f"<td>{esc(', '.join(contribution.evidence_refs) or 'No direct evidence refs')}</td>"
+                "</tr>"
+            )
+        rejected_rows = [
+            "<tr>"
+            f"<td>{esc(rejected['contributor_role'])}</td>"
+            f"<td>{esc(rejected['source_target'])}</td>"
+            f"<td>{esc(rejected['disposition'])}</td>"
+            f"<td>{esc(rejected['disposition_reason'])}</td>"
+            "</tr>"
+            for rejected in receipt.ensemble_contribution_bundle.rejected_inputs
+        ]
+        ensemble_blocks.append(
+            '<article class="case-block">'
+            f"<h3>{esc(episode.episode_id)}</h3>"
+            "<h4>Normalized contributions</h4>"
+            "<table><thead><tr><th>Node</th><th>Contributor</th><th>Proposed value</th><th>Range</th>"
+            "<th>Disposition</th><th>Reason</th><th>Evidence refs</th></tr></thead>"
+            f"<tbody>{''.join(contribution_rows)}</tbody></table>"
+            "<h4>Rejected ensemble inputs</h4>"
+            "<table><thead><tr><th>Contributor</th><th>Source target</th><th>Disposition</th><th>Reason</th></tr></thead>"
+            f"<tbody>{''.join(rejected_rows) or '<tr><td colspan=\"4\">No rejected input listed.</td></tr>'}</tbody></table>"
+            "</article>"
+        )
         receipt_blocks.append(
             '<article class="case-block">'
             f"<h3>{esc(episode.episode_id)}</h3>"
@@ -309,6 +370,10 @@ def render_graph_panels(episodes: list[DecisionEpisode], receipt_dir: Path, outp
         f"<h2>Next-Best-Input Panel</h2>{''.join(next_best_blocks)}</section>"
         '<section id="graph-inspector" class="panel">'
         f"<h2>Graph Inspector</h2>{''.join(graph_blocks)}</section>"
+        '<section id="node-audit-methodology" class="panel">'
+        f"<h2>Node Audit Methodology</h2>{''.join(node_audit_blocks)}</section>"
+        '<section id="ensemble-contribution-panel" class="panel">'
+        f"<h2>Ensemble Contribution Panel</h2>{''.join(ensemble_blocks)}</section>"
         '<section id="receipt-viewer-export" class="panel">'
         f"<h2>Receipt Viewer / Export</h2>{''.join(receipt_blocks)}</section>"
     )

@@ -500,7 +500,7 @@
 
 - Every existing deterministic graph node now has a schema-backed audit object with definition, dependencies, evidence, value, range, median, distribution kind, confidence, method, and sensitivity note.
 - Ensemble contribution objects are schema-defined, but Phase E still needs static role/EvidenceFlow contribution normalization and accept/reject/downgrade logic.
-- Phase F still needs receipts and the workbench to render the node audit methodology directly.
+- Superseded by later phases: receipts and the workbench now render the node audit methodology directly.
 
 ## 2026-06-11 - Phase E Ensemble Contribution Normalization Started
 
@@ -529,4 +529,37 @@
 
 - Static role and EvidenceFlow influence is now inspectable as bounded contribution records instead of implicit prose influence.
 - Unsupported static targets are rejected with reasons rather than silently dropped.
-- Phase F still needs receipts and the workbench to render node audits and ensemble contributions directly.
+- Superseded by Phase F: receipts and the workbench now render node audits and ensemble contributions directly.
+
+## 2026-06-11 - Phase F Receipt And Workbench Methodology Rendering Started
+
+### Completed So Far
+
+- Extended `SentinelReceipt` with `node_audit_bundle`, `ensemble_contribution_bundle`, and `methodology_summary`.
+- Updated receipt generation so every JSON receipt embeds node definitions, dependencies, evidence, estimates, ranges, medians, distributions, confidence/method fields, sensitivity notes, normalized ensemble contributions, and rejected ensemble inputs.
+- Updated Markdown receipt rendering with `Node Audit Methodology` and `Ensemble Contributions` sections.
+- Updated the static workbench with `node-audit-methodology` and `ensemble-contribution-panel` sections for every synthetic case.
+- Regenerated receipt JSON, receipt Markdown, `schemas/ed_sentinel_receipt.schema.json`, `validation/reports/latest.json`, and `data/workbench/index.html`.
+- Added tests proving receipt and workbench outputs expose dependent inputs, ranges, medians, distributions, evidence refs, sensitivity notes, accepted/downgraded contributions, and rejected ensemble inputs.
+
+### Verification Evidence
+
+- Initial Phase F focused test run failed because receipts lacked `node_audit_bundle` and `ensemble_contribution_bundle`, Markdown lacked `Node Audit Methodology`, and the workbench lacked `node-audit-methodology`.
+- `python3 -m pytest tests/test_phase6_receipts.py tests/test_phase7_workbench.py -q` passed: `5 passed`.
+- `python3 -m pytest -q` passed: `53 passed`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.validate data/cases` passed: `validated=7 errors=0`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.static_inputs --static-inputs data/static_inputs/static_inputs.json --case-dir data/cases` passed: `static_inputs cases=7 errors=0`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.schema_export schemas/ed_decision_episode.schema.json` passed.
+- `PYTHONPATH=src python3 -m sentinel_workbench.receipts --case-dir data/cases --static-inputs data/static_inputs/static_inputs.json --out data/receipts` passed: `receipts=7 out=data/receipts`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts` passed: `cases=7 future_leakage_failures=0`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.workbench --case-dir data/cases --receipt-dir data/receipts --report validation/reports/latest.json --out data/workbench/index.html` passed: `workbench=data/workbench/index.html cases=7`.
+- JSON syntax checks with `jq empty` passed for schemas, cases, static inputs, receipts, prepared inputs, and validation reports.
+- `git diff --check` passed.
+- Forbidden phrase scan matched only explicit safety-rule lists, scanner tests, and invalid rejection fixtures.
+- PHI/secret-pattern scan matched only deliberate synthetic redaction tests and redaction labels.
+- `python3 -m pip install -e . --dry-run --no-deps` succeeded and would install `sentinel-workbench-0.1.0`; the environment still reports a pre-existing invalid `~ecret-sweep` distribution warning.
+
+### Current State
+
+- The transparent deterministic demo now has artifact-backed methodology review in JSON receipts, Markdown receipts, and the static workbench.
+- The next major milestone is a local reviewer-edit/app surface for prepared inputs, using the existing redaction, approval, receipt, and workbench artifacts as the safety baseline.

@@ -12,11 +12,15 @@ This document separates the implemented local deterministic Sentinel POC from de
 - Future-fact blocking for current-time replay views.
 - Static role outputs and static EvidenceFlow outputs in `data/static_inputs/static_inputs.json`.
 - Schema validation for ED cases, static role outputs, static EvidenceFlow outputs, and receipts.
+- Constructed/deidentified-style input preparation with deterministic redaction and residual-risk reporting.
+- Reviewer approval artifacts for prepared constructed input.
 - Deterministic graph metrics for information sufficiency, material gap strength, harm clock, information clock, recoverability, future correction opportunity, decision weight, AI provenance risk, commission risk, omission risk, therapy-response relevance, next-best-information ranking, preventability-opportunity score, and final posture.
 - First-class commission, omission, and therapy-response lanes.
-- Reconstructable JSON receipts and human-readable Markdown receipts in `data/receipts/`.
+- Schema-backed node audits with dependencies, evidence, estimates, ranges, medians, distributions, confidence/method fields, and sensitivity notes.
+- Normalized ensemble contributions with accepted/downgraded dispositions and rejected unsupported targets.
+- Reconstructable JSON receipts and human-readable Markdown receipts in `data/receipts/`, including node audit and ensemble contribution methodology.
 - Evaluation report in `validation/reports/latest.json`.
-- Static reviewer workbench at `data/workbench/index.html`.
+- Static reviewer workbench at `data/workbench/index.html`, including node audit methodology and ensemble contribution panels.
 - Safety scanners for forbidden disposition phrasing, named institution examples, credential-like strings, and basic PHI-like patterns.
 
 The deterministic graph computes Sentinel posture categories only. It does not generate clinical orders, diagnoses, prescribing instructions, clearance language, or patient-specific medical advice.
@@ -71,11 +75,13 @@ The current deterministic verification commands are:
 python3 -m pytest -q
 PYTHONPATH=src python3 -m sentinel_workbench.validate data/cases
 PYTHONPATH=src python3 -m sentinel_workbench.static_inputs --static-inputs data/static_inputs/static_inputs.json --case-dir data/cases
+PYTHONPATH=src python3 -m sentinel_workbench.constructed_intake --input data/constructed_inputs/constructed_demo_case.txt --out data/prepared_inputs/constructed_demo_case --episode-id constructed_demo_case --title "Constructed demo case"
+PYTHONPATH=src python3 -m sentinel_workbench.approval --prepared-dir data/prepared_inputs/constructed_demo_case --reviewer-id reviewer_demo --approval-note "Demo structured episode reviewed for local deterministic workflow."
+PYTHONPATH=src python3 -m sentinel_workbench.approval --validate-approved data/prepared_inputs/constructed_demo_case
 PYTHONPATH=src python3 -m sentinel_workbench.receipts --case-dir data/cases --static-inputs data/static_inputs/static_inputs.json --out data/receipts
 PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts
 PYTHONPATH=src python3 -m sentinel_workbench.workbench --case-dir data/cases --receipt-dir data/receipts --report validation/reports/latest.json --out data/workbench/index.html
 PYTHONPATH=src python3 -m sentinel_workbench.schema_export schemas/ed_decision_episode.schema.json
 python3 -m pip install -e . --dry-run --no-deps
+git diff --check
 ```
-
-`git diff --check` cannot run from this folder unless `sentinel_codex_handoff` is placed inside a git repository.

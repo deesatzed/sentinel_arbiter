@@ -2,7 +2,7 @@
 
 ## Project Type
 
-Local deterministic Sentinel Governance Workbench POC. The first build wedge is synthetic Emergency Department disposition replay for governance review, now extended with constructed-input preparation, reviewer approval artifacts, deterministic node-audit methodology, and ensemble contribution normalization.
+Local deterministic Sentinel Governance Workbench POC. The first build wedge is synthetic Emergency Department disposition replay for governance review, now extended with constructed-input preparation, reviewer approval artifacts, deterministic node-audit methodology, ensemble contribution normalization, and transparent receipt/workbench methodology rendering.
 
 ## Tech Stack
 
@@ -18,6 +18,8 @@ Current target folder has a minimal Python substrate plus planning docs, JSON Sc
 - Reviewer approval manifest and hash-chained approval trace
 - Node audit bundle with definitions, evidence, estimates, ranges, medians, methods, confidence, and sensitivity notes
 - Ensemble contribution bundle with accepted/downgraded contributions and rejected unsupported static targets
+- JSON and Markdown receipts that embed node audits, ensemble contributions, rejected inputs, and a methodology summary
+- Static workbench panels for node audit methodology and ensemble contribution review
 
 ## Package Manager
 
@@ -59,8 +61,8 @@ Current runtime entry points:
 - `sentinel_workbench.node_audit`: deterministic node audit bundle, node evidence, node estimates, and node-audit completeness summary.
 - `sentinel_workbench.replay`: current-time replay view and blocked future fact reporting.
 - `sentinel_workbench.redaction`: deterministic redaction floor and redaction report schema.
-- `sentinel_workbench.receipts`: deterministic JSON and Markdown receipt generation.
-- `sentinel_workbench.workbench`: static offline reviewer workbench generation.
+- `sentinel_workbench.receipts`: deterministic JSON and Markdown receipt generation with node audit and ensemble contribution methodology.
+- `sentinel_workbench.workbench`: static offline reviewer workbench generation with graph, receipt, node-audit, and ensemble-contribution panels.
 - `sentinel_workbench.safety`: forbidden phrase, named institution, secret, and PHI-pattern scanner.
 - `sentinel_workbench.schema_export`: ED JSON Schema export command.
 - `sentinel_workbench.static_inputs`: static role-output and EvidenceFlow template validation.
@@ -112,6 +114,7 @@ Current planning entry points:
 - Approved constructed episodes require `approval_manifest.json`, `approval_trace.json`, hash checks, and trace-chain validation.
 - Every current graph metric should have a schema-backed node audit before receipt or workbench rendering claims methodology transparency.
 - Static role and EvidenceFlow inputs do not decide final posture; they become bounded, inspectable contributions only when they map to deterministic graph nodes.
+- Methodology transparency claims must be visible in generated artifacts, not only in code or evaluation summaries.
 
 ## Reference Patterns Inspected
 
@@ -152,6 +155,8 @@ Current tests cover:
 - weak AI-derived evidence is marked weak and limitation-bearing in node audits.
 - ensemble contribution schema export and completeness reporting.
 - unsupported static node targets are rejected with reasons.
+- receipt JSON and Markdown expose node audits, ranges, medians, distributions, evidence refs, sensitivity notes, ensemble contribution dispositions, and rejected ensemble inputs.
+- static workbench exposes node audit methodology and ensemble contribution panels.
 
 Receipt completeness and explicit automated validation categories are tracked in `validation/reports/latest.json`. The generated reviewer workbench is `data/workbench/index.html`.
 
@@ -197,6 +202,4 @@ Receipt completeness and explicit automated validation categories are tracked in
 ## Unknowns
 
 - Whether a later UI should replace the static offline report with a full local web app.
-- Receipts and workbench do not yet render node audit details directly.
-- Receipts and workbench do not yet render ensemble contribution details directly.
 - Exact scoring constants for future graph versions remain intentionally provisional until static role/EvidenceFlow inputs and receipt review exist.

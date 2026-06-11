@@ -7,9 +7,11 @@ from pathlib import Path
 
 from pydantic import Field
 
+from .ensemble import EnsembleContributionBundle, build_ensemble_contribution_bundle
 from .graph import PrudenceGraphResult, compute_prudence_graph
 from .loader import load_case_library
 from .models import DecisionEpisode, RequiredTimepoint, StrictModel
+from .node_audit import NodeAuditBundle, build_node_audit_bundle
 from .static_inputs import load_static_input_bundle
 
 
@@ -40,6 +42,9 @@ REQUIRED_RECEIPT_FIELDS: tuple[str, ...] = (
     "decision_weight",
     "signature_placeholder",
     "human_summary_sections",
+    "node_audit_bundle",
+    "ensemble_contribution_bundle",
+    "methodology_summary",
 )
 
 
@@ -70,6 +75,9 @@ class SentinelReceipt(StrictModel):
     decision_weight: float
     signature_placeholder: str
     human_summary_sections: dict[str, list[str]]
+    node_audit_bundle: NodeAuditBundle
+    ensemble_contribution_bundle: EnsembleContributionBundle
+    methodology_summary: dict[str, object]
 
 
 def sha256_file(path: str | Path) -> str:
@@ -141,6 +149,16 @@ def build_receipt(
 ) -> SentinelReceipt:
     graph = compute_prudence_graph(episode, RequiredTimepoint.T3_DISPOSITION_DECISION)
     static_bundle = load_static_input_bundle(static_inputs_path)
+    node_audit_bundle = build_node_audit_bundle(
+        episode,
+        RequiredTimepoint.T3_DISPOSITION_DECISION,
+        static_bundle=static_bundle,
+    )
+    ensemble_contribution_bundle = build_ensemble_contribution_bundle(
+        episode,
+        static_bundle,
+        RequiredTimepoint.T3_DISPOSITION_DECISION,
+    )
     prompt_versions = {
         template.role_name: static_bundle.version for template in static_bundle.role_assessment_templates
     }
@@ -197,6 +215,18 @@ def build_receipt(
         decision_weight=graph.node_values["decision_weight"],
         signature_placeholder="UNSIGNED_DETERMINISTIC_POC",
         human_summary_sections=build_human_sections(episode, graph),
+        node_audit_bundle=node_audit_bundle,
+        ensemble_contribution_bundle=ensemble_contribution_bundle,
+        methodology_summary={
+            "node_audit_complete": len(node_audit_bundle.node_audits) == len(graph.node_values),
+            "ensemble_contributions_visible": bool(ensemble_contribution_bundle.contributions),
+            "rejected_ensemble_inputs_visible": bool(ensemble_contribution_bundle.rejected_inputs),
+            "final_posture_source": "deterministic_graph_node_values",
+            "trust_boundary": (
+                "Static role and EvidenceFlow inputs are normalized as bounded contributions; "
+                "they do not decide final posture."
+            ),
+        },
     )
 
 
@@ -226,6 +256,35 @@ def render_receipt_markdown(receipt: SentinelReceipt) -> str:
         for item in receipt.human_summary_sections[key]:
             body.append(f"- {item}\n")
         body.append("\n")
+    body.append("## Node Audit Methodology\n")
+    for audit in receipt.node_audit_bundle.node_audits:
+        estimate = audit.estimate
+        evidence_refs = ", ".join(estimate.evidence_refs) or "No direct evidence refs"
+        dependencies = ", ".join(audit.dependencies)
+        body.append(
+            f"- `{audit.node_id}`: value `{estimate.value}`; Range `{estimate.range_min}` to "
+            f"`{estimate.range_max}`; Median `{estimate.median}`; Distribution "
+            f"`{estimate.distribution_kind}`; Method `{estimate.method}`; Dependent inputs "
+            f"`{dependencies}`; Evidence refs `{evidence_refs}`; Sensitivity `{audit.sensitivity_note}`\n"
+        )
+    body.append("\n")
+    body.append("## Ensemble Contributions\n")
+    for contribution in receipt.ensemble_contribution_bundle.contributions:
+        evidence_refs = ", ".join(contribution.evidence_refs) or "No direct evidence refs"
+        body.append(
+            f"- `{contribution.contributor_role}` to `{contribution.node_id}`: proposed "
+            f"`{contribution.proposed_value}`; Range `{contribution.proposed_range_min}` to "
+            f"`{contribution.proposed_range_max}`; disposition `{contribution.disposition}`; "
+            f"reason `{contribution.disposition_reason}`; Evidence refs `{evidence_refs}`\n"
+        )
+    if receipt.ensemble_contribution_bundle.rejected_inputs:
+        body.append("\nRejected ensemble inputs:\n")
+        for rejected in receipt.ensemble_contribution_bundle.rejected_inputs:
+            body.append(
+                f"- `{rejected['contributor_role']}` target `{rejected['source_target']}`: "
+                f"{rejected['disposition_reason']}\n"
+            )
+    body.append("\n")
     return (title + header + "".join(body)).rstrip() + "\n"
 
 
