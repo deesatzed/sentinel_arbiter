@@ -1671,5 +1671,6 @@
     "rejected_ensemble_inputs_visible": true,
     "final_posture_source": "deterministic_graph_node_values",
     "trust_boundary": "Static role and EvidenceFlow inputs are normalized as bounded contributions; they do not decide final posture."
-  }
+  },
+  "workflow_artifacts": {}
 }

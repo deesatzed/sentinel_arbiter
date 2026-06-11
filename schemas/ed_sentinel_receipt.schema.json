@@ -552,6 +552,11 @@
       "additionalProperties": true,
       "title": "Methodology Summary",
       "type": "object"
+    },
+    "workflow_artifacts": {
+      "additionalProperties": true,
+      "title": "Workflow Artifacts",
+      "type": "object"
     }
   },
   "required": [

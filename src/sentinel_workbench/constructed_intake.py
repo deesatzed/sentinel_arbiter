@@ -50,10 +50,27 @@ def prepare_constructed_input(
     quarantine_on_residual: bool = False,
 ) -> ConstructedInputArtifacts:
     source_path = Path(input_path)
+    raw_text = source_path.read_text(encoding="utf-8")
+    return prepare_constructed_text(
+        raw_text=raw_text,
+        out_dir=out_dir,
+        episode_id=episode_id,
+        title=title,
+        quarantine_on_residual=quarantine_on_residual,
+    )
+
+
+def prepare_constructed_text(
+    *,
+    raw_text: str,
+    out_dir: str | Path,
+    episode_id: str,
+    title: str,
+    quarantine_on_residual: bool = False,
+) -> ConstructedInputArtifacts:
     output_dir = Path(out_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    raw_text = source_path.read_text(encoding="utf-8")
     input_sha256 = hashlib.sha256(raw_text.encode("utf-8")).hexdigest()
     redaction = DeterministicRedactor().redact(raw_text)
 

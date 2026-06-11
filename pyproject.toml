@@ -25,6 +25,8 @@ sentinel-workbench-generate-receipts = "sentinel_workbench.receipts:main"
 sentinel-workbench-generate-ui = "sentinel_workbench.workbench:main"
 sentinel-workbench-prepare-constructed-input = "sentinel_workbench.constructed_intake:main"
 sentinel-workbench-approve-constructed-input = "sentinel_workbench.approval:main"
+sentinel-workbench-run-approved-demo = "sentinel_workbench.demo_run:main"
+sentinel-workbench-local-demo = "sentinel_workbench.local_app:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

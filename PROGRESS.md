@@ -563,3 +563,38 @@
 
 - The transparent deterministic demo now has artifact-backed methodology review in JSON receipts, Markdown receipts, and the static workbench.
 - The next major milestone is a local reviewer-edit/app surface for prepared inputs, using the existing redaction, approval, receipt, and workbench artifacts as the safety baseline.
+
+## 2026-06-11 - Phase G Local Demo App Started
+
+### Completed So Far
+
+- Added `prepare_constructed_text()` so the app can process pasted constructed text in memory without writing raw pasted text into prepared review artifacts.
+- Added `src/sentinel_workbench/demo_run.py` to validate an approved prepared-input directory, build a receipt with redaction and approval workflow hashes, write receipt JSON/Markdown, and render `review.html`.
+- Added `src/sentinel_workbench/local_app.py`, a Python stdlib HTTP app with:
+  - `GET /` input form,
+  - `POST /prepare` redaction and editable structured episode review,
+  - `POST /approve-and-run` reviewer approval plus deterministic analysis and review output.
+- Added console scripts:
+  - `sentinel-workbench-run-approved-demo`,
+  - `sentinel-workbench-local-demo`.
+- Added `.sentinel_local_demo/` to `.gitignore` as the default local app workspace.
+- Extended `SentinelReceipt` with `workflow_artifacts` and raw-input hash propagation for approved constructed-demo runs.
+- Added `tests/test_phase_g_local_demo_app.py`.
+- Generated durable constructed-demo analysis artifacts under `data/prepared_inputs/constructed_demo_case/analysis/`.
+- Updated README, repo map, status docs, and decision log.
+
+### Verification Evidence
+
+- Initial Phase G test run failed with `ImportError` for missing `prepare_constructed_text`, confirming tests covered missing behavior before implementation.
+- `python3 -m pytest tests/test_phase_g_local_demo_app.py -q` passed: `3 passed`.
+- `python3 -m pytest -q` passed: `56 passed`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.validate data/cases` passed: `validated=7 errors=0`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.static_inputs --static-inputs data/static_inputs/static_inputs.json --case-dir data/cases` passed: `static_inputs cases=7 errors=0`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.demo_run --prepared-dir data/prepared_inputs/constructed_demo_case --static-inputs data/static_inputs/static_inputs.json --out data/prepared_inputs/constructed_demo_case/analysis` passed and wrote review/receipt artifacts.
+- HTTP app behavior is covered by an ephemeral local-port integration test that performs prepare, approve, run, and review.
+
+### Current State
+
+- A reviewer can now run a local app, paste constructed/deidentified-style text, inspect redacted text and editable structured JSON, approve the structured episode, run deterministic analysis, and review an HTML output plus receipts.
+- The deterministic CLI path remains the verification baseline.
+- Remaining transparency work should focus on evaluation-report coverage for redaction gating, workbench completeness, local app completeness, and end-to-end proof-of-done auditing.

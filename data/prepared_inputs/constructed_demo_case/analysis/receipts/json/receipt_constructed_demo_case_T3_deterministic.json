@@ -1,12 +1,13 @@
 {
-  "receipt_id": "receipt_synthetic_ed_case_003_T3_deterministic",
-  "episode_id": "synthetic_ed_case_003",
+  "receipt_id": "receipt_constructed_demo_case_T3_deterministic",
+  "episode_id": "constructed_demo_case",
   "timepoint_id": "T3_disposition_decision",
-  "run_id": "run_synthetic_ed_case_003_deterministic_v0_1",
+  "run_id": "run_constructed_demo_case_deterministic_v0_1",
   "mode": "replay",
   "input_hashes": {
-    "episode_sha256": "826288394570a1eb3468dc04e998131f3c21d88e4f0f4871bd7bf513a0cbd555",
-    "static_inputs_sha256": "20c94073c06d70ca4cecac51c4c4dc67374f583e5a251791aab4676aebd4ac70"
+    "episode_sha256": "f6e76e086bfeb5867bfd1eee508d8c46c1b94736937b91143b01877ce4527d55",
+    "static_inputs_sha256": "20c94073c06d70ca4cecac51c4c4dc67374f583e5a251791aab4676aebd4ac70",
+    "raw_input_sha256": "bc433cd0e9898905e8147b60c14536436643767f39d635ef38d37e54fe8d3427"
   },
   "prompt_or_dotflow_versions": {
     "prudent_layperson": "0.1.0",
@@ -31,28 +32,28 @@
   "graph_version": "deterministic_graph_v0.1",
   "node_library_version": "ed_node_library_v0.1",
   "available_fact_ids": [
-    "c003_t0_fact",
-    "c003_t1_fact",
-    "c003_t2_fact",
-    "c003_t3_fact"
+    "constructed_fact_001",
+    "constructed_fact_002",
+    "constructed_fact_003",
+    "constructed_fact_004"
   ],
   "blocked_future_fact_ids": [
-    "c003_future_fact"
+    "constructed_hidden_future_placeholder"
   ],
   "node_values": {
     "information_sufficiency": 0.2,
     "material_gap_strength": 0.8,
-    "harm_clock": 0.82,
-    "information_clock": 0.9792,
-    "recoverability": 0.42,
+    "harm_clock": 0.64,
+    "information_clock": 0.9896,
+    "recoverability": 0.6,
     "future_correction_opportunity": 0.35,
-    "decision_weight": 0.71,
+    "decision_weight": 0.53,
     "ai_provenance_risk": 0.0,
-    "commission_risk": 0.75,
+    "commission_risk": 0.0,
     "omission_risk": 0.8,
-    "therapy_response_relevance": 0.9,
-    "next_best_information_rank": 2,
-    "preventability_opportunity_score": 0.4171
+    "therapy_response_relevance": 0.0,
+    "next_best_information_rank": 1,
+    "preventability_opportunity_score": 0.3776
   },
   "rejected_or_downgraded_findings": [
     "hidden_future_facts_blocked",
@@ -67,46 +68,39 @@
     ]
   },
   "commission_lane": {
-    "risk_score": 0.75,
+    "risk_score": 0.0,
     "relevance_score": 0,
-    "findings": [
-      "commission_overconfident_posture"
-    ]
+    "findings": []
   },
   "omission_lane": {
     "risk_score": 0.8,
     "relevance_score": 0,
     "findings": [
-      "omission_unassessed_response"
+      "omission_material_gap"
     ]
   },
   "therapy_response_lane": {
-    "risk_score": 0.9,
-    "relevance_score": 0.9,
-    "findings": [
-      "c003_therapy_not_considered:not_considered",
-      "c003_therapy_not_considered:unknown"
-    ]
+    "risk_score": 0.0,
+    "relevance_score": 0.0,
+    "findings": []
   },
   "next_best_information_ranking": [
-    "explain whether therapy-response observation would change review posture",
-    "capture response observation if clinically available"
+    "review and approve structured episode"
   ],
-  "preventability_opportunity_score": 0.4171,
+  "preventability_opportunity_score": 0.3776,
   "preventability_opportunity_explanation": "Preventability opportunity is a proxy derived from material gap strength, decision weight, information clock, and burden modifiers. It is not a claim of clinical harm prevention.",
   "final_posture": "OBTAIN_SPECIFIC_INFORMATION_FIRST",
-  "decision_weight": 0.71,
+  "decision_weight": 0.53,
   "signature_placeholder": "UNSIGNED_DETERMINISTIC_POC",
   "human_summary_sections": {
     "what_was_known": [
-      "At decision time, the record has no therapy-response observation and no explanation for why the lane was not used."
+      "At decision time, home support and ability to return for reassessment remain unclear."
     ],
     "what_was_missing": [
-      "Therapy-response lane remains unexamined."
+      "Reviewer must confirm timepoint assignment, missing inputs, therapy response, and follow-up feasibility before analysis."
     ],
     "what_would_have_changed_the_discussion": [
-      "explain whether therapy-response observation would change review posture",
-      "capture response observation if clinically available"
+      "review and approve structured episode"
     ],
     "what_hospital_based_monitoring_or_treatment_might_add": [
       "The receipt records whether a hospital-based path had a specific monitoring, information, or therapy-response target in the current-time facts."
@@ -115,21 +109,20 @@
       "The receipt records whether support, follow-up access, return access, and recheck feasibility were represented in the current-time facts."
     ],
     "commission_concerns": [
-      "commission_overconfident_posture"
+      "No commission-lane concern was raised by the deterministic graph."
     ],
     "omission_concerns": [
-      "omission_unassessed_response"
+      "omission_material_gap"
     ],
     "therapy_response_concerns": [
-      "c003_therapy_not_considered:not_considered",
-      "c003_therapy_not_considered:unknown"
+      "No therapy-response concern was raised by the deterministic graph."
     ],
     "why_the_graph_selected_the_posture": [
-      "The graph selected OBTAIN_SPECIFIC_INFORMATION_FIRST from bounded node values, with decision weight 0.71 and preventability opportunity 0.4171."
+      "The graph selected OBTAIN_SPECIFIC_INFORMATION_FIRST from bounded node values, with decision weight 0.53 and preventability opportunity 0.3776."
     ]
   },
   "node_audit_bundle": {
-    "episode_id": "synthetic_ed_case_003",
+    "episode_id": "constructed_demo_case",
     "timepoint_id": "T3_disposition_decision",
     "graph_version": "deterministic_graph_v0.1",
     "node_library_version": "ed_node_library_v0.2",
@@ -152,25 +145,13 @@
         ],
         "evidence": [
           {
-            "ref_id": "gap:c003_gap_therapy_considered",
+            "ref_id": "gap:constructed_review_required",
             "node_id": "information_sufficiency",
             "source_type": "information_gap",
-            "source_timepoint": "T1_initial_workup",
-            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "source_timepoint": "T3_disposition_decision",
+            "quoted_or_structured_fact": "Reviewer must confirm timepoint assignment, missing inputs, therapy response, and follow-up feasibility before analysis.",
             "provenance": "structured_gap_field",
-            "supports": "therapy_response",
-            "weight": 0.8,
-            "quality": "moderate",
-            "limitations": []
-          },
-          {
-            "ref_id": "gap:c003_gap_response_absent",
-            "node_id": "information_sufficiency",
-            "source_type": "information_gap",
-            "source_timepoint": "T2_post_treatment_reassessment",
-            "quoted_or_structured_fact": "Therapy-response information is absent.",
-            "provenance": "structured_gap_field",
-            "supports": "therapy_response",
+            "supports": "reviewer_approval_required",
             "weight": 0.8,
             "quality": "moderate",
             "limitations": []
@@ -186,8 +167,7 @@
           "confidence": 0.7,
           "method": "deterministic_fixture_field_mapping_v0.1",
           "evidence_refs": [
-            "gap:c003_gap_therapy_considered",
-            "gap:c003_gap_response_absent"
+            "gap:constructed_review_required"
           ]
         },
         "ensemble_contributions": [
@@ -226,25 +206,13 @@
         ],
         "evidence": [
           {
-            "ref_id": "gap:c003_gap_therapy_considered",
+            "ref_id": "gap:constructed_review_required",
             "node_id": "material_gap_strength",
             "source_type": "information_gap",
-            "source_timepoint": "T1_initial_workup",
-            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "source_timepoint": "T3_disposition_decision",
+            "quoted_or_structured_fact": "Reviewer must confirm timepoint assignment, missing inputs, therapy response, and follow-up feasibility before analysis.",
             "provenance": "structured_gap_field",
-            "supports": "therapy_response",
-            "weight": 0.8,
-            "quality": "moderate",
-            "limitations": []
-          },
-          {
-            "ref_id": "gap:c003_gap_response_absent",
-            "node_id": "material_gap_strength",
-            "source_type": "information_gap",
-            "source_timepoint": "T2_post_treatment_reassessment",
-            "quoted_or_structured_fact": "Therapy-response information is absent.",
-            "provenance": "structured_gap_field",
-            "supports": "therapy_response",
+            "supports": "reviewer_approval_required",
             "weight": 0.8,
             "quality": "moderate",
             "limitations": []
@@ -260,8 +228,7 @@
           "confidence": 0.7,
           "method": "deterministic_fixture_field_mapping_v0.1",
           "evidence_refs": [
-            "gap:c003_gap_therapy_considered",
-            "gap:c003_gap_response_absent"
+            "gap:constructed_review_required"
           ]
         },
         "ensemble_contributions": [
@@ -304,57 +271,29 @@
         ],
         "evidence": [
           {
-            "ref_id": "gap:c003_gap_therapy_considered",
+            "ref_id": "gap:constructed_review_required",
             "node_id": "harm_clock",
             "source_type": "information_gap",
-            "source_timepoint": "T1_initial_workup",
-            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "source_timepoint": "T3_disposition_decision",
+            "quoted_or_structured_fact": "Reviewer must confirm timepoint assignment, missing inputs, therapy response, and follow-up feasibility before analysis.",
             "provenance": "structured_gap_field",
-            "supports": "therapy_response",
+            "supports": "reviewer_approval_required",
             "weight": 0.8,
             "quality": "moderate",
             "limitations": []
-          },
-          {
-            "ref_id": "gap:c003_gap_response_absent",
-            "node_id": "harm_clock",
-            "source_type": "information_gap",
-            "source_timepoint": "T2_post_treatment_reassessment",
-            "quoted_or_structured_fact": "Therapy-response information is absent.",
-            "provenance": "structured_gap_field",
-            "supports": "therapy_response",
-            "weight": 0.8,
-            "quality": "moderate",
-            "limitations": []
-          },
-          {
-            "ref_id": "therapy:c003_therapy_not_considered",
-            "node_id": "harm_clock",
-            "source_type": "offered_therapy",
-            "source_timepoint": "T1_initial_workup",
-            "quoted_or_structured_fact": "unknown",
-            "provenance": "unknown",
-            "supports": "therapy_response",
-            "weight": 0.75,
-            "quality": "unknown",
-            "limitations": [
-              "Therapy response source refs are limited or absent."
-            ]
           }
         ],
         "estimate": {
           "node_id": "harm_clock",
-          "value": 0.82,
-          "range_min": 0.67,
-          "range_max": 0.97,
-          "median": 0.82,
+          "value": 0.64,
+          "range_min": 0.54,
+          "range_max": 0.74,
+          "median": 0.64,
           "distribution_kind": "bounded_deterministic_interval",
-          "confidence": 0.5667,
+          "confidence": 0.7,
           "method": "deterministic_fixture_field_mapping_v0.1",
           "evidence_refs": [
-            "gap:c003_gap_therapy_considered",
-            "gap:c003_gap_response_absent",
-            "therapy:c003_therapy_not_considered"
+            "gap:constructed_review_required"
           ]
         },
         "ensemble_contributions": [
@@ -406,25 +345,13 @@
         ],
         "evidence": [
           {
-            "ref_id": "gap:c003_gap_therapy_considered",
+            "ref_id": "gap:constructed_review_required",
             "node_id": "information_clock",
             "source_type": "information_gap",
-            "source_timepoint": "T1_initial_workup",
-            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "source_timepoint": "T3_disposition_decision",
+            "quoted_or_structured_fact": "Reviewer must confirm timepoint assignment, missing inputs, therapy response, and follow-up feasibility before analysis.",
             "provenance": "structured_gap_field",
-            "supports": "therapy_response",
-            "weight": 0.8,
-            "quality": "moderate",
-            "limitations": []
-          },
-          {
-            "ref_id": "gap:c003_gap_response_absent",
-            "node_id": "information_clock",
-            "source_type": "information_gap",
-            "source_timepoint": "T2_post_treatment_reassessment",
-            "quoted_or_structured_fact": "Therapy-response information is absent.",
-            "provenance": "structured_gap_field",
-            "supports": "therapy_response",
+            "supports": "reviewer_approval_required",
             "weight": 0.8,
             "quality": "moderate",
             "limitations": []
@@ -432,16 +359,15 @@
         ],
         "estimate": {
           "node_id": "information_clock",
-          "value": 0.9792,
-          "range_min": 0.8792,
+          "value": 0.9896,
+          "range_min": 0.8896,
           "range_max": 1.0,
-          "median": 0.9792,
+          "median": 0.9896,
           "distribution_kind": "bounded_deterministic_interval",
           "confidence": 0.7,
           "method": "deterministic_fixture_field_mapping_v0.1",
           "evidence_refs": [
-            "gap:c003_gap_therapy_considered",
-            "gap:c003_gap_response_absent"
+            "gap:constructed_review_required"
           ]
         },
         "ensemble_contributions": [
@@ -495,57 +421,29 @@
         ],
         "evidence": [
           {
-            "ref_id": "gap:c003_gap_therapy_considered",
+            "ref_id": "gap:constructed_review_required",
             "node_id": "recoverability",
             "source_type": "information_gap",
-            "source_timepoint": "T1_initial_workup",
-            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "source_timepoint": "T3_disposition_decision",
+            "quoted_or_structured_fact": "Reviewer must confirm timepoint assignment, missing inputs, therapy response, and follow-up feasibility before analysis.",
             "provenance": "structured_gap_field",
-            "supports": "therapy_response",
+            "supports": "reviewer_approval_required",
             "weight": 0.8,
             "quality": "moderate",
             "limitations": []
-          },
-          {
-            "ref_id": "gap:c003_gap_response_absent",
-            "node_id": "recoverability",
-            "source_type": "information_gap",
-            "source_timepoint": "T2_post_treatment_reassessment",
-            "quoted_or_structured_fact": "Therapy-response information is absent.",
-            "provenance": "structured_gap_field",
-            "supports": "therapy_response",
-            "weight": 0.8,
-            "quality": "moderate",
-            "limitations": []
-          },
-          {
-            "ref_id": "therapy:c003_therapy_not_considered",
-            "node_id": "recoverability",
-            "source_type": "offered_therapy",
-            "source_timepoint": "T1_initial_workup",
-            "quoted_or_structured_fact": "unknown",
-            "provenance": "unknown",
-            "supports": "therapy_response",
-            "weight": 0.75,
-            "quality": "unknown",
-            "limitations": [
-              "Therapy response source refs are limited or absent."
-            ]
           }
         ],
         "estimate": {
           "node_id": "recoverability",
-          "value": 0.42,
-          "range_min": 0.27,
-          "range_max": 0.57,
-          "median": 0.42,
+          "value": 0.6,
+          "range_min": 0.5,
+          "range_max": 0.7,
+          "median": 0.6,
           "distribution_kind": "bounded_deterministic_interval",
-          "confidence": 0.5667,
+          "confidence": 0.7,
           "method": "deterministic_fixture_field_mapping_v0.1",
           "evidence_refs": [
-            "gap:c003_gap_therapy_considered",
-            "gap:c003_gap_response_absent",
-            "therapy:c003_therapy_not_considered"
+            "gap:constructed_review_required"
           ]
         },
         "ensemble_contributions": [
@@ -584,7 +482,7 @@
         ],
         "evidence": [
           {
-            "ref_id": "follow_up:synthetic_ed_case_003:T3_disposition_decision",
+            "ref_id": "follow_up:constructed_demo_case:T3_disposition_decision",
             "node_id": "future_correction_opportunity",
             "source_type": "follow_up_feasibility",
             "source_timepoint": "T3_disposition_decision",
@@ -608,7 +506,7 @@
           "confidence": 0.3,
           "method": "deterministic_fixture_field_mapping_v0.1",
           "evidence_refs": [
-            "follow_up:synthetic_ed_case_003:T3_disposition_decision"
+            "follow_up:constructed_demo_case:T3_disposition_decision"
           ]
         },
         "ensemble_contributions": [
@@ -664,57 +562,29 @@
         ],
         "evidence": [
           {
-            "ref_id": "gap:c003_gap_therapy_considered",
+            "ref_id": "gap:constructed_review_required",
             "node_id": "decision_weight",
             "source_type": "information_gap",
-            "source_timepoint": "T1_initial_workup",
-            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "source_timepoint": "T3_disposition_decision",
+            "quoted_or_structured_fact": "Reviewer must confirm timepoint assignment, missing inputs, therapy response, and follow-up feasibility before analysis.",
             "provenance": "structured_gap_field",
-            "supports": "therapy_response",
+            "supports": "reviewer_approval_required",
             "weight": 0.8,
             "quality": "moderate",
             "limitations": []
-          },
-          {
-            "ref_id": "gap:c003_gap_response_absent",
-            "node_id": "decision_weight",
-            "source_type": "information_gap",
-            "source_timepoint": "T2_post_treatment_reassessment",
-            "quoted_or_structured_fact": "Therapy-response information is absent.",
-            "provenance": "structured_gap_field",
-            "supports": "therapy_response",
-            "weight": 0.8,
-            "quality": "moderate",
-            "limitations": []
-          },
-          {
-            "ref_id": "therapy:c003_therapy_not_considered",
-            "node_id": "decision_weight",
-            "source_type": "offered_therapy",
-            "source_timepoint": "T1_initial_workup",
-            "quoted_or_structured_fact": "unknown",
-            "provenance": "unknown",
-            "supports": "therapy_response",
-            "weight": 0.75,
-            "quality": "unknown",
-            "limitations": [
-              "Therapy response source refs are limited or absent."
-            ]
           }
         ],
         "estimate": {
           "node_id": "decision_weight",
-          "value": 0.71,
-          "range_min": 0.56,
-          "range_max": 0.86,
-          "median": 0.71,
+          "value": 0.53,
+          "range_min": 0.43,
+          "range_max": 0.63,
+          "median": 0.53,
           "distribution_kind": "bounded_deterministic_interval",
-          "confidence": 0.5667,
+          "confidence": 0.7,
           "method": "deterministic_fixture_field_mapping_v0.1",
           "evidence_refs": [
-            "gap:c003_gap_therapy_considered",
-            "gap:c003_gap_response_absent",
-            "therapy:c003_therapy_not_considered"
+            "gap:constructed_review_required"
           ]
         },
         "ensemble_contributions": [
@@ -820,25 +690,13 @@
         ],
         "evidence": [
           {
-            "ref_id": "gap:c003_gap_therapy_considered",
+            "ref_id": "gap:constructed_review_required",
             "node_id": "commission_risk",
             "source_type": "information_gap",
-            "source_timepoint": "T1_initial_workup",
-            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "source_timepoint": "T3_disposition_decision",
+            "quoted_or_structured_fact": "Reviewer must confirm timepoint assignment, missing inputs, therapy response, and follow-up feasibility before analysis.",
             "provenance": "structured_gap_field",
-            "supports": "therapy_response",
-            "weight": 0.8,
-            "quality": "moderate",
-            "limitations": []
-          },
-          {
-            "ref_id": "gap:c003_gap_response_absent",
-            "node_id": "commission_risk",
-            "source_type": "information_gap",
-            "source_timepoint": "T2_post_treatment_reassessment",
-            "quoted_or_structured_fact": "Therapy-response information is absent.",
-            "provenance": "structured_gap_field",
-            "supports": "therapy_response",
+            "supports": "reviewer_approval_required",
             "weight": 0.8,
             "quality": "moderate",
             "limitations": []
@@ -846,16 +704,15 @@
         ],
         "estimate": {
           "node_id": "commission_risk",
-          "value": 0.75,
-          "range_min": 0.65,
-          "range_max": 0.85,
-          "median": 0.75,
+          "value": 0.0,
+          "range_min": 0.0,
+          "range_max": 0.1,
+          "median": 0.0,
           "distribution_kind": "bounded_deterministic_interval",
           "confidence": 0.7,
           "method": "deterministic_fixture_field_mapping_v0.1",
           "evidence_refs": [
-            "gap:c003_gap_therapy_considered",
-            "gap:c003_gap_response_absent"
+            "gap:constructed_review_required"
           ]
         },
         "ensemble_contributions": [],
@@ -884,25 +741,13 @@
         ],
         "evidence": [
           {
-            "ref_id": "gap:c003_gap_therapy_considered",
+            "ref_id": "gap:constructed_review_required",
             "node_id": "omission_risk",
             "source_type": "information_gap",
-            "source_timepoint": "T1_initial_workup",
-            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "source_timepoint": "T3_disposition_decision",
+            "quoted_or_structured_fact": "Reviewer must confirm timepoint assignment, missing inputs, therapy response, and follow-up feasibility before analysis.",
             "provenance": "structured_gap_field",
-            "supports": "therapy_response",
-            "weight": 0.8,
-            "quality": "moderate",
-            "limitations": []
-          },
-          {
-            "ref_id": "gap:c003_gap_response_absent",
-            "node_id": "omission_risk",
-            "source_type": "information_gap",
-            "source_timepoint": "T2_post_treatment_reassessment",
-            "quoted_or_structured_fact": "Therapy-response information is absent.",
-            "provenance": "structured_gap_field",
-            "supports": "therapy_response",
+            "supports": "reviewer_approval_required",
             "weight": 0.8,
             "quality": "moderate",
             "limitations": []
@@ -918,8 +763,7 @@
           "confidence": 0.7,
           "method": "deterministic_fixture_field_mapping_v0.1",
           "evidence_refs": [
-            "gap:c003_gap_therapy_considered",
-            "gap:c003_gap_response_absent"
+            "gap:constructed_review_required"
           ]
         },
         "ensemble_contributions": [],
@@ -946,31 +790,31 @@
         ],
         "evidence": [
           {
-            "ref_id": "therapy:c003_therapy_not_considered",
+            "ref_id": "node:therapy_response_relevance:no_direct_evidence",
             "node_id": "therapy_response_relevance",
-            "source_type": "offered_therapy",
-            "source_timepoint": "T1_initial_workup",
-            "quoted_or_structured_fact": "unknown",
-            "provenance": "unknown",
-            "supports": "therapy_response",
-            "weight": 0.75,
+            "source_type": "derived_node",
+            "source_timepoint": "T3_disposition_decision",
+            "quoted_or_structured_fact": "No direct current-time evidence item was mapped to this node.",
+            "provenance": "deterministic_graph_derivation",
+            "supports": "therapy_response_relevance",
+            "weight": 0.0,
             "quality": "unknown",
             "limitations": [
-              "Therapy response source refs are limited or absent."
+              "Derived from absence or low materiality of represented current-time inputs."
             ]
           }
         ],
         "estimate": {
           "node_id": "therapy_response_relevance",
-          "value": 0.9,
-          "range_min": 0.75,
-          "range_max": 1.0,
-          "median": 0.9,
+          "value": 0.0,
+          "range_min": 0.0,
+          "range_max": 0.15,
+          "median": 0.0,
           "distribution_kind": "bounded_deterministic_interval",
           "confidence": 0.3,
           "method": "deterministic_fixture_field_mapping_v0.1",
           "evidence_refs": [
-            "therapy:c003_therapy_not_considered"
+            "node:therapy_response_relevance:no_direct_evidence"
           ]
         },
         "ensemble_contributions": [],
@@ -995,25 +839,13 @@
         ],
         "evidence": [
           {
-            "ref_id": "gap:c003_gap_therapy_considered",
+            "ref_id": "gap:constructed_review_required",
             "node_id": "next_best_information_rank",
             "source_type": "information_gap",
-            "source_timepoint": "T1_initial_workup",
-            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "source_timepoint": "T3_disposition_decision",
+            "quoted_or_structured_fact": "Reviewer must confirm timepoint assignment, missing inputs, therapy response, and follow-up feasibility before analysis.",
             "provenance": "structured_gap_field",
-            "supports": "therapy_response",
-            "weight": 0.8,
-            "quality": "moderate",
-            "limitations": []
-          },
-          {
-            "ref_id": "gap:c003_gap_response_absent",
-            "node_id": "next_best_information_rank",
-            "source_type": "information_gap",
-            "source_timepoint": "T2_post_treatment_reassessment",
-            "quoted_or_structured_fact": "Therapy-response information is absent.",
-            "provenance": "structured_gap_field",
-            "supports": "therapy_response",
+            "supports": "reviewer_approval_required",
             "weight": 0.8,
             "quality": "moderate",
             "limitations": []
@@ -1021,27 +853,26 @@
         ],
         "estimate": {
           "node_id": "next_best_information_rank",
-          "value": 2,
-          "range_min": 1.0,
-          "range_max": 3.0,
-          "median": 2.0,
+          "value": 1,
+          "range_min": 0.0,
+          "range_max": 2.0,
+          "median": 1.0,
           "distribution_kind": "deterministic_count_with_neighbor_range",
           "confidence": 0.7,
           "method": "deterministic_fixture_field_mapping_v0.1",
           "evidence_refs": [
-            "gap:c003_gap_therapy_considered",
-            "gap:c003_gap_response_absent"
+            "gap:constructed_review_required"
           ]
         },
         "ensemble_contributions": [
           {
             "node_id": "next_best_information_rank",
             "contributor_role": "evidenceflow:next_best_input",
-            "proposed_value": 2,
+            "proposed_value": 1,
             "proposed_range_min": 0.0,
-            "proposed_range_max": 3.0,
+            "proposed_range_max": 2.0,
             "evidence_refs": [
-              "synthetic_ed_case_003_candidate_input_001"
+              "constructed_demo_case_candidate_input_001"
             ],
             "rationale": "Resolve the highest-relevance current-time gap named in the synthetic fixture.",
             "disposition": "accepted",
@@ -1075,25 +906,13 @@
         ],
         "evidence": [
           {
-            "ref_id": "gap:c003_gap_therapy_considered",
+            "ref_id": "gap:constructed_review_required",
             "node_id": "preventability_opportunity_score",
             "source_type": "information_gap",
-            "source_timepoint": "T1_initial_workup",
-            "quoted_or_structured_fact": "Therapy-response lane remains unexamined.",
+            "source_timepoint": "T3_disposition_decision",
+            "quoted_or_structured_fact": "Reviewer must confirm timepoint assignment, missing inputs, therapy response, and follow-up feasibility before analysis.",
             "provenance": "structured_gap_field",
-            "supports": "therapy_response",
-            "weight": 0.8,
-            "quality": "moderate",
-            "limitations": []
-          },
-          {
-            "ref_id": "gap:c003_gap_response_absent",
-            "node_id": "preventability_opportunity_score",
-            "source_type": "information_gap",
-            "source_timepoint": "T2_post_treatment_reassessment",
-            "quoted_or_structured_fact": "Therapy-response information is absent.",
-            "provenance": "structured_gap_field",
-            "supports": "therapy_response",
+            "supports": "reviewer_approval_required",
             "weight": 0.8,
             "quality": "moderate",
             "limitations": []
@@ -1101,16 +920,15 @@
         ],
         "estimate": {
           "node_id": "preventability_opportunity_score",
-          "value": 0.4171,
-          "range_min": 0.3171,
-          "range_max": 0.5171,
-          "median": 0.4171,
+          "value": 0.3776,
+          "range_min": 0.2776,
+          "range_max": 0.4776,
+          "median": 0.3776,
           "distribution_kind": "bounded_deterministic_interval",
           "confidence": 0.7,
           "method": "deterministic_fixture_field_mapping_v0.1",
           "evidence_refs": [
-            "gap:c003_gap_therapy_considered",
-            "gap:c003_gap_response_absent"
+            "gap:constructed_review_required"
           ]
         },
         "ensemble_contributions": [
@@ -1121,7 +939,7 @@
             "proposed_range_min": 0.35,
             "proposed_range_max": 0.65,
             "evidence_refs": [
-              "synthetic_ed_case_003_candidate_input_001"
+              "constructed_demo_case_candidate_input_001"
             ],
             "rationale": "Resolve the highest-relevance current-time gap named in the synthetic fixture.",
             "disposition": "accepted",
@@ -1134,7 +952,7 @@
     ]
   },
   "ensemble_contribution_bundle": {
-    "episode_id": "synthetic_ed_case_003",
+    "episode_id": "constructed_demo_case",
     "timepoint_id": "T3_disposition_decision",
     "contribution_version": "static_ensemble_normalizer_v0.1",
     "contributions": [
@@ -1258,11 +1076,11 @@
       {
         "node_id": "next_best_information_rank",
         "contributor_role": "evidenceflow:next_best_input",
-        "proposed_value": 2,
+        "proposed_value": 1,
         "proposed_range_min": 0.0,
-        "proposed_range_max": 3.0,
+        "proposed_range_max": 2.0,
         "evidence_refs": [
-          "synthetic_ed_case_003_candidate_input_001"
+          "constructed_demo_case_candidate_input_001"
         ],
         "rationale": "Resolve the highest-relevance current-time gap named in the synthetic fixture.",
         "disposition": "accepted",
@@ -1275,7 +1093,7 @@
         "proposed_range_min": 0.35,
         "proposed_range_max": 0.65,
         "evidence_refs": [
-          "synthetic_ed_case_003_candidate_input_001"
+          "constructed_demo_case_candidate_input_001"
         ],
         "rationale": "Resolve the highest-relevance current-time gap named in the synthetic fixture.",
         "disposition": "accepted",
@@ -1312,112 +1130,112 @@
       {
         "contributor_role": "prudent_layperson",
         "source_target": "prudent_layperson_threshold",
-        "source_id": "synthetic_ed_case_003_layperson_threshold",
+        "source_id": "constructed_demo_case_layperson_threshold",
         "disposition": "rejected",
         "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
       },
       {
         "contributor_role": "prudent_layperson",
         "source_target": "safety_net_need",
-        "source_id": "synthetic_ed_case_003_layperson_threshold",
+        "source_id": "constructed_demo_case_layperson_threshold",
         "disposition": "rejected",
         "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
       },
       {
         "contributor_role": "prudent_provider",
         "source_target": "prudent_provider_threshold",
-        "source_id": "synthetic_ed_case_003_provider_information",
+        "source_id": "constructed_demo_case_provider_information",
         "disposition": "rejected",
         "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
       },
       {
         "contributor_role": "prudent_provider",
         "source_target": "over_action_risk",
-        "source_id": "synthetic_ed_case_003_provider_information",
+        "source_id": "constructed_demo_case_provider_information",
         "disposition": "rejected",
         "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
       },
       {
         "contributor_role": "prudent_provider",
         "source_target": "under_action_risk",
-        "source_id": "synthetic_ed_case_003_provider_information",
+        "source_id": "constructed_demo_case_provider_information",
         "disposition": "rejected",
         "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
       },
       {
         "contributor_role": "prudent_healthcare_ai",
         "source_target": "prudent_ai_threshold",
-        "source_id": "synthetic_ed_case_003_ai_conduct",
+        "source_id": "constructed_demo_case_ai_conduct",
         "disposition": "rejected",
         "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
       },
       {
         "contributor_role": "prudent_healthcare_ai",
         "source_target": "uncertainty_disclosure_need",
-        "source_id": "synthetic_ed_case_003_ai_conduct",
+        "source_id": "constructed_demo_case_ai_conduct",
         "disposition": "rejected",
         "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
       },
       {
         "contributor_role": "prudent_healthcare_ai",
         "source_target": "primary_source_confirmation_need",
-        "source_id": "synthetic_ed_case_003_ai_conduct",
+        "source_id": "constructed_demo_case_ai_conduct",
         "disposition": "rejected",
         "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
       },
       {
         "contributor_role": "prudent_healthcare_ai",
         "source_target": "ai_provenance_warning",
-        "source_id": "synthetic_ed_case_003_ai_conduct",
+        "source_id": "constructed_demo_case_ai_conduct",
         "disposition": "rejected",
         "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
       },
       {
         "contributor_role": "duty_to_inquire",
         "source_target": "material_gap_present",
-        "source_id": "synthetic_ed_case_003_material_gap",
+        "source_id": "constructed_demo_case_material_gap",
         "disposition": "rejected",
         "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
       },
       {
         "contributor_role": "duty_to_inquire",
         "source_target": "gap_decision_relevance",
-        "source_id": "synthetic_ed_case_003_material_gap",
+        "source_id": "constructed_demo_case_material_gap",
         "disposition": "rejected",
         "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
       },
       {
         "contributor_role": "red_team",
         "source_target": "evidence_conflict",
-        "source_id": "synthetic_ed_case_003_red_team_risk",
+        "source_id": "constructed_demo_case_red_team_risk",
         "disposition": "rejected",
         "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
       },
       {
         "contributor_role": "red_team",
         "source_target": "escalation_need",
-        "source_id": "synthetic_ed_case_003_red_team_risk",
+        "source_id": "constructed_demo_case_red_team_risk",
         "disposition": "rejected",
         "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
       },
       {
         "contributor_role": "red_team",
         "source_target": "under_action_risk",
-        "source_id": "synthetic_ed_case_003_red_team_risk",
+        "source_id": "constructed_demo_case_red_team_risk",
         "disposition": "rejected",
         "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
       },
       {
         "contributor_role": "defense",
         "source_target": "over_action_risk",
-        "source_id": "synthetic_ed_case_003_defense_balance",
+        "source_id": "constructed_demo_case_defense_balance",
         "disposition": "rejected",
         "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
       },
       {
         "contributor_role": "defense",
         "source_target": "safety_net_need",
-        "source_id": "synthetic_ed_case_003_defense_balance",
+        "source_id": "constructed_demo_case_defense_balance",
         "disposition": "rejected",
         "disposition_reason": "Target is not a deterministic graph node for Phase E normalization."
       }
@@ -1430,5 +1248,14 @@
     "final_posture_source": "deterministic_graph_node_values",
     "trust_boundary": "Static role and EvidenceFlow inputs are normalized as bounded contributions; they do not decide final posture."
   },
-  "workflow_artifacts": {}
+  "workflow_artifacts": {
+    "prepared_dir": "data/prepared_inputs/constructed_demo_case",
+    "redacted_input_sha256": "bc433cd0e9898905e8147b60c14536436643767f39d635ef38d37e54fe8d3427",
+    "redaction_report_sha256": "739362a09db5f7d610267af6993345360eaff7058209681f242479c4c0aab1c3",
+    "draft_episode_sha256": "4fad9599f561e9101c46f48de44268139182d2db68432e80cc891b6f6e730f6d",
+    "approved_episode_sha256": "4fad9599f561e9101c46f48de44268139182d2db68432e80cc891b6f6e730f6d",
+    "approval_manifest_sha256": "92bee26f2ffb97c3847bbca80c1c1dcbf23884aae4047b6ab4ef901a624a411d",
+    "approval_trace_sha256": "8293d526a2ee4b1a25113a0d06f10d0f51cbfbb9dbceed729ebb5e06903c9e19",
+    "raw_input_sha256": "bc433cd0e9898905e8147b60c14536436643767f39d635ef38d37e54fe8d3427"
+  }
 }

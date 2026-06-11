@@ -2,11 +2,11 @@
 
 ## Project Type
 
-Local deterministic Sentinel Governance Workbench POC. The first build wedge is synthetic Emergency Department disposition replay for governance review, now extended with constructed-input preparation, reviewer approval artifacts, deterministic node-audit methodology, ensemble contribution normalization, and transparent receipt/workbench methodology rendering.
+Local deterministic Sentinel Governance Workbench POC. The first build wedge is synthetic Emergency Department disposition replay for governance review, now extended with constructed-input preparation, reviewer approval artifacts, deterministic node-audit methodology, ensemble contribution normalization, transparent receipt/workbench methodology rendering, and a local stdlib demo app.
 
 ## Tech Stack
 
-Current target folder has a minimal Python substrate plus planning docs, JSON Schema, deterministic artifacts, a CLI-first constructed-input preparation path, reviewer approval artifacts, node-audit methodology objects, and bounded ensemble contribution normalization.
+Current target folder has a minimal Python substrate plus planning docs, JSON Schema, deterministic artifacts, a CLI-first constructed-input preparation path, reviewer approval artifacts, node-audit methodology objects, bounded ensemble contribution normalization, approved constructed-input analysis, and a local HTTP demo app.
 
 - Python package
 - Pydantic 2 schema models
@@ -20,6 +20,8 @@ Current target folder has a minimal Python substrate plus planning docs, JSON Sc
 - Ensemble contribution bundle with accepted/downgraded contributions and rejected unsupported static targets
 - JSON and Markdown receipts that embed node audits, ensemble contributions, rejected inputs, and a methodology summary
 - Static workbench panels for node audit methodology and ensemble contribution review
+- Approved constructed-input run generator with receipt and review HTML output
+- Local stdlib HTTP demo for paste, redaction, editable structured episode review, approval, deterministic analysis, and output review
 
 ## Package Manager
 
@@ -39,10 +41,12 @@ Python packaging is defined in `pyproject.toml`.
 | Prepare constructed input | `PYTHONPATH=src python3 -m sentinel_workbench.constructed_intake --input data/constructed_inputs/constructed_demo_case.txt --out data/prepared_inputs/constructed_demo_case --episode-id constructed_demo_case --title "Constructed demo case"` | Yes: `status=prepared` |
 | Approve constructed input | `PYTHONPATH=src python3 -m sentinel_workbench.approval --prepared-dir data/prepared_inputs/constructed_demo_case --reviewer-id reviewer_demo --approval-note "Demo structured episode reviewed for local deterministic workflow."` | Yes: `status=approved` |
 | Validate approved constructed input | `PYTHONPATH=src python3 -m sentinel_workbench.approval --validate-approved data/prepared_inputs/constructed_demo_case` | Yes: `approved_episode=constructed_demo_case status=approved` |
+| Run approved constructed demo analysis | `PYTHONPATH=src python3 -m sentinel_workbench.demo_run --prepared-dir data/prepared_inputs/constructed_demo_case --static-inputs data/static_inputs/static_inputs.json --out data/prepared_inputs/constructed_demo_case/analysis` | Yes |
 | Generate receipts | `PYTHONPATH=src python3 -m sentinel_workbench.receipts --case-dir data/cases --static-inputs data/static_inputs/static_inputs.json --out data/receipts` | Yes: `receipts=7 out=data/receipts` |
 | Export ED schema | `PYTHONPATH=src python3 -m sentinel_workbench.schema_export schemas/ed_decision_episode.schema.json` | Yes |
 | Generate evaluation report | `PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts` | Yes: `cases=7 future_leakage_failures=0` |
 | Generate reviewer workbench | `PYTHONPATH=src python3 -m sentinel_workbench.workbench --case-dir data/cases --receipt-dir data/receipts --report validation/reports/latest.json --out data/workbench/index.html` | Yes: `workbench=data/workbench/index.html cases=7` |
+| Start local demo app | `PYTHONPATH=src python3 -m sentinel_workbench.local_app --host 127.0.0.1 --port 8765` | Verified by HTTP test on ephemeral local port |
 | Editable install dry-run | `python3 -m pip install -e . --dry-run --no-deps` | Yes: would install `sentinel-workbench-0.1.0` |
 | Check repository status | `git status --short --branch` | Yes |
 | Whitespace diff check | `git diff --check` | Yes |
@@ -53,6 +57,7 @@ Current runtime entry points:
 
 - `sentinel_workbench.models`: ED disposition replay Pydantic models.
 - `sentinel_workbench.approval`: reviewer approval gate for prepared constructed input, including approved episode loading, manifest validation, and hash-chained trace validation.
+- `sentinel_workbench.demo_run`: deterministic analysis runner for approved prepared input, with workflow artifact hashes, receipt generation, and review HTML output.
 - `sentinel_workbench.ensemble`: static role/EvidenceFlow normalization into bounded ensemble contributions and rejected-input tracking.
 - `sentinel_workbench.case_library`: required case-pattern coverage summary.
 - `sentinel_workbench.constructed_intake`: constructed/deidentified-style text preparation command that emits redacted input, redaction report, and draft episode artifacts.
@@ -63,6 +68,7 @@ Current runtime entry points:
 - `sentinel_workbench.redaction`: deterministic redaction floor and redaction report schema.
 - `sentinel_workbench.receipts`: deterministic JSON and Markdown receipt generation with node audit and ensemble contribution methodology.
 - `sentinel_workbench.workbench`: static offline reviewer workbench generation with graph, receipt, node-audit, and ensemble-contribution panels.
+- `sentinel_workbench.local_app`: local stdlib HTTP demo for paste, prepare, review/edit, approve, run, and review output.
 - `sentinel_workbench.safety`: forbidden phrase, named institution, secret, and PHI-pattern scanner.
 - `sentinel_workbench.schema_export`: ED JSON Schema export command.
 - `sentinel_workbench.static_inputs`: static role-output and EvidenceFlow template validation.
@@ -94,7 +100,7 @@ Current planning entry points:
 - `src/sentinel_workbench/`: Phase 1 deterministic Python package.
 - `data/cases/`: Phase 1 synthetic fixture seed set.
 - `data/constructed_inputs/`: safe constructed text inputs for Phase B demo preparation.
-- `data/prepared_inputs/`: generated redacted input, redaction reports, draft episodes, approved episodes, approval manifests, and approval traces from constructed input.
+- `data/prepared_inputs/`: generated redacted input, redaction reports, draft episodes, approved episodes, approval manifests, approval traces, and constructed-demo analysis output.
 - `data/static_inputs/`: Phase 4 static role-output and EvidenceFlow templates plus invalid rejection fixtures.
 - `data/receipts/`: deterministic JSON and Markdown receipts.
 - `data/workbench/`: generated static reviewer workbench HTML.
@@ -112,6 +118,8 @@ Current planning entry points:
 - Constructed/deidentified text must pass deterministic redaction and residual-risk checks before it can become a draft episode.
 - Draft constructed episodes are reviewer-editable artifacts, not approved graph inputs.
 - Approved constructed episodes require `approval_manifest.json`, `approval_trace.json`, hash checks, and trace-chain validation.
+- Local app runs must use the same approval and receipt path as CLI runs.
+- Raw pasted text should not be written into prepared review artifacts; only hashes, redacted text, structured episodes, approval artifacts, receipts, and review HTML should persist.
 - Every current graph metric should have a schema-backed node audit before receipt or workbench rendering claims methodology transparency.
 - Static role and EvidenceFlow inputs do not decide final posture; they become bounded, inspectable contributions only when they map to deterministic graph nodes.
 - Methodology transparency claims must be visible in generated artifacts, not only in code or evaluation summaries.
@@ -157,6 +165,8 @@ Current tests cover:
 - unsupported static node targets are rejected with reasons.
 - receipt JSON and Markdown expose node audits, ranges, medians, distributions, evidence refs, sensitivity notes, ensemble contribution dispositions, and rejected ensemble inputs.
 - static workbench exposes node audit methodology and ensemble contribution panels.
+- approved constructed-demo analysis writes receipt JSON, receipt Markdown, and review HTML.
+- local HTTP app prepare/approve/run path is covered by an ephemeral-port integration test.
 
 Receipt completeness and explicit automated validation categories are tracked in `validation/reports/latest.json`. The generated reviewer workbench is `data/workbench/index.html`.
 
@@ -181,7 +191,9 @@ Receipt completeness and explicit automated validation categories are tracked in
 - `src/sentinel_workbench/redaction.py`
 - `src/sentinel_workbench/constructed_intake.py`
 - `src/sentinel_workbench/approval.py`
+- `src/sentinel_workbench/demo_run.py`
 - `src/sentinel_workbench/ensemble.py`
+- `src/sentinel_workbench/local_app.py`
 - `src/sentinel_workbench/node_audit.py`
 - `data/constructed_inputs/*.txt`
 - `data/prepared_inputs/**/*.json`
@@ -197,9 +209,10 @@ Receipt completeness and explicit automated validation categories are tracked in
 - `tests/test_phase_c_reviewer_approval.py`
 - `tests/test_phase_d_node_audit.py`
 - `tests/test_phase_e_ensemble_contributions.py`
+- `tests/test_phase_g_local_demo_app.py`
 - `tests/test_full_poc_documentation.py`
 
 ## Unknowns
 
-- Whether a later UI should replace the static offline report with a full local web app.
+- Whether the stdlib local app should later be replaced with a fuller FastAPI/frontend implementation.
 - Exact scoring constants for future graph versions remain intentionally provisional until static role/EvidenceFlow inputs and receipt review exist.

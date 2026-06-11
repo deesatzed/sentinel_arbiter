@@ -2,7 +2,7 @@
 
 Version: 0.1
 Date: 2026-06-11
-Status: Deterministic ED replay POC with constructed-input preparation, reviewer approval artifacts, node-audit methodology, ensemble contribution normalization, and transparent receipt/workbench rendering. No production clinical use implied.
+Status: Deterministic ED replay POC with constructed-input preparation, reviewer approval artifacts, node-audit methodology, ensemble contribution normalization, transparent receipt/workbench rendering, and a local stdlib demo app. No production clinical use implied.
 
 Repository: https://github.com/deesatzed/sentinel_arbiter.git
 
@@ -72,6 +72,9 @@ sentinel_codex_handoff/
       markdown/
     prepared_inputs/
       constructed_demo_case/
+        analysis/
+          receipts/
+          review.html
         approval_manifest.json
         approval_trace.json
         approved_episode.json
@@ -131,6 +134,7 @@ sentinel_codex_handoff/
     sentinel_workbench/
       approval.py
       ensemble.py
+      demo_run.py
       models.py
       case_library.py
       constructed_intake.py
@@ -146,6 +150,7 @@ sentinel_codex_handoff/
       validate.py
       evaluate.py
       workbench.py
+      local_app.py
   tests/
     test_phase1_models.py
     test_phase2_case_library.py
@@ -158,6 +163,7 @@ sentinel_codex_handoff/
     test_phase_c_reviewer_approval.py
     test_phase_d_node_audit.py
     test_phase_e_ensemble_contributions.py
+    test_phase_g_local_demo_app.py
     test_full_poc_documentation.py
   prompts/
     01_role_agent_prompt_contracts.md
@@ -171,7 +177,7 @@ sentinel_codex_handoff/
 
 ## Recommended first Codex task
 
-Ask Codex to read `GOAL.md`, this README, `DECISIONS.md`, `PROGRESS.md`, `REPO_MAP.md`, `RISK_NOTES.md`, `docs/20_emex_admsve_reuse_evaluation.md`, and the JSON schemas. Then continue from a local app endpoint or reviewer-edit surface for prepared inputs, using the existing CLI artifacts, receipt methodology, and static workbench as the safety baseline.
+Ask Codex to read `GOAL.md`, this README, `DECISIONS.md`, `PROGRESS.md`, `REPO_MAP.md`, `RISK_NOTES.md`, `docs/20_emex_admsve_reuse_evaluation.md`, and the JSON schemas. Then continue from validation-report coverage for redaction gating, workbench completeness, and local app completeness, using the current CLI and local-app artifacts as the safety baseline.
 
 ## Constructed input preparation
 
@@ -215,6 +221,41 @@ Approval writes:
 
 `load_approved_episode()` refuses direct draft JSON paths. Constructed input must pass through this approval artifact gate before later analysis commands should treat it as analysis-ready.
 
+## Approved demo run
+
+Phase G adds an approved-run command for a prepared constructed input:
+
+```bash
+PYTHONPATH=src python3 -m sentinel_workbench.demo_run \
+  --prepared-dir data/prepared_inputs/constructed_demo_case \
+  --static-inputs data/static_inputs/static_inputs.json \
+  --out data/prepared_inputs/constructed_demo_case/analysis
+```
+
+The command validates approval artifacts, runs deterministic Sentinel analysis, and writes:
+
+- `analysis/receipts/json/receipt_constructed_demo_case_T3_deterministic.json`
+- `analysis/receipts/markdown/receipt_constructed_demo_case_T3_deterministic.md`
+- `analysis/review.html`
+
+The constructed-demo receipt includes redaction and approval trace hashes without copying raw input text into the review artifacts.
+
+## Local demo app
+
+The first app-like surface uses Python stdlib only:
+
+```bash
+PYTHONPATH=src python3 -m sentinel_workbench.local_app --host 127.0.0.1 --port 8765
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8765
+```
+
+The local app lets a reviewer paste constructed/deidentified-style text, run deterministic redaction, inspect the redacted text and editable draft episode JSON, approve the structured episode, run deterministic analysis, and review the generated HTML/receipt output. The default app workspace is `.sentinel_local_demo/`, which is gitignored.
+
 ## Node audit methodology
 
 Phase D adds schema-backed node methodology objects for every current graph metric:
@@ -252,10 +293,12 @@ PYTHONPATH=src python3 -m sentinel_workbench.static_inputs --static-inputs data/
 PYTHONPATH=src python3 -m sentinel_workbench.constructed_intake --input data/constructed_inputs/constructed_demo_case.txt --out data/prepared_inputs/constructed_demo_case --episode-id constructed_demo_case --title "Constructed demo case"
 PYTHONPATH=src python3 -m sentinel_workbench.approval --prepared-dir data/prepared_inputs/constructed_demo_case --reviewer-id reviewer_demo --approval-note "Demo structured episode reviewed for local deterministic workflow."
 PYTHONPATH=src python3 -m sentinel_workbench.approval --validate-approved data/prepared_inputs/constructed_demo_case
+PYTHONPATH=src python3 -m sentinel_workbench.demo_run --prepared-dir data/prepared_inputs/constructed_demo_case --static-inputs data/static_inputs/static_inputs.json --out data/prepared_inputs/constructed_demo_case/analysis
 PYTHONPATH=src python3 -m sentinel_workbench.receipts --case-dir data/cases --static-inputs data/static_inputs/static_inputs.json --out data/receipts
 PYTHONPATH=src python3 -m sentinel_workbench.schema_export schemas/ed_decision_episode.schema.json
 PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts
 PYTHONPATH=src python3 -m sentinel_workbench.workbench --case-dir data/cases --receipt-dir data/receipts --report validation/reports/latest.json --out data/workbench/index.html
+PYTHONPATH=src python3 -m sentinel_workbench.local_app --host 127.0.0.1 --port 8765
 python3 -m pip install -e . --dry-run --no-deps
 ```
 

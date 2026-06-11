@@ -6,3 +6,4 @@ __pycache__/
 .venv/
 dist/
 build/
+.sentinel_local_demo/

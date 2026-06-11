@@ -45,6 +45,7 @@ REQUIRED_RECEIPT_FIELDS: tuple[str, ...] = (
     "node_audit_bundle",
     "ensemble_contribution_bundle",
     "methodology_summary",
+    "workflow_artifacts",
 )
 
 
@@ -78,6 +79,7 @@ class SentinelReceipt(StrictModel):
     node_audit_bundle: NodeAuditBundle
     ensemble_contribution_bundle: EnsembleContributionBundle
     methodology_summary: dict[str, object]
+    workflow_artifacts: dict[str, object] = Field(default_factory=dict)
 
 
 def sha256_file(path: str | Path) -> str:
@@ -146,6 +148,7 @@ def build_receipt(
     *,
     graph_version: str = "deterministic_graph_v0.1",
     node_library_version: str = "ed_node_library_v0.1",
+    workflow_artifacts: dict[str, object] | None = None,
 ) -> SentinelReceipt:
     graph = compute_prudence_graph(episode, RequiredTimepoint.T3_DISPOSITION_DECISION)
     static_bundle = load_static_input_bundle(static_inputs_path)
@@ -182,6 +185,14 @@ def build_receipt(
     }
 
     payload_hash = stable_hash_payload(episode.model_dump(mode="json"))
+    input_hashes = {
+        "episode_sha256": payload_hash,
+        "static_inputs_sha256": sha256_file(static_inputs_path),
+    }
+    if workflow_artifacts:
+        raw_input_sha256 = workflow_artifacts.get("raw_input_sha256")
+        if isinstance(raw_input_sha256, str) and raw_input_sha256:
+            input_hashes["raw_input_sha256"] = raw_input_sha256
     receipt_id = f"receipt_{episode.episode_id}_T3_deterministic"
     return SentinelReceipt(
         receipt_id=receipt_id,
@@ -189,10 +200,7 @@ def build_receipt(
         timepoint_id=RequiredTimepoint.T3_DISPOSITION_DECISION.value,
         run_id=f"run_{episode.episode_id}_deterministic_v0_1",
         mode="replay",
-        input_hashes={
-            "episode_sha256": payload_hash,
-            "static_inputs_sha256": sha256_file(static_inputs_path),
-        },
+        input_hashes=input_hashes,
         prompt_or_dotflow_versions=prompt_versions,
         model_versions={},
         evidence_versions={
@@ -227,6 +235,7 @@ def build_receipt(
                 "they do not decide final posture."
             ),
         },
+        workflow_artifacts=workflow_artifacts or {},
     )
 
 

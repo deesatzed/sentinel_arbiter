@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sentinel Demo Review - constructed_demo_case</title>
+  <style>
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: #1f2933; background: #f5f7f9; }
+    header { background: #17212b; color: #f8fafc; padding: 22px 28px; }
+    main { max-width: 1320px; margin: 0 auto; padding: 18px; }
+    section { background: #ffffff; border: 1px solid #d8dee6; border-radius: 6px; padding: 14px; margin: 14px 0; }
+    .warning { display: inline-block; margin-top: 8px; padding: 8px 10px; background: #f7c948; color: #17212b; font-weight: 700; border-radius: 4px; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #eef2f6; padding: 10px; border-radius: 4px; }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    th, td { border: 1px solid #d8dee6; padding: 7px; text-align: left; vertical-align: top; overflow-wrap: anywhere; font-size: 13px; }
+    th { background: #eef2f6; }
+    a { color: #005ea8; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Run Complete</h1>
+    <p>Sentinel local deterministic governance review for constructed_demo_case.</p>
+    <div class="warning">Planning / governance POC - not for patient care.</div>
+  </header>
+  <main>
+    <section>
+      <h2>Run Summary</h2>
+      <table><tbody>
+        <tr><th>Final posture</th><td>OBTAIN_SPECIFIC_INFORMATION_FIRST</td></tr>
+        <tr><th>Decision weight</th><td>0.53</td></tr>
+        <tr><th>Receipt JSON</th><td>data/prepared_inputs/constructed_demo_case/analysis/receipts/json/receipt_constructed_demo_case_T3_deterministic.json</td></tr>
+        <tr><th>Receipt Markdown</th><td>data/prepared_inputs/constructed_demo_case/analysis/receipts/markdown/receipt_constructed_demo_case_T3_deterministic.md</td></tr>
+        <tr><th>Signature placeholder</th><td>UNSIGNED_DETERMINISTIC_POC</td></tr>
+      </tbody></table>
+    </section>
+    <section>
+      <h2>Redacted Input</h2>
+      <pre>Adult constructed patient reports recurrent symptom concern after an initial evaluation.
+Initial structured information is documented as not decisive in this constructed demo.
+Supportive therapy was offered, but response is not clearly reassessed before the decision-time review.
+At decision time, home support and ability to return for reassessment remain unclear.
+</pre>
+    </section>
+    <section>
+      <h2>Approved Structured Episode</h2>
+      <pre>{
+  &quot;episode_id&quot;: &quot;constructed_demo_case&quot;,
+  &quot;title&quot;: &quot;Constructed demo case&quot;,
+  &quot;domain&quot;: &quot;emergency_department_disposition_replay&quot;,
+  &quot;decision_point_type&quot;: &quot;other_ed_disposition_review&quot;,
+  &quot;case_syntheticity&quot;: &quot;deidentified_style_synthetic&quot;,
+  &quot;governance_question&quot;: &quot;Was the disposition posture warranted at the decision time given only the information then available?&quot;,
+  &quot;forbidden_use_notice&quot;: &quot;Constructed local governance review draft. Not for patient care, orders, diagnosis, treatment, or disposition instructions.&quot;,
+  &quot;description&quot;: &quot;Reviewer-editable draft generated from redacted constructed input. Facts require reviewer approval before analysis.&quot;,
+  &quot;actors&quot;: [
+    {
+      &quot;actor_id&quot;: &quot;reviewer_001&quot;,
+      &quot;actor_type&quot;: &quot;human&quot;,
+      &quot;role&quot;: &quot;constructing reviewer&quot;
+    }
+  ],
+  &quot;timepoints&quot;: [
+    {
+      &quot;timepoint_id&quot;: &quot;T0_triage&quot;,
+      &quot;sequence_index&quot;: 0,
+      &quot;time_label&quot;: &quot;Constructed input intake&quot;,
+      &quot;available_facts&quot;: [
+        {
+          &quot;fact_id&quot;: &quot;constructed_fact_001&quot;,
+          &quot;text&quot;: &quot;Adult constructed patient reports recurrent symptom concern after an initial evaluation.&quot;,
+          &quot;source_type&quot;: &quot;human_authored_note&quot;,
+          &quot;verification_status&quot;: &quot;unverified_human_reported&quot;,
+          &quot;information_bucket&quot;: &quot;known_but_weak&quot;,
+          &quot;decision_criticality&quot;: 0.5,
+          &quot;ai_provenance_depth&quot;: 0,
+          &quot;source_refs&quot;: [
+            &quot;redacted_constructed_input&quot;
+          ]
+        }
+      ],
+      &quot;information_gaps&quot;: [],
+      &quot;pending_information&quot;: [],
+      &quot;offered_therapies&quot;: [],
+      &quot;therapy_response_observations&quot;: [],
+      &quot;proposed_disposition_posture_under_review&quot;: {
+        &quot;posture_under_review_id&quot;: &quot;constructed_posture_0&quot;,
+        &quot;stated_plan_category&quot;: &quot;unclear&quot;,
+        &quot;assertiveness&quot;: &quot;low&quot;,
+        &quot;source_actor&quot;: &quot;reviewer_001&quot;,
+        &quot;rationale_available_at_time&quot;: &quot;Draft intake placeholder pending reviewer approval.&quot;,
+        &quot;known_constraints&quot;: [
+          &quot;constructed draft&quot;,
+          &quot;reviewer approval required&quot;
+        ]
+      },
+      &quot;follow_up_feasibility&quot;: {
+        &quot;follow_up_access&quot;: &quot;unknown&quot;,
+        &quot;home_support&quot;: &quot;unknown&quot;,
+        &quot;return_access&quot;: &quot;unknown&quot;,
+        &quot;barrier_facts&quot;: [],
+        &quot;barrier_source_refs&quot;: [],
+        &quot;barrier_reliability&quot;: &quot;unknown&quot;
+      },
+      &quot;hidden_future_facts&quot;: []
+    },
+    {
+      &quot;timepoint_id&quot;: &quot;T1_initial_workup&quot;,
+      &quot;sequence_index&quot;: 1,
+      &quot;time_label&quot;: &quot;Constructed initial information&quot;,
+      &quot;available_facts&quot;: [
+        {
+          &quot;fact_id&quot;: &quot;constructed_fact_002&quot;,
+          &quot;text&quot;: &quot;Initial structured information is documented as not decisive in this constructed demo.&quot;,
+          &quot;source_type&quot;: &quot;human_authored_note&quot;,
+          &quot;verification_status&quot;: &quot;unverified_human_reported&quot;,
+          &quot;information_bucket&quot;: &quot;known_but_weak&quot;,
+          &quot;decision_criticality&quot;: 0.5,
+          &quot;ai_provenance_depth&quot;: 0,
+          &quot;source_refs&quot;: [
+            &quot;redacted_constructed_input&quot;
+          ]
+        }
+      ],
+      &quot;information_gaps&quot;: [],
+      &quot;pending_information&quot;: [],
+      &quot;offered_therapies&quot;: [],
+      &quot;therapy_response_observations&quot;: [],
+      &quot;proposed_disposition_posture_under_review&quot;: {
+        &quot;posture_under_review_id&quot;: &quot;constructed_posture_1&quot;,
+        &quot;stated_plan_category&quot;: &quot;unclear&quot;,
+        &quot;assertiveness&quot;: &quot;low&quot;,
+        &quot;source_actor&quot;: &quot;reviewer_001&quot;,
+        &quot;rationale_available_at_time&quot;: &quot;Draft intake placeholder pending reviewer approval.&quot;,
+        &quot;known_constraints&quot;: [
+          &quot;constructed draft&quot;,
+          &quot;reviewer approval required&quot;
+        ]
+      },
+      &quot;follow_up_feasibility&quot;: {
+        &quot;follow_up_access&quot;: &quot;unknown&quot;,
+        &quot;home_support&quot;: &quot;unknown&quot;,
+        &quot;return_access&quot;: &quot;unknown&quot;,
+        &quot;barrier_facts&quot;: [],
+        &quot;barrier_source_refs&quot;: [],
+        &quot;barrier_reliability&quot;: &quot;unknown&quot;
+      },
+      &quot;hidden_future_facts&quot;: []
+    },
+    {
+      &quot;timepoint_id&quot;: &quot;T2_post_treatment_reassessment&quot;,
+      &quot;sequence_index&quot;: 2,
+      &quot;time_label&quot;: &quot;Constructed reassessment information&quot;,
+      &quot;available_facts&quot;: [
+        {
+          &quot;fact_id&quot;: &quot;constructed_fact_003&quot;,
+          &quot;text&quot;: &quot;Supportive therapy was offered, but response is not clearly reassessed before the decision-time review.&quot;,
+          &quot;source_type&quot;: &quot;human_authored_note&quot;,
+          &quot;verification_status&quot;: &quot;unverified_human_reported&quot;,
+          &quot;information_bucket&quot;: &quot;known_but_weak&quot;,
+          &quot;decision_criticality&quot;: 0.5,
+          &quot;ai_provenance_depth&quot;: 0,
+          &quot;source_refs&quot;: [
+            &quot;redacted_constructed_input&quot;
+          ]
+        }
+      ],
+      &quot;information_gaps&quot;: [],
+      &quot;pending_information&quot;: [],
+      &quot;offered_therapies&quot;: [],
+      &quot;therapy_response_observations&quot;: [],
+      &quot;proposed_disposition_posture_under_review&quot;: {
+        &quot;posture_under_review_id&quot;: &quot;constructed_posture_2&quot;,
+        &quot;stated_plan_category&quot;: &quot;unclear&quot;,
+        &quot;assertiveness&quot;: &quot;low&quot;,
+        &quot;source_actor&quot;: &quot;reviewer_001&quot;,
+        &quot;rationale_available_at_time&quot;: &quot;Draft intake placeholder pending reviewer approval.&quot;,
+        &quot;known_constraints&quot;: [
+          &quot;constructed draft&quot;,
+          &quot;reviewer approval required&quot;
+        ]
+      },
+      &quot;follow_up_feasibility&quot;: {
+        &quot;follow_up_access&quot;: &quot;unknown&quot;,
+        &quot;home_support&quot;: &quot;unknown&quot;,
+        &quot;return_access&quot;: &quot;unknown&quot;,
+        &quot;barrier_facts&quot;: [],
+        &quot;barrier_source_refs&quot;: [],
+        &quot;barrier_reliability&quot;: &quot;unknown&quot;
+      },
+      &quot;hidden_future_facts&quot;: []
+    },
+    {
+      &quot;timepoint_id&quot;: &quot;T3_disposition_decision&quot;,
+      &quot;sequence_index&quot;: 3,
+      &quot;time_label&quot;: &quot;Constructed decision-time review&quot;,
+      &quot;available_facts&quot;: [
+        {
+          &quot;fact_id&quot;: &quot;constructed_fact_004&quot;,
+          &quot;text&quot;: &quot;At decision time, home support and ability to return for reassessment remain unclear.&quot;,
+          &quot;source_type&quot;: &quot;human_authored_note&quot;,
+          &quot;verification_status&quot;: &quot;unverified_human_reported&quot;,
+          &quot;information_bucket&quot;: &quot;known_but_weak&quot;,
+          &quot;decision_criticality&quot;: 0.5,
+          &quot;ai_provenance_depth&quot;: 0,
+          &quot;source_refs&quot;: [
+            &quot;redacted_constructed_input&quot;
+          ]
+        }
+      ],
+      &quot;information_gaps&quot;: [
+        {
+          &quot;gap_id&quot;: &quot;constructed_review_required&quot;,
+          &quot;description&quot;: &quot;Reviewer must confirm timepoint assignment, missing inputs, therapy response, and follow-up feasibility before analysis.&quot;,
+          &quot;gap_type&quot;: &quot;reviewer_approval_required&quot;,
+          &quot;knowability&quot;: &quot;knowable_now&quot;,
+          &quot;time_to_obtain_hours&quot;: 0.25,
+          &quot;burden&quot;: &quot;low&quot;,
+          &quot;decision_relevance_prior&quot;: 0.8,
+          &quot;candidate_input_mapping&quot;: &quot;review and approve structured episode&quot;
+        }
+      ],
+      &quot;pending_information&quot;: [],
+      &quot;offered_therapies&quot;: [],
+      &quot;therapy_response_observations&quot;: [],
+      &quot;proposed_disposition_posture_under_review&quot;: {
+        &quot;posture_under_review_id&quot;: &quot;constructed_posture_3&quot;,
+        &quot;stated_plan_category&quot;: &quot;unclear&quot;,
+        &quot;assertiveness&quot;: &quot;low&quot;,
+        &quot;source_actor&quot;: &quot;reviewer_001&quot;,
+        &quot;rationale_available_at_time&quot;: &quot;Draft intake placeholder pending reviewer approval.&quot;,
+        &quot;known_constraints&quot;: [
+          &quot;constructed draft&quot;,
+          &quot;reviewer approval required&quot;
+        ]
+      },
+      &quot;follow_up_feasibility&quot;: {
+        &quot;follow_up_access&quot;: &quot;unknown&quot;,
+        &quot;home_support&quot;: &quot;unknown&quot;,
+        &quot;return_access&quot;: &quot;unknown&quot;,
+        &quot;barrier_facts&quot;: [],
+        &quot;barrier_source_refs&quot;: [],
+        &quot;barrier_reliability&quot;: &quot;unknown&quot;
+      },
+      &quot;hidden_future_facts&quot;: []
+    },
+    {
+      &quot;timepoint_id&quot;: &quot;T4_follow_up_or_outcome&quot;,
+      &quot;sequence_index&quot;: 4,
+      &quot;time_label&quot;: &quot;Hidden follow-up placeholder&quot;,
+      &quot;available_facts&quot;: [
+        {
+          &quot;fact_id&quot;: &quot;constructed_hidden_future_placeholder&quot;,
+          &quot;text&quot;: &quot;No outcome fact is supplied in this constructed draft.&quot;,
+          &quot;source_type&quot;: &quot;unknown&quot;,
+          &quot;verification_status&quot;: &quot;unknown_provenance&quot;,
+          &quot;information_bucket&quot;: &quot;unknowable_now&quot;,
+          &quot;decision_criticality&quot;: 0.0,
+          &quot;ai_provenance_depth&quot;: 0,
+          &quot;source_refs&quot;: []
+        }
+      ],
+      &quot;information_gaps&quot;: [],
+      &quot;pending_information&quot;: [],
+      &quot;offered_therapies&quot;: [],
+      &quot;therapy_response_observations&quot;: [],
+      &quot;proposed_disposition_posture_under_review&quot;: {
+        &quot;posture_under_review_id&quot;: &quot;constructed_posture_4&quot;,
+        &quot;stated_plan_category&quot;: &quot;unclear&quot;,
+        &quot;assertiveness&quot;: &quot;low&quot;,
+        &quot;source_actor&quot;: &quot;reviewer_001&quot;,
+        &quot;rationale_available_at_time&quot;: &quot;Draft intake placeholder pending reviewer approval.&quot;,
+        &quot;known_constraints&quot;: [
+          &quot;constructed draft&quot;,
+          &quot;reviewer approval required&quot;
+        ]
+      },
+      &quot;follow_up_feasibility&quot;: {
+        &quot;follow_up_access&quot;: &quot;unknown&quot;,
+        &quot;home_support&quot;: &quot;unknown&quot;,
+        &quot;return_access&quot;: &quot;unknown&quot;,
+        &quot;barrier_facts&quot;: [],
+        &quot;barrier_source_refs&quot;: [],
+        &quot;barrier_reliability&quot;: &quot;unknown&quot;
+      },
+      &quot;hidden_future_facts&quot;: []
+    }
+  ],
+  &quot;expected_outputs&quot;: {
+    &quot;expected_final_posture&quot;: &quot;HUMAN_REVIEW_REQUIRED&quot;,
+    &quot;covered_case_patterns&quot;: [
+      &quot;material_missing_input_before_disposition&quot;
+    ],
+    &quot;expected_material_gaps&quot;: [
+      &quot;constructed_review_required&quot;
+    ],
+    &quot;expected_omission_flags&quot;: [],
+    &quot;expected_commission_flags&quot;: [],
+    &quot;expected_therapy_response_flags&quot;: [],
+    &quot;expected_next_best_information&quot;: [],
+    &quot;expected_future_leakage_blocked&quot;: true
+  }
+}</pre>
+    </section>
+    <section>
+      <h2>Node Audit Methodology</h2>
+      <table><thead><tr><th>Node</th><th>Dependent inputs</th><th>Value</th><th>Range</th><th>Median</th><th>Distribution</th><th>Confidence</th><th>Method</th><th>Evidence refs</th><th>Sensitivity</th></tr></thead><tbody><tr><td>information_sufficiency</td><td>current_time_information_gaps</td><td>0.2</td><td>0.1 to 0.3</td><td>0.2</td><td>bounded_deterministic_interval</td><td>0.7</td><td>deterministic_fixture_field_mapping_v0.1</td><td>gap:constructed_review_required</td><td>Posture sensitivity should be reviewed if the estimate range crosses a graph threshold.</td></tr><tr><td>material_gap_strength</td><td>current_time_information_gaps</td><td>0.8</td><td>0.7 to 0.9</td><td>0.8</td><td>bounded_deterministic_interval</td><td>0.7</td><td>deterministic_fixture_field_mapping_v0.1</td><td>gap:constructed_review_required</td><td>Posture sensitivity should be reviewed if the estimate range crosses a graph threshold.</td></tr><tr><td>harm_clock</td><td>current_time_information_gaps, therapy_response, ai_provenance</td><td>0.64</td><td>0.54 to 0.74</td><td>0.64</td><td>bounded_deterministic_interval</td><td>0.7</td><td>deterministic_fixture_field_mapping_v0.1</td><td>gap:constructed_review_required</td><td>Posture sensitivity should be reviewed if the estimate range crosses a graph threshold.</td></tr><tr><td>information_clock</td><td>current_time_information_gaps</td><td>0.9896</td><td>0.8896 to 1.0</td><td>0.9896</td><td>bounded_deterministic_interval</td><td>0.7</td><td>deterministic_fixture_field_mapping_v0.1</td><td>gap:constructed_review_required</td><td>Posture sensitivity should be reviewed if the estimate range crosses a graph threshold.</td></tr><tr><td>recoverability</td><td>current_time_information_gaps, therapy_response</td><td>0.6</td><td>0.5 to 0.7</td><td>0.6</td><td>bounded_deterministic_interval</td><td>0.7</td><td>deterministic_fixture_field_mapping_v0.1</td><td>gap:constructed_review_required</td><td>Posture sensitivity should be reviewed if the estimate range crosses a graph threshold.</td></tr><tr><td>future_correction_opportunity</td><td>follow_up_feasibility</td><td>0.35</td><td>0.2 to 0.5</td><td>0.35</td><td>bounded_deterministic_interval</td><td>0.3</td><td>deterministic_fixture_field_mapping_v0.1</td><td>follow_up:constructed_demo_case:T3_disposition_decision</td><td>Posture sensitivity should be reviewed if the estimate range crosses a graph threshold.</td></tr><tr><td>decision_weight</td><td>current_time_information_gaps, therapy_response, ai_provenance</td><td>0.53</td><td>0.43 to 0.63</td><td>0.53</td><td>bounded_deterministic_interval</td><td>0.7</td><td>deterministic_fixture_field_mapping_v0.1</td><td>gap:constructed_review_required</td><td>Posture sensitivity should be reviewed if the estimate range crosses a graph threshold.</td></tr><tr><td>ai_provenance_risk</td><td>available_facts</td><td>0.0</td><td>0.0 to 0.15</td><td>0.0</td><td>bounded_deterministic_interval</td><td>0.3</td><td>deterministic_fixture_field_mapping_v0.1</td><td>node:ai_provenance_risk:no_direct_evidence</td><td>Posture sensitivity should be reviewed if the estimate range crosses a graph threshold.</td></tr><tr><td>commission_risk</td><td>proposed_posture, current_time_information_gaps, ai_provenance</td><td>0.0</td><td>0.0 to 0.1</td><td>0.0</td><td>bounded_deterministic_interval</td><td>0.7</td><td>deterministic_fixture_field_mapping_v0.1</td><td>gap:constructed_review_required</td><td>Posture sensitivity should be reviewed if the estimate range crosses a graph threshold.</td></tr><tr><td>omission_risk</td><td>current_time_information_gaps, follow_up_feasibility, ai_provenance</td><td>0.8</td><td>0.7 to 0.9</td><td>0.8</td><td>bounded_deterministic_interval</td><td>0.7</td><td>deterministic_fixture_field_mapping_v0.1</td><td>gap:constructed_review_required</td><td>Posture sensitivity should be reviewed if the estimate range crosses a graph threshold.</td></tr><tr><td>therapy_response_relevance</td><td>offered_therapies, therapy_response_observations</td><td>0.0</td><td>0.0 to 0.15</td><td>0.0</td><td>bounded_deterministic_interval</td><td>0.3</td><td>deterministic_fixture_field_mapping_v0.1</td><td>node:therapy_response_relevance:no_direct_evidence</td><td>Posture sensitivity should be reviewed if the estimate range crosses a graph threshold.</td></tr><tr><td>next_best_information_rank</td><td>current_time_information_gaps</td><td>1</td><td>0.0 to 2.0</td><td>1.0</td><td>deterministic_count_with_neighbor_range</td><td>0.7</td><td>deterministic_fixture_field_mapping_v0.1</td><td>gap:constructed_review_required</td><td>Posture sensitivity depends on whether additional gaps cross the materiality threshold.</td></tr><tr><td>preventability_opportunity_score</td><td>material_gap_strength, decision_weight, information_clock, burden_modifier</td><td>0.3776</td><td>0.2776 to 0.4776</td><td>0.3776</td><td>bounded_deterministic_interval</td><td>0.7</td><td>deterministic_fixture_field_mapping_v0.1</td><td>gap:constructed_review_required</td><td>Posture sensitivity should be reviewed if the estimate range crosses a graph threshold.</td></tr></tbody></table>
+    </section>
+    <section>
+      <h2>Ensemble Contributions</h2>
+      <table><thead><tr><th>Node</th><th>Contributor</th><th>Proposed value</th><th>Range</th><th>Disposition</th><th>Reason</th></tr></thead><tbody><tr><td>information_sufficiency</td><td>prudent_provider</td><td>0.5</td><td>0.4 to 0.6</td><td>accepted</td><td>Accepted static role contribution at confidence 0.7.</td></tr><tr><td>information_clock</td><td>duty_to_inquire</td><td>0.75</td><td>0.65 to 0.85</td><td>accepted</td><td>Accepted static role contribution at confidence 0.75.</td></tr><tr><td>harm_clock</td><td>risk_horizon</td><td>0.6</td><td>0.4 to 0.8</td><td>accepted</td><td>Accepted static role contribution at confidence 0.65.</td></tr><tr><td>information_clock</td><td>risk_horizon</td><td>0.6</td><td>0.4 to 0.8</td><td>accepted</td><td>Accepted static role contribution at confidence 0.65.</td></tr><tr><td>recoverability</td><td>risk_horizon</td><td>0.5</td><td>0.3 to 0.7</td><td>accepted</td><td>Accepted static role contribution at confidence 0.65.</td></tr><tr><td>future_correction_opportunity</td><td>risk_horizon</td><td>0.4</td><td>0.2 to 0.6</td><td>accepted</td><td>Accepted static role contribution at confidence 0.65.</td></tr><tr><td>decision_weight</td><td>risk_horizon</td><td>0.6</td><td>0.4 to 0.8</td><td>accepted</td><td>Accepted static role contribution at confidence 0.65.</td></tr><tr><td>future_correction_opportunity</td><td>defense</td><td>0.4</td><td>0.2 to 0.6</td><td>downgraded</td><td>Downgraded static role contribution because confidence 0.6 is below acceptance threshold.</td></tr><tr><td>material_gap_strength</td><td>evidenceflow:guideline_dependency</td><td>0.4</td><td>0.2 to 0.6</td><td>accepted</td><td>Accepted EvidenceFlow contribution at confidence 0.65.</td></tr><tr><td>next_best_information_rank</td><td>evidenceflow:next_best_input</td><td>1</td><td>0.0 to 2.0</td><td>accepted</td><td>EvidenceFlow candidate normalized with expected posture shift 0.6.</td></tr><tr><td>preventability_opportunity_score</td><td>evidenceflow:next_best_input</td><td>0.5</td><td>0.35 to 0.65</td><td>accepted</td><td>EvidenceFlow candidate normalized with preventability leverage 0.5.</td></tr><tr><td>harm_clock</td><td>evidenceflow:high_risk_alternative</td><td>0.5</td><td>0.3 to 0.7</td><td>downgraded</td><td>Downgraded EvidenceFlow contribution because confidence 0.6 is below acceptance threshold.</td></tr><tr><td>ai_provenance_risk</td><td>evidenceflow:prudent_ai_conduct</td><td>0.5</td><td>0.4 to 0.6</td><td>accepted</td><td>Accepted EvidenceFlow contribution at confidence 0.75.</td></tr></tbody></table>
+      <h3>Rejected ensemble inputs</h3>
+      <table><thead><tr><th>Contributor</th><th>Source target</th><th>Disposition</th><th>Reason</th></tr></thead><tbody><tr><td>prudent_layperson</td><td>prudent_layperson_threshold</td><td>rejected</td><td>Target is not a deterministic graph node for Phase E normalization.</td></tr><tr><td>prudent_layperson</td><td>safety_net_need</td><td>rejected</td><td>Target is not a deterministic graph node for Phase E normalization.</td></tr><tr><td>prudent_provider</td><td>prudent_provider_threshold</td><td>rejected</td><td>Target is not a deterministic graph node for Phase E normalization.</td></tr><tr><td>prudent_provider</td><td>over_action_risk</td><td>rejected</td><td>Target is not a deterministic graph node for Phase E normalization.</td></tr><tr><td>prudent_provider</td><td>under_action_risk</td><td>rejected</td><td>Target is not a deterministic graph node for Phase E normalization.</td></tr><tr><td>prudent_healthcare_ai</td><td>prudent_ai_threshold</td><td>rejected</td><td>Target is not a deterministic graph node for Phase E normalization.</td></tr><tr><td>prudent_healthcare_ai</td><td>uncertainty_disclosure_need</td><td>rejected</td><td>Target is not a deterministic graph node for Phase E normalization.</td></tr><tr><td>prudent_healthcare_ai</td><td>primary_source_confirmation_need</td><td>rejected</td><td>Target is not a deterministic graph node for Phase E normalization.</td></tr><tr><td>prudent_healthcare_ai</td><td>ai_provenance_warning</td><td>rejected</td><td>Target is not a deterministic graph node for Phase E normalization.</td></tr><tr><td>duty_to_inquire</td><td>material_gap_present</td><td>rejected</td><td>Target is not a deterministic graph node for Phase E normalization.</td></tr><tr><td>duty_to_inquire</td><td>gap_decision_relevance</td><td>rejected</td><td>Target is not a deterministic graph node for Phase E normalization.</td></tr><tr><td>red_team</td><td>evidence_conflict</td><td>rejected</td><td>Target is not a deterministic graph node for Phase E normalization.</td></tr><tr><td>red_team</td><td>escalation_need</td><td>rejected</td><td>Target is not a deterministic graph node for Phase E normalization.</td></tr><tr><td>red_team</td><td>under_action_risk</td><td>rejected</td><td>Target is not a deterministic graph node for Phase E normalization.</td></tr><tr><td>defense</td><td>over_action_risk</td><td>rejected</td><td>Target is not a deterministic graph node for Phase E normalization.</td></tr><tr><td>defense</td><td>safety_net_need</td><td>rejected</td><td>Target is not a deterministic graph node for Phase E normalization.</td></tr></tbody></table>
+    </section>
+  </main>
+</body>
+</html>
