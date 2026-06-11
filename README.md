@@ -104,6 +104,7 @@ sentinel_codex_handoff/
     17_model_and_framework_strategy.md
     18_deterministic_poc_status.md
     19_repository_publishing.md
+    21_goal_completion_audit.md
   roadmaps/
     01_short_term_poc_roadmap.md
     02_long_term_roadmap_after_poc.md
@@ -320,3 +321,5 @@ The generated reviewer workbench is a static offline file at `data/workbench/ind
 Implemented/deferred boundaries and requirements before real clinical, prospective, or production use are summarized in `docs/18_deterministic_poc_status.md`.
 
 Repository publishing notes are in `docs/19_repository_publishing.md`.
+
+The requirement-by-requirement transparent-demo completion audit is saved in `docs/21_goal_completion_audit.md`.

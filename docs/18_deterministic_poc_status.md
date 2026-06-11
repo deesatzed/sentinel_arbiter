@@ -4,6 +4,8 @@ Date: 2026-06-11
 
 This document separates the implemented local deterministic Sentinel POC from deferred work and from requirements that would be necessary before any real clinical, prospective, or production use.
 
+The `GOAL.md` transparent-demo completion audit is saved in `docs/21_goal_completion_audit.md`.
+
 ## Implemented Deterministic POC
 
 - Local Python project under `sentinel_codex_handoff` with installable package metadata in `pyproject.toml`.

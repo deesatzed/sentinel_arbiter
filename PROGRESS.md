@@ -626,3 +626,30 @@
 
 - GOAL.md proof item 14 is now much closer to machine-verifiable: the validation report covers schema validity, future leakage, redaction gating, expected posture agreement, omission detection, commission warning detection, therapy-response integration, next-best-information usefulness, node-audit completeness, receipt completeness, workbench completeness, and forbidden phrase violations.
 - The remaining major step is a requirement-by-requirement end-to-end completion audit against `GOAL.md` before considering the active goal complete.
+
+## 2026-06-11 - GOAL.md Completion Audit
+
+### Completed So Far
+
+- Added `docs/21_goal_completion_audit.md`.
+- Mapped all 16 `GOAL.md` Full Demo Proof Of Done items to current repo evidence.
+- Linked the audit from `README.md` and `docs/18_deterministic_poc_status.md`.
+- Regenerated constructed input artifacts, approval artifacts, constructed-demo analysis artifacts, synthetic receipts, schemas, evaluation report, and static workbench in dependency order.
+
+### Verification Evidence
+
+- `python3 -m pytest -q` passed: `57 passed`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.validate data/cases` passed: `validated=7 errors=0`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.static_inputs --static-inputs data/static_inputs/static_inputs.json --case-dir data/cases` passed: `static_inputs cases=7 errors=0`.
+- Approval validation passed: `approved_episode=constructed_demo_case status=approved`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.demo_run --prepared-dir data/prepared_inputs/constructed_demo_case --static-inputs data/static_inputs/static_inputs.json --out data/prepared_inputs/constructed_demo_case/analysis` passed.
+- JSON syntax checks with `jq empty` passed for schemas, cases, static inputs, synthetic receipts, prepared-input JSON, constructed-demo analysis receipts, and validation reports.
+- `git diff --check` passed.
+- `python3 -m pip install -e . --dry-run --no-deps` succeeded and would install `sentinel-workbench-0.1.0`; the environment still reports the pre-existing invalid `~ecret-sweep` distribution warning.
+- Forbidden phrase scan matched only explicit safety-rule lists, scanner tests, and invalid rejection fixtures.
+- PHI-like string scan matched only deliberate synthetic redaction check strings and redaction labels.
+
+### Current State
+
+- The transparent local demo milestone is supported by a saved requirement-by-requirement audit.
+- Future work remains possible, but the current milestone evidence supports marking the active `GOAL.md` objective complete after commit/push and clean status verification.
