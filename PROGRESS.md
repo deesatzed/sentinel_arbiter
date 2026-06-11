@@ -597,4 +597,32 @@
 
 - A reviewer can now run a local app, paste constructed/deidentified-style text, inspect redacted text and editable structured JSON, approve the structured episode, run deterministic analysis, and review an HTML output plus receipts.
 - The deterministic CLI path remains the verification baseline.
-- Remaining transparency work should focus on evaluation-report coverage for redaction gating, workbench completeness, local app completeness, and end-to-end proof-of-done auditing.
+- Superseded by the validation-report coverage section below: redaction gating, workbench completeness, and local app completeness are now represented in `validation/reports/latest.json`.
+
+## 2026-06-11 - Validation Report Proof Coverage Expanded
+
+### Completed So Far
+
+- Extended `src/sentinel_workbench/evaluate.py` with concrete proof payloads for:
+  - `redaction_gating`,
+  - `workbench_completeness`,
+  - `local_app_completeness`.
+- Added tests requiring those payloads to verify prepared-demo redaction status, input hashing, safe redaction, residual-risk block/quarantine behavior, no raw input copy, redacted input visibility, structured episode visibility, node methodology, ensemble contribution review, receipt links, validation status, app endpoints, console scripts, and review HTML safety.
+- Regenerated `validation/reports/latest.json` and `data/workbench/index.html`.
+- Updated README, repo map, and status documentation to point to the new report keys.
+
+### Verification Evidence
+
+- Initial focused test failed with `KeyError: 'redaction_gating'`, confirming the report lacked the required proof field before implementation.
+- `python3 -m pytest tests/test_phase3_evaluation_report.py -q` passed: `3 passed`.
+- `python3 -m pytest -q` passed: `57 passed`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.validate data/cases` passed: `validated=7 errors=0`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.static_inputs --static-inputs data/static_inputs/static_inputs.json --case-dir data/cases` passed: `static_inputs cases=7 errors=0`.
+- JSON syntax checks with `jq empty` passed for schemas, cases, static inputs, receipts, prepared inputs, constructed-demo analysis receipts, and validation reports.
+- `git diff --check` passed.
+- `validation/reports/latest.json` reports `redaction_gating.complete=true`, `workbench_completeness.complete=true`, and `local_app_completeness.complete=true`.
+
+### Current State
+
+- GOAL.md proof item 14 is now much closer to machine-verifiable: the validation report covers schema validity, future leakage, redaction gating, expected posture agreement, omission detection, commission warning detection, therapy-response integration, next-best-information usefulness, node-audit completeness, receipt completeness, workbench completeness, and forbidden phrase violations.
+- The remaining major step is a requirement-by-requirement end-to-end completion audit against `GOAL.md` before considering the active goal complete.

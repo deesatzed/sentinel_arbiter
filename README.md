@@ -177,7 +177,7 @@ sentinel_codex_handoff/
 
 ## Recommended first Codex task
 
-Ask Codex to read `GOAL.md`, this README, `DECISIONS.md`, `PROGRESS.md`, `REPO_MAP.md`, `RISK_NOTES.md`, `docs/20_emex_admsve_reuse_evaluation.md`, and the JSON schemas. Then continue from validation-report coverage for redaction gating, workbench completeness, and local app completeness, using the current CLI and local-app artifacts as the safety baseline.
+Ask Codex to read `GOAL.md`, this README, `DECISIONS.md`, `PROGRESS.md`, `REPO_MAP.md`, `RISK_NOTES.md`, `docs/20_emex_admsve_reuse_evaluation.md`, and the JSON schemas. Then continue from an end-to-end proof-of-done audit against `GOAL.md`, using the current CLI, local app, receipts, workbench, and validation-report artifacts as the safety baseline.
 
 ## Constructed input preparation
 
@@ -255,6 +255,19 @@ http://127.0.0.1:8765
 ```
 
 The local app lets a reviewer paste constructed/deidentified-style text, run deterministic redaction, inspect the redacted text and editable draft episode JSON, approve the structured episode, run deterministic analysis, and review the generated HTML/receipt output. The default app workspace is `.sentinel_local_demo/`, which is gitignored.
+
+## Validation report coverage
+
+`validation/reports/latest.json` now includes explicit proof payloads for:
+
+- `redaction_gating`
+- `node_audit_completeness`
+- `ensemble_contribution_completeness`
+- `receipt_completeness`
+- `workbench_completeness`
+- `local_app_completeness`
+
+These are in addition to schema validity, future leakage, expected posture agreement, lane coverage, fixture category checks, static input validation, and forbidden phrase checks.
 
 ## Node audit methodology
 

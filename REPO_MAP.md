@@ -167,8 +167,9 @@ Current tests cover:
 - static workbench exposes node audit methodology and ensemble contribution panels.
 - approved constructed-demo analysis writes receipt JSON, receipt Markdown, and review HTML.
 - local HTTP app prepare/approve/run path is covered by an ephemeral-port integration test.
+- validation report payloads explicitly cover redaction gating, workbench completeness, and local app completeness.
 
-Receipt completeness and explicit automated validation categories are tracked in `validation/reports/latest.json`. The generated reviewer workbench is `data/workbench/index.html`.
+Receipt completeness, redaction gating, workbench completeness, local app completeness, and explicit automated validation categories are tracked in `validation/reports/latest.json`. The generated reviewer workbench is `data/workbench/index.html`.
 
 ## Likely Files For Current Task
 

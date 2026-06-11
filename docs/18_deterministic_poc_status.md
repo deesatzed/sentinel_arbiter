@@ -22,6 +22,7 @@ This document separates the implemented local deterministic Sentinel POC from de
 - Normalized ensemble contributions with accepted/downgraded dispositions and rejected unsupported targets.
 - Reconstructable JSON receipts and human-readable Markdown receipts in `data/receipts/`, including node audit and ensemble contribution methodology.
 - Evaluation report in `validation/reports/latest.json`.
+- Validation report proof payloads for redaction gating, node audit completeness, ensemble contribution completeness, receipt completeness, workbench completeness, local app completeness, fixture categories, future leakage, schema validity, and forbidden phrase checks.
 - Static reviewer workbench at `data/workbench/index.html`, including node audit methodology and ensemble contribution panels.
 - Constructed-demo review output at `data/prepared_inputs/constructed_demo_case/analysis/review.html`.
 - Safety scanners for forbidden disposition phrasing, named institution examples, credential-like strings, and basic PHI-like patterns.

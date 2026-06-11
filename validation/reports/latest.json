@@ -42,6 +42,18 @@
     "evidenceflow_template_count": 4,
     "errors": []
   },
+  "redaction_gating": {
+    "complete": true,
+    "prepared_demo_status": "prepared",
+    "prepared_demo_report_exists": true,
+    "prepared_demo_status_is_prepared": true,
+    "prepared_demo_has_input_hash": true,
+    "prepared_demo_no_residual_findings": true,
+    "safe_redaction_replaces_phi_like_spans": true,
+    "unsafe_residual_blocks": true,
+    "unsafe_residual_quarantines": true,
+    "raw_input_copied_to_review_artifacts": false
+  },
   "node_audit_completeness": {
     "complete": true,
     "case_count": 7,
@@ -64,6 +76,30 @@
     "markdown_receipts": 7,
     "missing_json": [],
     "missing_markdown": []
+  },
+  "workbench_completeness": {
+    "complete": true,
+    "missing": [],
+    "workbench_exists": true,
+    "redacted_input": true,
+    "structured_episode": true,
+    "timeline_replay": true,
+    "node_audit_methodology": true,
+    "ensemble_contribution_panel": true,
+    "graph_posture": true,
+    "receipt_links": true,
+    "validation_status": true,
+    "poc_warning": true
+  },
+  "local_app_completeness": {
+    "complete": true,
+    "stdlib_http_server": true,
+    "prepare_endpoint": true,
+    "approve_and_run_endpoint": true,
+    "console_script_registered": true,
+    "review_html_exists": true,
+    "review_html_has_run_summary": true,
+    "review_html_forbidden_phrase_violations": 0
   },
   "case_results": [
     {

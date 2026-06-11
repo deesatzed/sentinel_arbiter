@@ -53,3 +53,43 @@ def test_evaluation_report_explicitly_scores_goal_required_validation_categories
         assert automated[category]["expected"] > 0
         assert automated[category]["missing"] == []
         assert automated[category]["matched"] == automated[category]["expected"]
+
+
+def test_evaluation_report_covers_redaction_workbench_and_local_app_completeness(tmp_path):
+    report_path = tmp_path / "latest.json"
+    receipt_dir = tmp_path / "receipts"
+    generate_receipts_for_case_library(FIXTURE_DIR, Path("data/static_inputs/static_inputs.json"), receipt_dir)
+
+    generate_evaluation_report(FIXTURE_DIR, report_path, receipt_dir=receipt_dir)
+    payload = json.loads(report_path.read_text(encoding="utf-8"))
+
+    redaction = payload["redaction_gating"]
+    assert redaction["complete"] is True
+    assert redaction["prepared_demo_status"] == "prepared"
+    assert redaction["prepared_demo_has_input_hash"] is True
+    assert redaction["safe_redaction_replaces_phi_like_spans"] is True
+    assert redaction["unsafe_residual_blocks"] is True
+    assert redaction["unsafe_residual_quarantines"] is True
+    assert redaction["raw_input_copied_to_review_artifacts"] is False
+
+    workbench = payload["workbench_completeness"]
+    assert workbench["complete"] is True
+    for required in [
+        "redacted_input",
+        "structured_episode",
+        "node_audit_methodology",
+        "ensemble_contribution_panel",
+        "receipt_links",
+        "validation_status",
+        "poc_warning",
+    ]:
+        assert required not in workbench["missing"]
+
+    local_app = payload["local_app_completeness"]
+    assert local_app["complete"] is True
+    assert local_app["stdlib_http_server"] is True
+    assert local_app["prepare_endpoint"] is True
+    assert local_app["approve_and_run_endpoint"] is True
+    assert local_app["console_script_registered"] is True
+    assert local_app["review_html_exists"] is True
+    assert local_app["review_html_forbidden_phrase_violations"] == 0
