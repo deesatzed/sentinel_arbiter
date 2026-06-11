@@ -75,7 +75,12 @@
     "json_receipts": 7,
     "markdown_receipts": 7,
     "missing_json": [],
-    "missing_markdown": []
+    "missing_markdown": [],
+    "clinician_summary_complete": true,
+    "deeper_dive_artifacts_complete": true,
+    "selected_review_question_field_supported": true,
+    "markdown_clinician_summary_complete": true,
+    "markdown_deeper_dive_complete": true
   },
   "workbench_completeness": {
     "complete": true,

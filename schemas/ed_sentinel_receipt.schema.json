@@ -532,6 +532,22 @@
       "title": "Signature Placeholder",
       "type": "string"
     },
+    "selected_review_question": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Selected Review Question"
+    },
+    "clinician_summary": {
+      "title": "Clinician Summary",
+      "type": "string"
+    },
     "human_summary_sections": {
       "additionalProperties": {
         "items": {
@@ -552,6 +568,13 @@
       "additionalProperties": true,
       "title": "Methodology Summary",
       "type": "object"
+    },
+    "deeper_dive_artifacts": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Deeper Dive Artifacts",
+      "type": "array"
     },
     "workflow_artifacts": {
       "additionalProperties": true,
@@ -583,10 +606,12 @@
     "final_posture",
     "decision_weight",
     "signature_placeholder",
+    "clinician_summary",
     "human_summary_sections",
     "node_audit_bundle",
     "ensemble_contribution_bundle",
-    "methodology_summary"
+    "methodology_summary",
+    "deeper_dive_artifacts"
   ],
   "title": "SentinelReceipt",
   "type": "object"

@@ -239,7 +239,7 @@ The command validates approval artifacts, runs deterministic Sentinel analysis, 
 - `analysis/receipts/markdown/receipt_constructed_demo_case_T3_deterministic.md`
 - `analysis/review.html`
 
-The constructed-demo receipt includes redaction and approval trace hashes without copying raw input text into the review artifacts.
+The constructed-demo receipt includes redaction and approval trace hashes without copying raw input text into the review artifacts. Receipts also persist the selected review question, clinician-facing governance summary, and a deeper-dive artifact index covering human summary sections, node audit, ensemble contribution, methodology summary, and workflow artifacts.
 
 ## Local demo app
 
@@ -293,7 +293,7 @@ The report is written to `artifacts/model_comparison/challenging_case/comparison
 - `workbench_completeness`
 - `local_app_completeness`
 
-These are in addition to schema validity, future leakage, expected posture agreement, lane coverage, fixture category checks, static input validation, and forbidden phrase checks.
+`receipt_completeness` now checks generated JSON and Markdown receipts for clinician summaries, selected-review-question support, and deeper-dive artifact sections. These are in addition to schema validity, future leakage, expected posture agreement, lane coverage, fixture category checks, static input validation, and forbidden phrase checks.
 
 ## Node audit methodology
 

@@ -93,6 +93,8 @@
   "final_posture": "PROCEED_WITH_UNCERTAINTY_DISCLOSURE",
   "decision_weight": 0.5125,
   "signature_placeholder": "UNSIGNED_DETERMINISTIC_POC",
+  "selected_review_question": null,
+  "clinician_summary": "For Unspecified governance review question, Sentinel found information sufficiency 0.25 with material gap strength 0.75 and decision weight 0.5125. The main driver is: Specific hospital-based added value remains unresolved. The most useful next review input is: identify the information, monitoring, or therapy target This output is governance review support, not a clinical action recommendation.",
   "human_summary_sections": {
     "what_was_known": [
       "At decision time, the hospital-based path still lacks a documented specific added-value target."
@@ -1249,5 +1251,12 @@
     "final_posture_source": "deterministic_graph_node_values",
     "trust_boundary": "Static role and EvidenceFlow inputs are normalized as bounded contributions; they do not decide final posture."
   },
+  "deeper_dive_artifacts": [
+    "human_summary_sections",
+    "node_audit_bundle",
+    "ensemble_contribution_bundle",
+    "methodology_summary",
+    "workflow_artifacts"
+  ],
   "workflow_artifacts": {}
 }

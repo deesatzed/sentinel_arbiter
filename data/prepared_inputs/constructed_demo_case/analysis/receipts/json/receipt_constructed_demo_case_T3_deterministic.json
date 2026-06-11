@@ -92,6 +92,8 @@
   "final_posture": "OBTAIN_SPECIFIC_INFORMATION_FIRST",
   "decision_weight": 0.53,
   "signature_placeholder": "UNSIGNED_DETERMINISTIC_POC",
+  "selected_review_question": "disposition_information_sufficiency",
+  "clinician_summary": "For Disposition information sufficiency, Sentinel found information sufficiency 0.2 with material gap strength 0.8 and decision weight 0.53. The main driver is: Reviewer must confirm timepoint assignment, missing inputs, therapy response, and follow-up feasibility before analysis. The most useful next review input is: review and approve structured episode This output is governance review support, not a clinical action recommendation.",
   "human_summary_sections": {
     "what_was_known": [
       "At decision time, home support and ability to return for reassessment remain unclear."
@@ -1248,6 +1250,13 @@
     "final_posture_source": "deterministic_graph_node_values",
     "trust_boundary": "Static role and EvidenceFlow inputs are normalized as bounded contributions; they do not decide final posture."
   },
+  "deeper_dive_artifacts": [
+    "human_summary_sections",
+    "node_audit_bundle",
+    "ensemble_contribution_bundle",
+    "methodology_summary",
+    "workflow_artifacts"
+  ],
   "workflow_artifacts": {
     "prepared_dir": "data/prepared_inputs/constructed_demo_case",
     "redacted_input_sha256": "bc433cd0e9898905e8147b60c14536436643767f39d635ef38d37e54fe8d3427",

@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .approval import load_approved_episode, validate_approved_input
-from .receipts import SentinelReceipt, build_receipt, sha256_file, write_receipt
+from .receipts import SentinelReceipt, build_receipt, review_question_display, sha256_file, write_receipt
 from .safety import scan_forbidden_content
 
 
@@ -113,8 +113,8 @@ def render_demo_review_html(
             f"<td>{_esc(rejected['disposition_reason'])}</td>"
             "</tr>"
         )
-    clinician_summary = build_clinician_summary(receipt, review_question)
-    review_question_label = review_question_display(review_question)
+    clinician_summary = receipt.clinician_summary
+    review_question_label = review_question_display(receipt.selected_review_question)
 
     return f"""<!doctype html>
 <html lang="en">
@@ -185,28 +185,6 @@ def render_demo_review_html(
 </body>
 </html>
 """
-
-
-def build_clinician_summary(receipt: SentinelReceipt, review_question: str | None = None) -> str:
-    missing = receipt.human_summary_sections.get("what_was_missing", [])
-    would_change = receipt.human_summary_sections.get("what_would_have_changed_the_discussion", [])
-    question_text = review_question_display(review_question).lower()
-    main_gap = missing[0] if missing else "The current-time record has unresolved information gaps."
-    next_input = would_change[0] if would_change else "No next-best information item was ranked above the materiality threshold."
-    return (
-        f"For {question_text}, Sentinel found information sufficiency {receipt.node_values.get('information_sufficiency')} "
-        f"with material gap strength {receipt.node_values.get('material_gap_strength')} and decision weight "
-        f"{receipt.decision_weight}. The main driver is: {main_gap} "
-        f"The most useful next review input is: {next_input}"
-    )
-
-
-def review_question_display(review_question: str | None) -> str:
-    labels = {
-        "disposition_information_sufficiency": "Disposition information sufficiency",
-        "ai_response_use_sufficiency": "AI response use sufficiency",
-    }
-    return labels.get(review_question or "", "Unspecified governance review question")
 
 
 def _workflow_artifacts(

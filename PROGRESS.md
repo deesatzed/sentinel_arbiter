@@ -774,3 +774,30 @@
 
 - Phase H now supports both paste input and local text-file upload for the app demo.
 - Uploaded file content still passes through the same deterministic redaction, intake, node audit, ensemble, reviewer checkpoint, processing, summary, and deeper-dive path.
+
+## 2026-06-11 - Phase J Receipt Summary And Deeper-Dive Proof Added
+
+### Completed So Far
+
+- Added top-level receipt fields for `selected_review_question`, `clinician_summary`, and `deeper_dive_artifacts`.
+- Added shared receipt wording for review-question labels and clinician-facing governance summaries.
+- Updated Markdown receipts to render `Clinician Summary`, `Selected Review Question`, and `Deeper Dive Artifacts`.
+- Updated the constructed-demo HTML renderer to use the receipt's saved clinician summary instead of rebuilding summary text separately.
+- Strengthened `receipt_completeness` in `validation/reports/latest.json` to inspect generated JSON and Markdown receipts for summary, selected-review-question support, and deeper-dive artifact sections.
+- Regenerated `schemas/ed_sentinel_receipt.schema.json`, all case-library receipts, constructed-demo receipt/HTML, `validation/reports/latest.json`, and `data/workbench/index.html`.
+
+### Verification Evidence
+
+- `python3 -m pytest tests/test_phase6_receipts.py -q` passed: `5 passed`.
+- `python3 -m pytest tests/test_phase3_evaluation_report.py::test_evaluation_report_covers_graph_and_validation_metrics -q` passed: `1 passed`.
+- `python3 -m pytest tests/test_phase_g_local_demo_app.py -q` passed: `6 passed`.
+- `python3 -m pytest -q` passed: `68 passed`.
+- `git diff --check` passed.
+- JSON syntax checks passed for schemas, regenerated JSON receipts, constructed-demo receipt JSON, and `validation/reports/latest.json`.
+- Forbidden disposition-phrase scan found only the explicit `GOAL.md` safety list, `src/sentinel_workbench/safety.py`, and the scanner fixture in `tests/test_phase1_models.py`.
+- `validation/reports/latest.json` reports `receipt_completeness.complete=true`, `clinician_summary_complete=true`, `deeper_dive_artifacts_complete=true`, `selected_review_question_field_supported=true`, `markdown_clinician_summary_complete=true`, and `markdown_deeper_dive_complete=true`.
+
+### Current State
+
+- Receipt artifacts now preserve the summary-first and deeper-dive trust layer instead of leaving those requirements only in the local HTML view.
+- The staged demo still uses deterministic graph authority; LLM/OpenRouter outputs remain comparison artifacts only.

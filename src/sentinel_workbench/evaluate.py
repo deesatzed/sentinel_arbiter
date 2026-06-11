@@ -41,13 +41,61 @@ def receipt_completeness_payload(episodes: list, receipt_dir: str | Path) -> dic
     expected_ids = {f"receipt_{episode.episode_id}_T3_deterministic" for episode in episodes}
     json_ids = {path.stem for path in json_dir.glob("*.json")} if json_dir.exists() else set()
     markdown_ids = {path.stem for path in markdown_dir.glob("*.md")} if markdown_dir.exists() else set()
+    expected_json_paths = [json_dir / f"{receipt_id}.json" for receipt_id in sorted(expected_ids)]
+    expected_markdown_paths = [markdown_dir / f"{receipt_id}.md" for receipt_id in sorted(expected_ids)]
+    receipt_payloads = [
+        json.loads(path.read_text(encoding="utf-8"))
+        for path in expected_json_paths
+        if path.exists()
+    ]
+    markdown_texts = [
+        path.read_text(encoding="utf-8")
+        for path in expected_markdown_paths
+        if path.exists()
+    ]
+    clinician_summary_complete = len(receipt_payloads) == len(expected_ids) and all(
+        isinstance(payload.get("clinician_summary"), str)
+        and payload["clinician_summary"].strip()
+        and "governance review support" in payload["clinician_summary"].lower()
+        for payload in receipt_payloads
+    )
+    deeper_dive_artifacts_complete = len(receipt_payloads) == len(expected_ids) and all(
+        isinstance(payload.get("deeper_dive_artifacts"), list)
+        and {"node_audit_bundle", "ensemble_contribution_bundle", "workflow_artifacts"}.issubset(
+            set(payload["deeper_dive_artifacts"])
+        )
+        for payload in receipt_payloads
+    )
+    selected_review_question_field_supported = len(receipt_payloads) == len(expected_ids) and all(
+        "selected_review_question" in payload for payload in receipt_payloads
+    )
+    markdown_clinician_summary_complete = len(markdown_texts) == len(expected_ids) and all(
+        "## Clinician Summary" in text for text in markdown_texts
+    )
+    markdown_deeper_dive_complete = len(markdown_texts) == len(expected_ids) and all(
+        "## Deeper Dive Artifacts" in text for text in markdown_texts
+    )
+    complete = (
+        expected_ids.issubset(json_ids)
+        and expected_ids.issubset(markdown_ids)
+        and clinician_summary_complete
+        and deeper_dive_artifacts_complete
+        and selected_review_question_field_supported
+        and markdown_clinician_summary_complete
+        and markdown_deeper_dive_complete
+    )
     return {
-        "complete": expected_ids.issubset(json_ids) and expected_ids.issubset(markdown_ids),
+        "complete": complete,
         "expected_receipts": len(expected_ids),
         "json_receipts": len(expected_ids & json_ids),
         "markdown_receipts": len(expected_ids & markdown_ids),
         "missing_json": sorted(expected_ids - json_ids),
         "missing_markdown": sorted(expected_ids - markdown_ids),
+        "clinician_summary_complete": clinician_summary_complete,
+        "deeper_dive_artifacts_complete": deeper_dive_artifacts_complete,
+        "selected_review_question_field_supported": selected_review_question_field_supported,
+        "markdown_clinician_summary_complete": markdown_clinician_summary_complete,
+        "markdown_deeper_dive_complete": markdown_deeper_dive_complete,
     }
 
 

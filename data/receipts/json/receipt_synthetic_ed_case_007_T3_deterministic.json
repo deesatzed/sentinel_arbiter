@@ -87,6 +87,8 @@
   "final_posture": "PROCEED_WITH_UNCERTAINTY_DISCLOSURE",
   "decision_weight": 0.25,
   "signature_placeholder": "UNSIGNED_DETERMINISTIC_POC",
+  "selected_review_question": null,
+  "clinician_summary": "For Unspecified governance review question, Sentinel found information sufficiency 0.9 with material gap strength 0.1 and decision weight 0.25. The main driver is: Low-value background detail remains missing but is not material to the posture under review. The most useful next review input is: No next-best-information item was ranked above the materiality threshold. This output is governance review support, not a clinical action recommendation.",
   "human_summary_sections": {
     "what_was_known": [
       "At decision time, the only known missing input is low expected relevance and higher burden."
@@ -1241,5 +1243,12 @@
     "final_posture_source": "deterministic_graph_node_values",
     "trust_boundary": "Static role and EvidenceFlow inputs are normalized as bounded contributions; they do not decide final posture."
   },
+  "deeper_dive_artifacts": [
+    "human_summary_sections",
+    "node_audit_bundle",
+    "ensemble_contribution_bundle",
+    "methodology_summary",
+    "workflow_artifacts"
+  ],
   "workflow_artifacts": {}
 }

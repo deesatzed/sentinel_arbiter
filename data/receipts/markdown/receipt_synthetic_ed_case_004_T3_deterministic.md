@@ -4,7 +4,11 @@
 - Timepoint: `T3_disposition_decision`
 - Final posture: `PROCEED_WITH_UNCERTAINTY_DISCLOSURE`
 - Decision weight: `0.5125`
+- Selected Review Question: `Unspecified governance review question`
 - Signature placeholder: `UNSIGNED_DETERMINISTIC_POC`
+
+## Clinician Summary
+For Unspecified governance review question, Sentinel found information sufficiency 0.25 with material gap strength 0.75 and decision weight 0.5125. The main driver is: Specific hospital-based added value remains unresolved. The most useful next review input is: identify the information, monitoring, or therapy target This output is governance review support, not a clinical action recommendation.
 
 ## What Was Known
 - At decision time, the hospital-based path still lacks a documented specific added-value target.
@@ -82,3 +86,10 @@ Rejected ensemble inputs:
 - `red_team` target `under_action_risk`: Target is not a deterministic graph node for Phase E normalization.
 - `defense` target `over_action_risk`: Target is not a deterministic graph node for Phase E normalization.
 - `defense` target `safety_net_need`: Target is not a deterministic graph node for Phase E normalization.
+
+## Deeper Dive Artifacts
+- `human_summary_sections`
+- `node_audit_bundle`
+- `ensemble_contribution_bundle`
+- `methodology_summary`
+- `workflow_artifacts`

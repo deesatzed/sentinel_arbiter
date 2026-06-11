@@ -41,10 +41,13 @@ REQUIRED_RECEIPT_FIELDS: tuple[str, ...] = (
     "final_posture",
     "decision_weight",
     "signature_placeholder",
+    "selected_review_question",
+    "clinician_summary",
     "human_summary_sections",
     "node_audit_bundle",
     "ensemble_contribution_bundle",
     "methodology_summary",
+    "deeper_dive_artifacts",
     "workflow_artifacts",
 )
 
@@ -75,10 +78,13 @@ class SentinelReceipt(StrictModel):
     final_posture: str
     decision_weight: float
     signature_placeholder: str
+    selected_review_question: str | None = None
+    clinician_summary: str
     human_summary_sections: dict[str, list[str]]
     node_audit_bundle: NodeAuditBundle
     ensemble_contribution_bundle: EnsembleContributionBundle
     methodology_summary: dict[str, object]
+    deeper_dive_artifacts: list[str]
     workflow_artifacts: dict[str, object] = Field(default_factory=dict)
 
 
@@ -142,6 +148,34 @@ def preventability_explanation(graph: PrudenceGraphResult) -> str:
     )
 
 
+def review_question_display(review_question: str | None) -> str:
+    labels = {
+        "disposition_information_sufficiency": "Disposition information sufficiency",
+        "ai_response_use_sufficiency": "AI response use sufficiency",
+    }
+    return labels.get(review_question or "", "Unspecified governance review question")
+
+
+def build_clinician_summary(
+    *,
+    human_sections: dict[str, list[str]],
+    graph: PrudenceGraphResult,
+    review_question: str | None,
+) -> str:
+    missing = human_sections.get("what_was_missing", [])
+    would_change = human_sections.get("what_would_have_changed_the_discussion", [])
+    main_gap = missing[0] if missing else "The current-time record has unresolved information gaps."
+    next_input = would_change[0] if would_change else "No next-best information item was ranked above the materiality threshold."
+    question_text = review_question_display(review_question)
+    return (
+        f"For {question_text}, Sentinel found information sufficiency {graph.node_values['information_sufficiency']} "
+        f"with material gap strength {graph.node_values['material_gap_strength']} and decision weight "
+        f"{graph.node_values['decision_weight']}. The main driver is: {main_gap} "
+        f"The most useful next review input is: {next_input} "
+        "This output is governance review support, not a clinical action recommendation."
+    )
+
+
 def build_receipt(
     episode: DecisionEpisode,
     static_inputs_path: str | Path,
@@ -193,6 +227,10 @@ def build_receipt(
         raw_input_sha256 = workflow_artifacts.get("raw_input_sha256")
         if isinstance(raw_input_sha256, str) and raw_input_sha256:
             input_hashes["raw_input_sha256"] = raw_input_sha256
+    selected_review_question = None
+    if workflow_artifacts and isinstance(workflow_artifacts.get("selected_review_question"), str):
+        selected_review_question = str(workflow_artifacts["selected_review_question"])
+    human_sections = build_human_sections(episode, graph)
     receipt_id = f"receipt_{episode.episode_id}_T3_deterministic"
     return SentinelReceipt(
         receipt_id=receipt_id,
@@ -222,7 +260,13 @@ def build_receipt(
         final_posture=graph.final_posture.value,
         decision_weight=graph.node_values["decision_weight"],
         signature_placeholder="UNSIGNED_DETERMINISTIC_POC",
-        human_summary_sections=build_human_sections(episode, graph),
+        selected_review_question=selected_review_question,
+        clinician_summary=build_clinician_summary(
+            human_sections=human_sections,
+            graph=graph,
+            review_question=selected_review_question,
+        ),
+        human_summary_sections=human_sections,
         node_audit_bundle=node_audit_bundle,
         ensemble_contribution_bundle=ensemble_contribution_bundle,
         methodology_summary={
@@ -235,6 +279,13 @@ def build_receipt(
                 "they do not decide final posture."
             ),
         },
+        deeper_dive_artifacts=[
+            "human_summary_sections",
+            "node_audit_bundle",
+            "ensemble_contribution_bundle",
+            "methodology_summary",
+            "workflow_artifacts",
+        ],
         workflow_artifacts=workflow_artifacts or {},
     )
 
@@ -246,6 +297,7 @@ def render_receipt_markdown(receipt: SentinelReceipt) -> str:
         f"- Timepoint: `{receipt.timepoint_id}`\n"
         f"- Final posture: `{receipt.final_posture}`\n"
         f"- Decision weight: `{receipt.decision_weight}`\n"
+        f"- Selected Review Question: `{review_question_display(receipt.selected_review_question)}`\n"
         f"- Signature placeholder: `{receipt.signature_placeholder}`\n\n"
     )
     section_titles = {
@@ -260,6 +312,8 @@ def render_receipt_markdown(receipt: SentinelReceipt) -> str:
         "why_the_graph_selected_the_posture": "Why The Graph Selected The Posture",
     }
     body: list[str] = []
+    body.append("## Clinician Summary\n")
+    body.append(f"{receipt.clinician_summary}\n\n")
     for key, title_text in section_titles.items():
         body.append(f"## {title_text}\n")
         for item in receipt.human_summary_sections[key]:
@@ -293,6 +347,10 @@ def render_receipt_markdown(receipt: SentinelReceipt) -> str:
                 f"- `{rejected['contributor_role']}` target `{rejected['source_target']}`: "
                 f"{rejected['disposition_reason']}\n"
             )
+    body.append("\n")
+    body.append("## Deeper Dive Artifacts\n")
+    for artifact in receipt.deeper_dive_artifacts:
+        body.append(f"- `{artifact}`\n")
     body.append("\n")
     return (title + header + "".join(body)).rstrip() + "\n"
 

@@ -67,6 +67,31 @@ def test_receipt_exposes_node_audit_methodology_and_ensemble_dispositions():
     assert payload["ensemble_contribution_bundle"]["rejected_inputs"]
 
 
+def test_receipt_exposes_clinician_summary_selected_question_and_deeper_dive_artifacts():
+    episode = load_case_library(CASE_DIR)[0]
+
+    receipt = build_receipt(
+        episode,
+        STATIC_INPUTS,
+        workflow_artifacts={"selected_review_question": "ai_response_use_sufficiency"},
+    )
+    payload = receipt.model_dump(mode="json")
+
+    assert payload["selected_review_question"] == "ai_response_use_sufficiency"
+    assert "AI response use sufficiency" in payload["clinician_summary"]
+    assert payload["clinician_summary"].count("\n\n") == 0
+    assert "governance review support" in payload["clinician_summary"].lower()
+    assert "node_audit_bundle" in payload["deeper_dive_artifacts"]
+    assert "ensemble_contribution_bundle" in payload["deeper_dive_artifacts"]
+    assert "workflow_artifacts" in payload["deeper_dive_artifacts"]
+
+    markdown = render_receipt_markdown(receipt)
+    assert "## Clinician Summary" in markdown
+    assert "Selected Review Question" in markdown
+    assert "## Deeper Dive Artifacts" in markdown
+    assert scan_forbidden_content(markdown, allow_safety_rule_lists=False) == []
+
+
 def test_markdown_receipt_has_required_human_readable_sections_without_forbidden_phrases():
     episode = load_case_library(CASE_DIR)[0]
     receipt = build_receipt(episode, STATIC_INPUTS)

@@ -23,6 +23,11 @@ def test_evaluation_report_covers_graph_and_validation_metrics(tmp_path):
     assert payload["receipt_completeness"]["complete"] is True
     assert payload["receipt_completeness"]["json_receipts"] == 7
     assert payload["receipt_completeness"]["markdown_receipts"] == 7
+    assert payload["receipt_completeness"]["clinician_summary_complete"] is True
+    assert payload["receipt_completeness"]["deeper_dive_artifacts_complete"] is True
+    assert payload["receipt_completeness"]["selected_review_question_field_supported"] is True
+    assert payload["receipt_completeness"]["markdown_clinician_summary_complete"] is True
+    assert payload["receipt_completeness"]["markdown_deeper_dive_complete"] is True
     assert payload["lane_coverage"]["commission_lane_cases"] > 0
     assert payload["lane_coverage"]["omission_lane_cases"] > 0
     assert payload["lane_coverage"]["therapy_response_lane_cases"] > 0

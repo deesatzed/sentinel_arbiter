@@ -4,7 +4,11 @@
 - Timepoint: `T3_disposition_decision`
 - Final posture: `PROCEED_WITH_SAFETY_NET_OR_RECHECK`
 - Decision weight: `0.32`
+- Selected Review Question: `Unspecified governance review question`
 - Signature placeholder: `UNSIGNED_DETERMINISTIC_POC`
+
+## Clinician Summary
+For Unspecified governance review question, Sentinel found information sufficiency 1.0 with material gap strength 0.0 and decision weight 0.32. The main driver is: No material missing inputs were represented at this timepoint. The most useful next review input is: No next-best-information item was ranked above the materiality threshold. This output is governance review support, not a clinical action recommendation.
 
 ## What Was Known
 - At decision time, therapy response is documented and follow-up access is clear in the synthetic case.
@@ -81,3 +85,10 @@ Rejected ensemble inputs:
 - `red_team` target `under_action_risk`: Target is not a deterministic graph node for Phase E normalization.
 - `defense` target `over_action_risk`: Target is not a deterministic graph node for Phase E normalization.
 - `defense` target `safety_net_need`: Target is not a deterministic graph node for Phase E normalization.
+
+## Deeper Dive Artifacts
+- `human_summary_sections`
+- `node_audit_bundle`
+- `ensemble_contribution_bundle`
+- `methodology_summary`
+- `workflow_artifacts`

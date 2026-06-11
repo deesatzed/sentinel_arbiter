@@ -4,7 +4,11 @@
 - Timepoint: `T3_disposition_decision`
 - Final posture: `OBTAIN_SPECIFIC_INFORMATION_FIRST`
 - Decision weight: `0.53`
+- Selected Review Question: `Disposition information sufficiency`
 - Signature placeholder: `UNSIGNED_DETERMINISTIC_POC`
+
+## Clinician Summary
+For Disposition information sufficiency, Sentinel found information sufficiency 0.2 with material gap strength 0.8 and decision weight 0.53. The main driver is: Reviewer must confirm timepoint assignment, missing inputs, therapy response, and follow-up feasibility before analysis. The most useful next review input is: review and approve structured episode This output is governance review support, not a clinical action recommendation.
 
 ## What Was Known
 - At decision time, home support and ability to return for reassessment remain unclear.
@@ -80,3 +84,10 @@ Rejected ensemble inputs:
 - `red_team` target `under_action_risk`: Target is not a deterministic graph node for Phase E normalization.
 - `defense` target `over_action_risk`: Target is not a deterministic graph node for Phase E normalization.
 - `defense` target `safety_net_need`: Target is not a deterministic graph node for Phase E normalization.
+
+## Deeper Dive Artifacts
+- `human_summary_sections`
+- `node_audit_bundle`
+- `ensemble_contribution_bundle`
+- `methodology_summary`
+- `workflow_artifacts`

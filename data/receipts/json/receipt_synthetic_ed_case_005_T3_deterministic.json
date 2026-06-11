@@ -93,6 +93,8 @@
   "final_posture": "OBTAIN_SPECIFIC_INFORMATION_FIRST",
   "decision_weight": 0.565,
   "signature_placeholder": "UNSIGNED_DETERMINISTIC_POC",
+  "selected_review_question": null,
+  "clinician_summary": "For Unspecified governance review question, Sentinel found information sufficiency 0.1 with material gap strength 0.9 and decision weight 0.565. The main driver is: Home-plan feasibility is unresolved. The most useful next review input is: clarify support, follow-up, and return access This output is governance review support, not a clinical action recommendation.",
   "human_summary_sections": {
     "what_was_known": [
       "At decision time, home support and return access are still not established."
@@ -1247,5 +1249,12 @@
     "final_posture_source": "deterministic_graph_node_values",
     "trust_boundary": "Static role and EvidenceFlow inputs are normalized as bounded contributions; they do not decide final posture."
   },
+  "deeper_dive_artifacts": [
+    "human_summary_sections",
+    "node_audit_bundle",
+    "ensemble_contribution_bundle",
+    "methodology_summary",
+    "workflow_artifacts"
+  ],
   "workflow_artifacts": {}
 }

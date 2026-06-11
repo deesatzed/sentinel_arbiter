@@ -4,7 +4,11 @@
 - Timepoint: `T3_disposition_decision`
 - Final posture: `PROCEED_WITH_UNCERTAINTY_DISCLOSURE`
 - Decision weight: `0.25`
+- Selected Review Question: `Unspecified governance review question`
 - Signature placeholder: `UNSIGNED_DETERMINISTIC_POC`
+
+## Clinician Summary
+For Unspecified governance review question, Sentinel found information sufficiency 0.9 with material gap strength 0.1 and decision weight 0.25. The main driver is: Low-value background detail remains missing but is not material to the posture under review. The most useful next review input is: No next-best-information item was ranked above the materiality threshold. This output is governance review support, not a clinical action recommendation.
 
 ## What Was Known
 - At decision time, the only known missing input is low expected relevance and higher burden.
@@ -80,3 +84,10 @@ Rejected ensemble inputs:
 - `red_team` target `under_action_risk`: Target is not a deterministic graph node for Phase E normalization.
 - `defense` target `over_action_risk`: Target is not a deterministic graph node for Phase E normalization.
 - `defense` target `safety_net_need`: Target is not a deterministic graph node for Phase E normalization.
+
+## Deeper Dive Artifacts
+- `human_summary_sections`
+- `node_audit_bundle`
+- `ensemble_contribution_bundle`
+- `methodology_summary`
+- `workflow_artifacts`
