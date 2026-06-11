@@ -205,6 +205,32 @@ def render_therapy_panel(episodes: list[DecisionEpisode]) -> str:
     )
 
 
+def render_clinician_summary_panel(episodes: list[DecisionEpisode], receipt_dir: Path, output_path: Path) -> str:
+    case_blocks: list[str] = []
+    for episode in episodes:
+        receipt = build_receipt(episode, "data/static_inputs/static_inputs.json")
+        json_href = rel_link(receipt_dir / "json" / f"{receipt.receipt_id}.json", output_path)
+        markdown_href = rel_link(receipt_dir / "markdown" / f"{receipt.receipt_id}.md", output_path)
+        artifact_lines = [f"{artifact}" for artifact in receipt.deeper_dive_artifacts]
+        case_blocks.append(
+            '<article class="case-block">'
+            f"<h3>{esc(episode.episode_id)}</h3>"
+            f"<p>{esc(receipt.clinician_summary)}</p>"
+            "<h4>Deeper Dive Artifact Index</h4>"
+            f"<ul>{list_items(artifact_lines, empty='No deeper-dive artifacts listed.')}</ul>"
+            f"<p><a href=\"{esc(json_href)}\">Export JSON</a> "
+            f"<a href=\"{esc(markdown_href)}\">Export Markdown Summary</a></p>"
+            "</article>"
+        )
+    return (
+        '<section id="clinician-summary-panel" class="panel">'
+        "<h2>Clinician Summary</h2>"
+        '<p class="note">These summaries are generated from receipt fields; raw structured artifacts stay available from the deeper-dive links.</p>'
+        f"{''.join(case_blocks)}"
+        "</section>"
+    )
+
+
 def render_provenance_panel(episodes: list[DecisionEpisode]) -> str:
     case_blocks: list[str] = []
     for episode in episodes:
@@ -451,6 +477,7 @@ li { margin: 3px 0; }
         f"{render_timeline_panel(episodes)}"
         f"{render_gap_panel(episodes)}"
         f"{render_therapy_panel(episodes)}"
+        f"{render_clinician_summary_panel(episodes, receipt_dir, output_path)}"
         f"{render_graph_panels(episodes, receipt_dir, output_path)}"
         f"{render_provenance_panel(episodes)}"
         f"{render_evaluation_dashboard(report)}"

@@ -171,6 +171,14 @@ def workbench_completeness_payload(
         "redacted_input": "Redacted Input" in review_html,
         "structured_episode": "Approved Structured Episode" in review_html,
         "timeline_replay": 'id="timeline-replay"' in html,
+        "clinician_summary": 'id="clinician-summary-panel"' in html
+        and "Clinician Summary" in html
+        and "governance review support" in html,
+        "deeper_dive_artifact_index": "Deeper Dive Artifact Index" in html
+        and "node_audit_bundle" in html
+        and "ensemble_contribution_bundle" in html
+        and "workflow_artifacts" in html,
+        "raw_artifact_links": "Export JSON" in html and "Export Markdown Summary" in html,
         "node_audit_methodology": 'id="node-audit-methodology"' in html and "Node Audit Methodology" in review_html,
         "ensemble_contribution_panel": 'id="ensemble-contribution-panel"' in html and "Ensemble Contributions" in review_html,
         "graph_posture": "Final posture" in html and "Final posture" in review_html,

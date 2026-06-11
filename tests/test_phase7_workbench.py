@@ -27,6 +27,7 @@ def test_generate_static_reviewer_workbench_with_required_panels(tmp_path):
         "timeline-replay",
         "information-gap-panel",
         "therapy-response-panel",
+        "clinician-summary-panel",
         "commission-omission-panel",
         "provenance-panel",
         "two-clock-panel",
@@ -50,6 +51,13 @@ def test_generate_static_reviewer_workbench_with_required_panels(tmp_path):
     assert "receipts/json/receipt_" in html
     assert "receipts/markdown/receipt_" in html
     assert "Final posture" in html
+    assert "Clinician Summary" in html
+    assert "Deeper Dive Artifact Index" in html
+    assert "governance review support" in html
+    assert "human_summary_sections" in html
+    assert "node_audit_bundle" in html
+    assert "ensemble_contribution_bundle" in html
+    assert "workflow_artifacts" in html
     assert "Hidden future facts blocked" in html
     assert "Dependent inputs" in html
     assert "Distribution" in html

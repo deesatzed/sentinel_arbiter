@@ -801,3 +801,29 @@
 
 - Receipt artifacts now preserve the summary-first and deeper-dive trust layer instead of leaving those requirements only in the local HTML view.
 - The staged demo still uses deterministic graph authority; LLM/OpenRouter outputs remain comparison artifacts only.
+
+## 2026-06-11 - Phase J Workbench Summary And Deeper-Dive Proof Added
+
+### Completed So Far
+
+- Added a receipt-sourced `Clinician Summary` panel to `data/workbench/index.html`.
+- Added a `Deeper Dive Artifact Index` for each workbench case using receipt `deeper_dive_artifacts`.
+- Kept raw structured access behind workbench export links for JSON and Markdown receipts.
+- Strengthened `workbench_completeness` in `validation/reports/latest.json` to require clinician summary, deeper-dive artifact index, and raw artifact links.
+- Added tests so static workbench generation and validation-report completeness fail if those fields disappear.
+- Regenerated `data/workbench/index.html` and `validation/reports/latest.json`.
+
+### Verification Evidence
+
+- `python3 -m pytest tests/test_phase7_workbench.py -q` initially failed on missing `clinician-summary-panel`, then passed after implementation.
+- `python3 -m pytest tests/test_phase3_evaluation_report.py::test_evaluation_report_covers_redaction_workbench_and_local_app_completeness -q` initially failed on missing workbench summary proof, then passed after regeneration.
+- `python3 -m pytest -q` passed: `68 passed`.
+- `git diff --check` passed.
+- JSON syntax checks passed for `validation/reports/latest.json` and a generated receipt JSON sample.
+- Forbidden disposition-phrase scan found only the explicit `GOAL.md` safety list, `src/sentinel_workbench/safety.py`, and the scanner fixture in `tests/test_phase1_models.py`.
+- `validation/reports/latest.json` reports `workbench_completeness.clinician_summary=true`, `deeper_dive_artifact_index=true`, and `raw_artifact_links=true`.
+
+### Current State
+
+- The static workbench now satisfies the summary/deeper-dive artifact portion of `GOAL.md` proof item 22 more directly.
+- Remaining full-goal completion still requires a final requirement-by-requirement audit before marking the active goal complete.

@@ -79,9 +79,15 @@ def test_evaluation_report_covers_redaction_workbench_and_local_app_completeness
 
     workbench = payload["workbench_completeness"]
     assert workbench["complete"] is True
+    assert workbench["clinician_summary"] is True
+    assert workbench["deeper_dive_artifact_index"] is True
+    assert workbench["raw_artifact_links"] is True
     for required in [
         "redacted_input",
         "structured_episode",
+        "clinician_summary",
+        "deeper_dive_artifact_index",
+        "raw_artifact_links",
         "node_audit_methodology",
         "ensemble_contribution_panel",
         "receipt_links",
