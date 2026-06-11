@@ -880,3 +880,31 @@
 - The generated audit reports 24 static-artifact proof items as `PASS`.
 - Proof item 25 remains `PENDING` by design because final verification commands and a clean tracked diff must be proven live after all edits are complete.
 - The active goal remains open until item 25 is proven and the completion audit supports a full pass.
+
+## 2026-06-11 - Final Verification Report Closes GOAL.md Audit
+
+### Completed So Far
+
+- Added `src/sentinel_workbench/final_verification.py`.
+- Registered `sentinel-workbench-final-verification` in `pyproject.toml`.
+- Added `validation/reports/final_verification.json` as durable command-exit evidence for the final GOAL.md proof item.
+- Updated `src/sentinel_workbench/goal_audit.py` so proof item 25 passes only when the final-verification report records passing local checks.
+- Regenerated `validation/reports/goal_completion_audit.json` and `docs/21_goal_completion_audit.md`.
+- Added tests that require the checked-in goal audit to remain 25/25 and require the final-verification report to close item 25.
+
+### Verification Evidence
+
+- `python3 -m pytest -q` passed: `71 passed`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.validate data/cases` passed: `validated=7 errors=0`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.static_inputs --static-inputs data/static_inputs/static_inputs.json --case-dir data/cases` passed: `static_inputs cases=7 errors=0`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts` passed: `cases=7 future_leakage_failures=0`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.final_verification` passed: `final_verification_all_pass=True goal_audit_all_pass=True`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.goal_audit --out-json validation/reports/goal_completion_audit.json --out-markdown docs/21_goal_completion_audit.md` passed: `goal_audit_items=25 pass_count=25`.
+- JSON syntax checks passed for schemas, cases, static inputs, receipt JSON, constructed-demo JSON, and validation reports.
+- `git diff --check` passed.
+
+### Current State
+
+- `validation/reports/goal_completion_audit.json` reports `proof_item_count=25`, `pass_count=25`, and `all_pass=true`.
+- `docs/21_goal_completion_audit.md` shows all 25 `GOAL.md` proof items as `PASS`.
+- Sentinel remains a local deterministic governance-review POC and still does not claim clinical safety, production readiness, regulatory compliance, or clinical outcome benefit.

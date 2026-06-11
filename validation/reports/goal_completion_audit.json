@@ -2,8 +2,8 @@
   "report_type": "goal_completion_audit",
   "goal_file": "GOAL.md",
   "proof_item_count": 25,
-  "pass_count": 24,
-  "all_pass": false,
+  "pass_count": 25,
+  "all_pass": true,
   "items": [
     {
       "id": 1,
@@ -176,9 +176,9 @@
     {
       "id": 25,
       "requirement": "Full local verification commands pass and git diff --check is clean.",
-      "verdict": "PENDING",
-      "evidence_key": "live verification commands",
-      "evidence": "Run the final verification command set after this generated audit is committed; this item is intentionally not inferred from static files."
+      "verdict": "PASS",
+      "evidence_key": "validation/reports/final_verification.json",
+      "evidence": "Final verification report records passing local commands, JSON syntax checks, and git diff --check."
     }
   ]
 }

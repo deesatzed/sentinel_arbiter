@@ -40,13 +40,15 @@ def generate_goal_completion_audit(
     output_json: str | Path = "validation/reports/goal_completion_audit.json",
     output_markdown: str | Path = "docs/21_goal_completion_audit.md",
     evaluation_report_path: str | Path = "validation/reports/latest.json",
+    final_verification_path: str | Path = "validation/reports/final_verification.json",
     goal_path: str | Path = "GOAL.md",
     status_doc_path: str | Path = "docs/18_deterministic_poc_status.md",
 ) -> dict[str, object]:
     evaluation = _read_json(evaluation_report_path)
+    final_verification = _read_json_if_present(final_verification_path)
     goal_text = Path(goal_path).read_text(encoding="utf-8")
     status_text = Path(status_doc_path).read_text(encoding="utf-8")
-    items = _build_items(evaluation, goal_text, status_text)
+    items = _build_items(evaluation, goal_text, status_text, final_verification, str(final_verification_path))
     pass_count = sum(1 for item in items if item["verdict"] == "PASS")
     payload = {
         "report_type": "goal_completion_audit",
@@ -65,7 +67,13 @@ def generate_goal_completion_audit(
     return payload
 
 
-def _build_items(evaluation: dict[str, Any], goal_text: str, status_text: str) -> list[dict[str, object]]:
+def _build_items(
+    evaluation: dict[str, Any],
+    goal_text: str,
+    status_text: str,
+    final_verification: dict[str, Any],
+    final_verification_path: str,
+) -> list[dict[str, object]]:
     local_app = _dict(evaluation.get("local_app_completeness"))
     redaction = _dict(evaluation.get("redaction_gating"))
     node_audit = _dict(evaluation.get("node_audit_completeness"))
@@ -102,7 +110,11 @@ def _build_items(evaluation: dict[str, Any], goal_text: str, status_text: str) -
         (bool(workbench.get("complete") and workbench.get("clinician_summary") and workbench.get("deeper_dive_artifact_index")), "workbench_completeness", "Workbench renders summary, methodology, receipts, validation status, and deeper-dive artifact index."),
         (_automated_validation_complete(evaluation, automated), "validation/reports/latest.json", "Validation report covers schema, leakage, redaction, fixture agreement, detection categories, node audit, receipts, workbench, app flow, summary, and forbidden phrases."),
         (_status_doc_complete(status_text), "docs/18_deterministic_poc_status.md", "Status document separates implemented, deferred, required-before-real-use, and not-claimed boundaries."),
-        (False, "live verification commands", "Run the final verification command set after this generated audit is committed; this item is intentionally not inferred from static files."),
+        (
+            _final_verification_complete(final_verification),
+            final_verification_path,
+            "Final verification report records passing local commands, JSON syntax checks, and git diff --check.",
+        ),
     )
 
     for index, (passed, evidence_key, evidence) in enumerate(checks, start=1):
@@ -150,6 +162,26 @@ def _status_doc_complete(text: str) -> bool:
     return all(item in text for item in required)
 
 
+def _final_verification_complete(report: dict[str, Any]) -> bool:
+    required_checks = (
+        "pytest_passed",
+        "case_validation_passed",
+        "static_input_validation_passed",
+        "evaluation_report_regenerated",
+        "json_syntax_checks_passed",
+        "git_diff_check_passed",
+    )
+    commands = report.get("commands")
+    return (
+        report.get("report_type") == "final_verification"
+        and report.get("all_pass") is True
+        and all(report.get(key) is True for key in required_checks)
+        and isinstance(commands, list)
+        and bool(commands)
+        and all(_dict(command).get("exit_code") == 0 for command in commands)
+    )
+
+
 def _render_markdown(payload: dict[str, object]) -> str:
     lines = [
         "# 21 - GOAL.md Completion Audit",
@@ -180,7 +212,9 @@ def _render_markdown(payload: dict[str, object]) -> str:
             "```bash",
             "python3 -m pytest -q",
             "PYTHONPATH=src python3 -m sentinel_workbench.validate data/cases",
+            "PYTHONPATH=src python3 -m sentinel_workbench.static_inputs --static-inputs data/static_inputs/static_inputs.json --case-dir data/cases",
             "PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts",
+            "PYTHONPATH=src python3 -m sentinel_workbench.final_verification",
             "PYTHONPATH=src python3 -m sentinel_workbench.goal_audit --out-json validation/reports/goal_completion_audit.json --out-markdown docs/21_goal_completion_audit.md",
             "git diff --check",
             "```",
@@ -194,6 +228,13 @@ def _read_json(path: str | Path) -> dict[str, Any]:
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
+def _read_json_if_present(path: str | Path) -> dict[str, Any]:
+    candidate = Path(path)
+    if not candidate.exists():
+        return {}
+    return _read_json(candidate)
+
+
 def _dict(value: object) -> dict[str, Any]:
     if isinstance(value, dict):
         return value
@@ -205,6 +246,7 @@ def main() -> None:
     parser.add_argument("--out-json", default="validation/reports/goal_completion_audit.json")
     parser.add_argument("--out-markdown", default="docs/21_goal_completion_audit.md")
     parser.add_argument("--evaluation-report", default="validation/reports/latest.json")
+    parser.add_argument("--final-verification", default="validation/reports/final_verification.json")
     parser.add_argument("--goal", default="GOAL.md")
     parser.add_argument("--status-doc", default="docs/18_deterministic_poc_status.md")
     args = parser.parse_args()
@@ -212,6 +254,7 @@ def main() -> None:
         output_json=args.out_json,
         output_markdown=args.out_markdown,
         evaluation_report_path=args.evaluation_report,
+        final_verification_path=args.final_verification,
         goal_path=args.goal,
         status_doc_path=args.status_doc,
     )

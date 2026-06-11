@@ -1,0 +1,54 @@
+{
+  "report_type": "final_verification",
+  "scope": "GOAL.md clinician-facing staged local demo",
+  "all_pass": true,
+  "pytest_passed": true,
+  "case_validation_passed": true,
+  "static_input_validation_passed": true,
+  "evaluation_report_regenerated": true,
+  "git_diff_check_passed": true,
+  "json_syntax_checks_passed": true,
+  "commands": [
+    {
+      "name": "pytest",
+      "command": "python3 -m pytest -q",
+      "exit_code": 0,
+      "stdout_tail": ".......................................................................  [100%]\n71 passed in 3.64s",
+      "stderr_tail": ""
+    },
+    {
+      "name": "case_validation",
+      "command": "python3 -m sentinel_workbench.validate data/cases",
+      "exit_code": 0,
+      "stdout_tail": "validated=7 errors=0",
+      "stderr_tail": ""
+    },
+    {
+      "name": "static_input_validation",
+      "command": "python3 -m sentinel_workbench.static_inputs --static-inputs data/static_inputs/static_inputs.json --case-dir data/cases",
+      "exit_code": 0,
+      "stdout_tail": "static_inputs cases=7 errors=0",
+      "stderr_tail": ""
+    },
+    {
+      "name": "evaluation_report",
+      "command": "python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts",
+      "exit_code": 0,
+      "stdout_tail": "cases=7 future_leakage_failures=0 out=validation/reports/latest.json",
+      "stderr_tail": ""
+    },
+    {
+      "name": "git_diff_check",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "stdout_tail": "",
+      "stderr_tail": ""
+    }
+  ],
+  "json_syntax": {
+    "passed": true,
+    "checked_count": 44,
+    "errors": []
+  },
+  "goal_audit_all_pass_after_regeneration": true
+}

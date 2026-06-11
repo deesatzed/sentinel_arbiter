@@ -3,8 +3,8 @@
 Current audit replaces the older 16-item audit with a 25-item map to the current `GOAL.md` Full Demo Proof Of Done list.
 
 Proof items: 25
-Pass count: 24
-All pass: False
+Pass count: 25
+All pass: True
 
 Sentinel remains a local deterministic governance-review POC. This audit does not claim clinical safety, production readiness, regulatory compliance, or clinical outcome benefit.
 
@@ -36,14 +36,16 @@ Sentinel remains a local deterministic governance-review POC. This audit does no
 | 22 | The workbench renders the redacted input, structured episode, node methodology, distributions, range, median, ensemble disagreement, graph posture, clinician summary, deeper-dive artifacts, receipts, and validation status. | PASS | `workbench_completeness` | Workbench renders summary, methodology, receipts, validation status, and deeper-dive artifact index. |
 | 23 | Automated validation reports cover schema validity, future leakage, redaction gating, expected posture agreement on fixtures, omission detection, commission warning detection, therapy-response integration, next-best-information usefulness, node-audit completeness, receipt completeness, workbench completeness, app-flow completeness, summary completeness, and forbidden phrase violations. | PASS | `validation/reports/latest.json` | Validation report covers schema, leakage, redaction, fixture agreement, detection categories, node audit, receipts, workbench, app flow, summary, and forbidden phrases. |
 | 24 | The project documents what is implemented, what is deferred, and what would be required before any real clinical, prospective, production, or live-evidence use. | PASS | `docs/18_deterministic_poc_status.md` | Status document separates implemented, deferred, required-before-real-use, and not-claimed boundaries. |
-| 25 | Full local verification commands pass and git diff --check is clean. | PENDING | `live verification commands` | Run the final verification command set after this generated audit is committed; this item is intentionally not inferred from static files. |
+| 25 | Full local verification commands pass and git diff --check is clean. | PASS | `validation/reports/final_verification.json` | Final verification report records passing local commands, JSON syntax checks, and git diff --check. |
 
 ## Verification Commands
 
 ```bash
 python3 -m pytest -q
 PYTHONPATH=src python3 -m sentinel_workbench.validate data/cases
+PYTHONPATH=src python3 -m sentinel_workbench.static_inputs --static-inputs data/static_inputs/static_inputs.json --case-dir data/cases
 PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts
+PYTHONPATH=src python3 -m sentinel_workbench.final_verification
 PYTHONPATH=src python3 -m sentinel_workbench.goal_audit --out-json validation/reports/goal_completion_audit.json --out-markdown docs/21_goal_completion_audit.md
 git diff --check
 ```
