@@ -249,6 +249,41 @@ def local_app_completeness_payload(
     }
 
 
+def summary_completeness_payload(
+    review_html_path: str | Path = "data/prepared_inputs/constructed_demo_case/analysis/review.html",
+    receipt_json_path: str | Path = (
+        "data/prepared_inputs/constructed_demo_case/analysis/receipts/json/"
+        "receipt_constructed_demo_case_T3_deterministic.json"
+    ),
+) -> dict[str, object]:
+    review_path = Path(review_html_path)
+    receipt_path = Path(receipt_json_path)
+    review_html = review_path.read_text(encoding="utf-8") if review_path.exists() else ""
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8")) if receipt_path.exists() else {}
+    summary = str(receipt.get("clinician_summary", ""))
+    paragraph_count = len([part for part in summary.split("\n\n") if part.strip()])
+    forbidden_count = len(scan_forbidden_content(summary, allow_safety_rule_lists=False))
+    checks = {
+        "review_html_exists": review_path.exists(),
+        "receipt_json_exists": receipt_path.exists(),
+        "clinician_summary_present": bool(summary.strip()) and "Clinician Summary" in review_html,
+        "selected_review_question_framing": bool(receipt.get("selected_review_question"))
+        and str(receipt.get("selected_review_question")) in json.dumps(receipt),
+        "clinician_summary_first": "Clinician Summary" in review_html
+        and "Approved Structured Episode" in review_html
+        and review_html.index("Clinician Summary") < review_html.index("Approved Structured Episode"),
+        "summary_paragraph_limit": 1 <= paragraph_count <= 2,
+        "governance_support_boundary": "governance review support" in summary.lower(),
+        "forbidden_phrase_violations": forbidden_count,
+    }
+    complete = all(value for key, value in checks.items() if key != "forbidden_phrase_violations") and forbidden_count == 0
+    return {
+        "complete": complete,
+        "paragraph_count": paragraph_count,
+        **checks,
+    }
+
+
 def expected_flag_matched(expected: str, detected: list[str], category: str) -> bool:
     if expected in detected:
         return True
@@ -447,6 +482,7 @@ def generate_evaluation_report(
             "invalid_node_targets": [],
         },
         "receipt_completeness": receipt_completeness_payload(episodes, receipt_dir),
+        "summary_completeness": summary_completeness_payload(),
         "workbench_completeness": workbench_completeness_payload(),
         "local_app_completeness": local_app_completeness_payload(),
         "case_results": report.case_results,

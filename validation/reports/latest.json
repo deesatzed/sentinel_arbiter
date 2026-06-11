@@ -82,6 +82,18 @@
     "markdown_clinician_summary_complete": true,
     "markdown_deeper_dive_complete": true
   },
+  "summary_completeness": {
+    "complete": true,
+    "paragraph_count": 1,
+    "review_html_exists": true,
+    "receipt_json_exists": true,
+    "clinician_summary_present": true,
+    "selected_review_question_framing": true,
+    "clinician_summary_first": true,
+    "summary_paragraph_limit": true,
+    "governance_support_boundary": true,
+    "forbidden_phrase_violations": 0
+  },
   "workbench_completeness": {
     "complete": true,
     "missing": [],

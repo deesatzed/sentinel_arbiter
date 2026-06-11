@@ -852,3 +852,31 @@
 
 - The local app deeper-dive result now exposes receipt links, validation status, and trace hashes directly, reducing the remaining gap for `GOAL.md` proof item 19.
 - The active goal remains open pending a fresh 25-item completion audit against current artifacts.
+
+## 2026-06-11 - 25-Item GOAL.md Audit Generator Added
+
+### Completed So Far
+
+- Added `src/sentinel_workbench/goal_audit.py` to generate a current 25-item audit against the `GOAL.md` Full Demo Proof Of Done list.
+- Added `validation/reports/goal_completion_audit.json` as the machine-readable audit output.
+- Replaced stale `docs/21_goal_completion_audit.md`, which mapped an older 16-item proof list, with the generated 25-item audit.
+- Added first-class `summary_completeness` to `validation/reports/latest.json`.
+- Registered `sentinel-workbench-goal-audit` in `pyproject.toml`.
+- Added tests that fail if the checked-in audit falls back to the older 16-item shape or if `summary_completeness` disappears.
+
+### Verification Evidence
+
+- `python3 -m pytest tests/test_phase3_evaluation_report.py::test_evaluation_report_covers_graph_and_validation_metrics -q` initially failed with missing `summary_completeness`, then passed.
+- `python3 -m pytest tests/test_goal_completion_audit.py -q` initially failed because the audit module and checked-in 25-item audit were missing, then passed after generation.
+- `python3 -m pytest -q` passed: `70 passed`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.validate data/cases` passed: `validated=7 errors=0`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.goal_audit --out-json validation/reports/goal_completion_audit.json --out-markdown docs/21_goal_completion_audit.md` reported `goal_audit_items=25 pass_count=24`.
+- `git diff --check` passed.
+- JSON syntax checks passed for `validation/reports/latest.json`, `validation/reports/goal_completion_audit.json`, schemas, generated receipts, and the constructed-demo receipt.
+- Forbidden disposition-phrase scan found only the explicit `GOAL.md` safety list, `src/sentinel_workbench/safety.py`, and the scanner fixture in `tests/test_phase1_models.py`.
+
+### Current State
+
+- The generated audit reports 24 static-artifact proof items as `PASS`.
+- Proof item 25 remains `PENDING` by design because final verification commands and a clean tracked diff must be proven live after all edits are complete.
+- The active goal remains open until item 25 is proven and the completion audit supports a full pass.

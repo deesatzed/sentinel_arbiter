@@ -1,0 +1,184 @@
+{
+  "report_type": "goal_completion_audit",
+  "goal_file": "GOAL.md",
+  "proof_item_count": 25,
+  "pass_count": 24,
+  "all_pass": false,
+  "items": [
+    {
+      "id": 1,
+      "requirement": "A user can open the local app and choose either review question A or B before input is processed.",
+      "verdict": "PASS",
+      "evidence_key": "local_app_completeness",
+      "evidence": "Local app exposes both review questions and requires Pre-process workflow."
+    },
+    {
+      "id": 2,
+      "requirement": "The selected review question is saved into the run manifest, receipts, and summary.",
+      "verdict": "PASS",
+      "evidence_key": "receipt_completeness, summary_completeness",
+      "evidence": "Selected review question is present in receipts and summary framing."
+    },
+    {
+      "id": 3,
+      "requirement": "A user can paste redacted text or upload a constructed/deidentified local file and click Pre-process.",
+      "verdict": "PASS",
+      "evidence_key": "local_app_completeness",
+      "evidence": "Paste and upload paths are represented in the local app proof payload."
+    },
+    {
+      "id": 4,
+      "requirement": "A user can run a local CLI command with constructed text input and receive a redaction report plus draft structured episode.",
+      "verdict": "PASS",
+      "evidence_key": "redaction_gating",
+      "evidence": "Constructed input path emits a redaction report and prepared draft artifacts."
+    },
+    {
+      "id": 5,
+      "requirement": "Residual PII/PHI risk is detected and blocks or quarantines unsafe input.",
+      "verdict": "PASS",
+      "evidence_key": "redaction_gating",
+      "evidence": "Residual risk block and quarantine behavior are both checked."
+    },
+    {
+      "id": 6,
+      "requirement": "A reviewer-approved structured episode can be saved and used for deterministic analysis.",
+      "verdict": "PASS",
+      "evidence_key": "local_app_completeness",
+      "evidence": "Approved structured episode can be run through the deterministic analysis endpoint."
+    },
+    {
+      "id": 7,
+      "requirement": "Synthetic and constructed demo inputs validate against schemas.",
+      "verdict": "PASS",
+      "evidence_key": "schema_validity, redaction_gating",
+      "evidence": "Synthetic case library and constructed demo artifact path validate."
+    },
+    {
+      "id": 8,
+      "requirement": "Hidden future facts cannot enter current-time node computation.",
+      "verdict": "PASS",
+      "evidence_key": "future_leakage_failures",
+      "evidence": "Current validation report has zero future-leakage failures."
+    },
+    {
+      "id": 9,
+      "requirement": "Every graph node has a NodeAudit or equivalent schema-backed audit object.",
+      "verdict": "PASS",
+      "evidence_key": "node_audit_completeness",
+      "evidence": "Every graph node has a node audit."
+    },
+    {
+      "id": 10,
+      "requirement": "Every node audit has dependencies, evidence refs, value, range, median, distribution kind, confidence, method, and sensitivity note.",
+      "verdict": "PASS",
+      "evidence_key": "node_audit_completeness",
+      "evidence": "Node audits have required estimate, evidence, dependency, and sensitivity fields."
+    },
+    {
+      "id": 11,
+      "requirement": "The app displays Node Audit Methodology after pre-processing and before processing.",
+      "verdict": "PASS",
+      "evidence_key": "local_app_completeness",
+      "evidence": "Node Audit Methodology is visible before processing."
+    },
+    {
+      "id": 12,
+      "requirement": "A reviewer can choose OK, Adjust, or Re-check selected nodes; adjustments require confirmation before replacing generated methodology.",
+      "verdict": "PASS",
+      "evidence_key": "local_app_completeness",
+      "evidence": "OK, Adjust, and Re-check selected-node controls are present and traced."
+    },
+    {
+      "id": 13,
+      "requirement": "Every ensemble contribution is accepted, rejected, or downgraded with a reason.",
+      "verdict": "PASS",
+      "evidence_key": "ensemble_contribution_completeness",
+      "evidence": "Every ensemble contribution has a disposition and reason."
+    },
+    {
+      "id": 14,
+      "requirement": "The app displays Ensemble Contributions before Process.",
+      "verdict": "PASS",
+      "evidence_key": "local_app_completeness",
+      "evidence": "Ensemble Contributions are visible in the pre-process/review flow before Process."
+    },
+    {
+      "id": 15,
+      "requirement": "The graph computes final Sentinel posture from normalized typed node values.",
+      "verdict": "PASS",
+      "evidence_key": "expected_posture_agreement",
+      "evidence": "Graph posture is computed from deterministic typed fixture runs."
+    },
+    {
+      "id": 16,
+      "requirement": "Final posture remains one of the Sentinel posture categories, not a disposition recommendation.",
+      "verdict": "PASS",
+      "evidence_key": "forbidden_phrase_violations",
+      "evidence": "Forbidden disposition-language scan reports zero generated-artifact violations."
+    },
+    {
+      "id": 17,
+      "requirement": "The primary result is a clinician-readable governance summary of no more than one or two short paragraphs.",
+      "verdict": "PASS",
+      "evidence_key": "summary_completeness",
+      "evidence": "Primary clinician summary is concise and machine-checked."
+    },
+    {
+      "id": 18,
+      "requirement": "The primary summary explains what the result means for the selected review question and why, including the main uncertainty drivers.",
+      "verdict": "PASS",
+      "evidence_key": "summary_completeness",
+      "evidence": "Summary includes selected-question framing and governance boundary."
+    },
+    {
+      "id": 19,
+      "requirement": "A Deeper Dive button exposes node audit tables, ensemble tables, receipts, trace hashes, validation status, structured episode, and raw JSON/Markdown artifacts.",
+      "verdict": "PASS",
+      "evidence_key": "local_app_completeness",
+      "evidence": "Deeper Dive exposes trace hashes and raw JSON/Markdown receipt links."
+    },
+    {
+      "id": 20,
+      "requirement": "JSON receipts include selected review question, redaction, intake, node audit, ensemble, trace, graph, and signature-placeholder fields.",
+      "verdict": "PASS",
+      "evidence_key": "receipt_completeness",
+      "evidence": "JSON receipts include selected question and required audit fields."
+    },
+    {
+      "id": 21,
+      "requirement": "Human-readable receipts explain what was known, what was missing, what would have changed the discussion, what facility-based monitoring or treatment might add, what non-inpatient alternatives might add, commission concerns, omission concerns, therapy-response concerns, and why the graph selected the posture.",
+      "verdict": "PASS",
+      "evidence_key": "receipt_completeness",
+      "evidence": "Human-readable receipts include summary and deeper-dive sections."
+    },
+    {
+      "id": 22,
+      "requirement": "The workbench renders the redacted input, structured episode, node methodology, distributions, range, median, ensemble disagreement, graph posture, clinician summary, deeper-dive artifacts, receipts, and validation status.",
+      "verdict": "PASS",
+      "evidence_key": "workbench_completeness",
+      "evidence": "Workbench renders summary, methodology, receipts, validation status, and deeper-dive artifact index."
+    },
+    {
+      "id": 23,
+      "requirement": "Automated validation reports cover schema validity, future leakage, redaction gating, expected posture agreement on fixtures, omission detection, commission warning detection, therapy-response integration, next-best-information usefulness, node-audit completeness, receipt completeness, workbench completeness, app-flow completeness, summary completeness, and forbidden phrase violations.",
+      "verdict": "PASS",
+      "evidence_key": "validation/reports/latest.json",
+      "evidence": "Validation report covers schema, leakage, redaction, fixture agreement, detection categories, node audit, receipts, workbench, app flow, summary, and forbidden phrases."
+    },
+    {
+      "id": 24,
+      "requirement": "The project documents what is implemented, what is deferred, and what would be required before any real clinical, prospective, production, or live-evidence use.",
+      "verdict": "PASS",
+      "evidence_key": "docs/18_deterministic_poc_status.md",
+      "evidence": "Status document separates implemented, deferred, required-before-real-use, and not-claimed boundaries."
+    },
+    {
+      "id": 25,
+      "requirement": "Full local verification commands pass and git diff --check is clean.",
+      "verdict": "PENDING",
+      "evidence_key": "live verification commands",
+      "evidence": "Run the final verification command set after this generated audit is committed; this item is intentionally not inferred from static files."
+    }
+  ]
+}

@@ -28,6 +28,7 @@ sentinel-workbench-approve-constructed-input = "sentinel_workbench.approval:main
 sentinel-workbench-run-approved-demo = "sentinel_workbench.demo_run:main"
 sentinel-workbench-local-demo = "sentinel_workbench.local_app:main"
 sentinel-workbench-openrouter-compare = "sentinel_workbench.openrouter_compare:main"
+sentinel-workbench-goal-audit = "sentinel_workbench.goal_audit:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

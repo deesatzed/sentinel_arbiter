@@ -1,56 +1,49 @@
 # 21 - GOAL.md Completion Audit
 
-Date: 2026-06-11
+Current audit replaces the older 16-item audit with a 25-item map to the current `GOAL.md` Full Demo Proof Of Done list.
 
-Verdict: PASS for the transparent local demo milestone in `GOAL.md`.
+Proof items: 25
+Pass count: 24
+All pass: False
 
-This audit maps each `GOAL.md` Full Demo Proof Of Done item to current repo evidence. Sentinel remains a local deterministic governance-review POC using synthetic or constructed/deidentified-style input only. This audit does not claim clinical safety, production readiness, regulatory compliance, or clinical outcome benefit.
+Sentinel remains a local deterministic governance-review POC. This audit does not claim clinical safety, production readiness, regulatory compliance, or clinical outcome benefit.
 
-## Proof Items
+## Full Demo Proof Of Done
 
-| # | Requirement | Verdict | Evidence |
-|---|---|---|---|
-| 1 | A user can run a local CLI command with constructed text input and receive a redaction report plus draft structured episode. | PASS | `PYTHONPATH=src python3 -m sentinel_workbench.constructed_intake --input data/constructed_inputs/constructed_demo_case.txt --out data/prepared_inputs/constructed_demo_case --episode-id constructed_demo_case --title "Constructed demo case"` writes `redaction_report.json`, `redacted_input.txt`, and `draft_episode.json`. |
-| 2 | Residual PII/PHI risk is detected and blocks or quarantines unsafe input. | PASS | `validation/reports/latest.json` has `redaction_gating.unsafe_residual_blocks=true` and `redaction_gating.unsafe_residual_quarantines=true`; `tests/test_phase_b_constructed_intake.py` covers block and quarantine paths. |
-| 3 | A reviewer-approved structured episode can be saved and used for deterministic analysis. | PASS | `data/prepared_inputs/constructed_demo_case/approval_manifest.json`, `approval_trace.json`, and `approved_episode.json` exist; `demo_run` produced `data/prepared_inputs/constructed_demo_case/analysis/review.html` and constructed-demo receipts. |
-| 4 | Synthetic and constructed demo inputs validate against schemas. | PASS | `PYTHONPATH=src python3 -m sentinel_workbench.validate data/cases` reports `validated=7 errors=0`; approval validation reports `approved_episode=constructed_demo_case status=approved`; JSON syntax checks pass for cases, prepared inputs, receipts, schemas, and reports. |
-| 5 | Hidden future facts cannot enter current-time node computation. | PASS | `validation/reports/latest.json` has `future_leakage_failures=0`; tests cover T4 blocking from T0-T3 replay. |
-| 6 | Every graph node has a `NodeAudit` or equivalent schema-backed audit object. | PASS | `validation/reports/latest.json` has `node_audit_completeness.complete=true`, `case_count=7`, `expected_nodes_per_case=13`, no missing nodes, no incomplete nodes. |
-| 7 | Every node audit has dependencies, evidence refs, value, range, median, distribution kind, confidence, method, and sensitivity note. | PASS | `tests/test_phase_d_node_audit.py` and `tests/test_phase6_receipts.py` validate node audit fields; constructed-demo receipt has 13 node audits and no incomplete audit records. |
-| 8 | Every ensemble contribution is accepted, rejected, or downgraded with a reason. | PASS | `validation/reports/latest.json` has `ensemble_contribution_completeness.complete=true`, `contribution_count=91`, `rejected_input_count=112`, no missing dispositions, no invalid node targets. |
-| 9 | The graph computes final Sentinel posture from normalized typed node values. | PASS | `src/sentinel_workbench/graph.py` computes deterministic posture from typed `DecisionEpisode` fields; `src/sentinel_workbench/ensemble.py` normalizes static inputs without deciding final posture; `tests/test_phase3_prudence_graph.py` and `tests/test_phase_e_ensemble_contributions.py` cover this boundary. |
-| 10 | Final posture remains one of the Sentinel posture categories, not a disposition recommendation. | PASS | Pydantic posture enum constrains outputs; forbidden phrase scan reports only explicit safety-rule/test/invalid-fixture strings; `validation/reports/latest.json` has `forbidden_phrase_violations=0`. |
-| 11 | JSON receipts include redaction, intake, node audit, ensemble, trace, graph, and signature-placeholder fields. | PASS | Constructed-demo JSON receipt includes `input_hashes.raw_input_sha256`, `workflow_artifacts.redaction_report_sha256`, draft/approved episode hashes, `approval_trace_sha256`, `node_audit_bundle`, `ensemble_contribution_bundle`, graph fields, and `signature_placeholder`. |
-| 12 | Human-readable receipts explain known facts, missing inputs, what would change discussion, facility-based monitoring/treatment value, non-inpatient alternatives, commission concerns, omission concerns, therapy-response concerns, and graph rationale. | PASS | Markdown receipt renderer includes all required human summary sections; `tests/test_phase6_receipts.py` checks required sections and forbidden phrase safety. |
-| 13 | The workbench renders redacted input, structured episode, node methodology, distributions, range, median, ensemble disagreement, graph posture, receipts, and validation status. | PASS | `data/prepared_inputs/constructed_demo_case/analysis/review.html` renders redacted input and approved structured episode; `data/workbench/index.html` renders timeline, node audit methodology, ensemble contribution panel, graph posture, receipt links, and evaluation dashboard; `validation/reports/latest.json` has `workbench_completeness.complete=true`. |
-| 14 | Automated validation reports cover schema validity, future leakage, redaction gating, expected posture agreement, omission detection, commission warning detection, therapy-response integration, next-best-information usefulness, node-audit completeness, receipt completeness, workbench completeness, and forbidden phrase violations. | PASS | `validation/reports/latest.json` contains `schema_validity`, `future_leakage_failures`, `redaction_gating`, `expected_posture_agreement`, `automated_validation`, `node_audit_completeness`, `receipt_completeness`, `workbench_completeness`, `local_app_completeness`, and `forbidden_phrase_violations`. |
-| 15 | The project documents what is implemented, deferred, and required before real clinical, prospective, production, or live-evidence use. | PASS | `docs/18_deterministic_poc_status.md` separates implemented deterministic POC, deferred items, required pre-real-use controls, and not-claimed boundaries. |
-| 16 | Full local verification commands pass and `git diff --check` is clean. | PASS | Latest verification: `python3 -m pytest -q` passed with 57 tests; case validation and static input validation passed; JSON syntax checks passed; `git diff --check` passed; install dry-run succeeded with only the pre-existing `~ecret-sweep` environment warning. |
+| # | Requirement | Verdict | Evidence Surface | Evidence |
+|---:|---|---|---|---|
+| 1 | A user can open the local app and choose either review question A or B before input is processed. | PASS | `local_app_completeness` | Local app exposes both review questions and requires Pre-process workflow. |
+| 2 | The selected review question is saved into the run manifest, receipts, and summary. | PASS | `receipt_completeness, summary_completeness` | Selected review question is present in receipts and summary framing. |
+| 3 | A user can paste redacted text or upload a constructed/deidentified local file and click Pre-process. | PASS | `local_app_completeness` | Paste and upload paths are represented in the local app proof payload. |
+| 4 | A user can run a local CLI command with constructed text input and receive a redaction report plus draft structured episode. | PASS | `redaction_gating` | Constructed input path emits a redaction report and prepared draft artifacts. |
+| 5 | Residual PII/PHI risk is detected and blocks or quarantines unsafe input. | PASS | `redaction_gating` | Residual risk block and quarantine behavior are both checked. |
+| 6 | A reviewer-approved structured episode can be saved and used for deterministic analysis. | PASS | `local_app_completeness` | Approved structured episode can be run through the deterministic analysis endpoint. |
+| 7 | Synthetic and constructed demo inputs validate against schemas. | PASS | `schema_validity, redaction_gating` | Synthetic case library and constructed demo artifact path validate. |
+| 8 | Hidden future facts cannot enter current-time node computation. | PASS | `future_leakage_failures` | Current validation report has zero future-leakage failures. |
+| 9 | Every graph node has a NodeAudit or equivalent schema-backed audit object. | PASS | `node_audit_completeness` | Every graph node has a node audit. |
+| 10 | Every node audit has dependencies, evidence refs, value, range, median, distribution kind, confidence, method, and sensitivity note. | PASS | `node_audit_completeness` | Node audits have required estimate, evidence, dependency, and sensitivity fields. |
+| 11 | The app displays Node Audit Methodology after pre-processing and before processing. | PASS | `local_app_completeness` | Node Audit Methodology is visible before processing. |
+| 12 | A reviewer can choose OK, Adjust, or Re-check selected nodes; adjustments require confirmation before replacing generated methodology. | PASS | `local_app_completeness` | OK, Adjust, and Re-check selected-node controls are present and traced. |
+| 13 | Every ensemble contribution is accepted, rejected, or downgraded with a reason. | PASS | `ensemble_contribution_completeness` | Every ensemble contribution has a disposition and reason. |
+| 14 | The app displays Ensemble Contributions before Process. | PASS | `local_app_completeness` | Ensemble Contributions are visible in the pre-process/review flow before Process. |
+| 15 | The graph computes final Sentinel posture from normalized typed node values. | PASS | `expected_posture_agreement` | Graph posture is computed from deterministic typed fixture runs. |
+| 16 | Final posture remains one of the Sentinel posture categories, not a disposition recommendation. | PASS | `forbidden_phrase_violations` | Forbidden disposition-language scan reports zero generated-artifact violations. |
+| 17 | The primary result is a clinician-readable governance summary of no more than one or two short paragraphs. | PASS | `summary_completeness` | Primary clinician summary is concise and machine-checked. |
+| 18 | The primary summary explains what the result means for the selected review question and why, including the main uncertainty drivers. | PASS | `summary_completeness` | Summary includes selected-question framing and governance boundary. |
+| 19 | A Deeper Dive button exposes node audit tables, ensemble tables, receipts, trace hashes, validation status, structured episode, and raw JSON/Markdown artifacts. | PASS | `local_app_completeness` | Deeper Dive exposes trace hashes and raw JSON/Markdown receipt links. |
+| 20 | JSON receipts include selected review question, redaction, intake, node audit, ensemble, trace, graph, and signature-placeholder fields. | PASS | `receipt_completeness` | JSON receipts include selected question and required audit fields. |
+| 21 | Human-readable receipts explain what was known, what was missing, what would have changed the discussion, what facility-based monitoring or treatment might add, what non-inpatient alternatives might add, commission concerns, omission concerns, therapy-response concerns, and why the graph selected the posture. | PASS | `receipt_completeness` | Human-readable receipts include summary and deeper-dive sections. |
+| 22 | The workbench renders the redacted input, structured episode, node methodology, distributions, range, median, ensemble disagreement, graph posture, clinician summary, deeper-dive artifacts, receipts, and validation status. | PASS | `workbench_completeness` | Workbench renders summary, methodology, receipts, validation status, and deeper-dive artifact index. |
+| 23 | Automated validation reports cover schema validity, future leakage, redaction gating, expected posture agreement on fixtures, omission detection, commission warning detection, therapy-response integration, next-best-information usefulness, node-audit completeness, receipt completeness, workbench completeness, app-flow completeness, summary completeness, and forbidden phrase violations. | PASS | `validation/reports/latest.json` | Validation report covers schema, leakage, redaction, fixture agreement, detection categories, node audit, receipts, workbench, app flow, summary, and forbidden phrases. |
+| 24 | The project documents what is implemented, what is deferred, and what would be required before any real clinical, prospective, production, or live-evidence use. | PASS | `docs/18_deterministic_poc_status.md` | Status document separates implemented, deferred, required-before-real-use, and not-claimed boundaries. |
+| 25 | Full local verification commands pass and git diff --check is clean. | PENDING | `live verification commands` | Run the final verification command set after this generated audit is committed; this item is intentionally not inferred from static files. |
 
-## Final Verification Commands
+## Verification Commands
 
 ```bash
 python3 -m pytest -q
 PYTHONPATH=src python3 -m sentinel_workbench.validate data/cases
-PYTHONPATH=src python3 -m sentinel_workbench.static_inputs --static-inputs data/static_inputs/static_inputs.json --case-dir data/cases
-PYTHONPATH=src python3 -m sentinel_workbench.constructed_intake --input data/constructed_inputs/constructed_demo_case.txt --out data/prepared_inputs/constructed_demo_case --episode-id constructed_demo_case --title "Constructed demo case"
-PYTHONPATH=src python3 -m sentinel_workbench.approval --prepared-dir data/prepared_inputs/constructed_demo_case --reviewer-id reviewer_demo --approval-note "Demo structured episode reviewed for local deterministic workflow."
-PYTHONPATH=src python3 -m sentinel_workbench.approval --validate-approved data/prepared_inputs/constructed_demo_case
-PYTHONPATH=src python3 -m sentinel_workbench.demo_run --prepared-dir data/prepared_inputs/constructed_demo_case --static-inputs data/static_inputs/static_inputs.json --out data/prepared_inputs/constructed_demo_case/analysis
-PYTHONPATH=src python3 -m sentinel_workbench.receipts --case-dir data/cases --static-inputs data/static_inputs/static_inputs.json --out data/receipts
-PYTHONPATH=src python3 -m sentinel_workbench.schema_export schemas/ed_decision_episode.schema.json
 PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts
-PYTHONPATH=src python3 -m sentinel_workbench.workbench --case-dir data/cases --receipt-dir data/receipts --report validation/reports/latest.json --out data/workbench/index.html
-python3 -m pip install -e . --dry-run --no-deps
+PYTHONPATH=src python3 -m sentinel_workbench.goal_audit --out-json validation/reports/goal_completion_audit.json --out-markdown docs/21_goal_completion_audit.md
 git diff --check
 ```
-
-## Remaining Non-Completion Work
-
-These are not required for the transparent deterministic local demo milestone but remain future roadmap items:
-
-- fuller FastAPI or frontend implementation,
-- optional companion prose or LLM mode,
-- model-swap and prompt-ablation evaluation,
-- reviewer authentication and multi-user workflow,
-- production signing, deployment, compliance, and clinical safety validation.

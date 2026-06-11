@@ -347,4 +347,6 @@ Implemented/deferred boundaries and requirements before real clinical, prospecti
 
 Repository publishing notes are in `docs/19_repository_publishing.md`.
 
-The requirement-by-requirement transparent-demo completion audit is saved in `docs/21_goal_completion_audit.md`.
+The requirement-by-requirement transparent-demo completion audit is saved in `docs/21_goal_completion_audit.md`, with machine-readable output in `validation/reports/goal_completion_audit.json`.
+
+The current audit maps all 25 `GOAL.md` proof-of-done items. It reports 24 static-artifact passes and leaves item 25 pending until the final live verification command set and clean tracked diff are proven after the latest edits.
