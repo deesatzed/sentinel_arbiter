@@ -257,6 +257,29 @@ http://127.0.0.1:8765
 
 The local app lets a reviewer paste constructed/deidentified-style text, run deterministic redaction, inspect the redacted text and editable draft episode JSON, approve the structured episode, run deterministic analysis, and review the generated HTML/receipt output. The default app workspace is `.sentinel_local_demo/`, which is gitignored.
 
+## OpenRouter model comparison
+
+The OpenRouter harness is optional and comparison-only. Deterministic Sentinel remains the authority; model outputs are saved as local artifacts for review and are not used as final graph judgment.
+
+Configure local `.env` values without committing secrets:
+
+```text
+OPENROUTER_API_KEY=...
+MODEL_1=...
+MODEL_2=...
+```
+
+Run the limited constructed challenge case:
+
+```bash
+PYTHONPATH=src python3 -m sentinel_workbench.openrouter_compare \
+  --input data/model_comparison/challenging_constructed_case.txt \
+  --out artifacts/model_comparison/challenging_case \
+  --review-question disposition_information_sufficiency
+```
+
+The report is written to `artifacts/model_comparison/challenging_case/comparison_report.md`. The `artifacts/` directory is gitignored because it can contain raw model responses.
+
 ## Validation report coverage
 
 `validation/reports/latest.json` now includes explicit proof payloads for:

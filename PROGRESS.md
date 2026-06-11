@@ -671,3 +671,29 @@
 
 - The prior transparent local demo remains the baseline substrate.
 - The new active target is to build the staged clinician-facing UX over the existing deterministic pipeline without weakening redaction, reviewer approval, node audit, ensemble, receipt, or safety constraints.
+
+## 2026-06-11 - OpenRouter Model Comparison Harness And First Run
+
+### Completed So Far
+
+- Added a CLI-first OpenRouter comparison harness in `src/sentinel_workbench/openrouter_compare.py`.
+- Added `.env.example` placeholders for `OPENROUTER_API_KEY` and numbered `MODEL_N` values without committing local secrets.
+- Added a limited constructed challenge example in `data/model_comparison/challenging_constructed_case.txt`.
+- Added tests for `.env` loading, JSON extraction, node-assessment validation, prompt construction, comparison reporting, and console-script registration.
+- Ran the first OpenRouter comparison with seven local `.env` models, then tightened the prompt and reran into `artifacts/model_comparison/challenging_case_v2/`.
+
+### Verification Evidence
+
+- `python3 -m pytest tests/test_openrouter_compare.py -q` passed: `7 passed`.
+- `python3 -m pytest -q` passed: `64 passed`.
+- Live comparison report written locally:
+  - `artifacts/model_comparison/challenging_case_v2/comparison_report.json`
+  - `artifacts/model_comparison/challenging_case_v2/comparison_report.md`
+
+### Current State
+
+- Deterministic Sentinel remains the authority; OpenRouter outputs are comparison artifacts only.
+- On the challenge case, `deepseek/deepseek-v4-pro` and `x-ai/grok-4.3` produced valid structured outputs that aligned closely with deterministic node values.
+- `qwen/qwen3.7-max` produced parseable structured output but shifted several nodes substantially and used action-oriented wording that needs stricter wording gates before app use.
+- `google/gemini-3.5-flash`, `nvidia/nemotron-3-ultra-550b-a55b`, and `stepfun/step-3.7-flash` produced invalid or truncated JSON in this run.
+- `anthropic/claude-haiku-latest` was rejected by OpenRouter as an invalid model ID.

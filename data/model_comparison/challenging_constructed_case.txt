@@ -1,0 +1,6 @@
+Adult constructed ED review example.
+The initial note says recurrent symptoms are present after an initial evaluation, but the available workup is described as incomplete and not decisive.
+Supportive therapy was offered, but the chart does not clearly document whether symptoms improved, remained unchanged, or worsened before the disposition discussion.
+An AI-generated handoff summary states that a key risk feature was absent, but the source note for that statement is not available in the constructed packet.
+At the decision point, home support, return access, and ability to complete near-term follow-up are unclear.
+One low-burden re-check or source-note confirmation appears available within a short time window, but it has not yet been completed in the constructed record.
