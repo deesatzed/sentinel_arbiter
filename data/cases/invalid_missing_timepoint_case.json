@@ -1,0 +1,80 @@
+{
+  "episode_id": "synthetic_ed_case_invalid_missing_timepoint",
+  "title": "Synthetic ED replay fixture missing a required timepoint",
+  "domain": "emergency_department_disposition_replay",
+  "decision_point_type": "admission_vs_non_inpatient_alternative",
+  "case_syntheticity": "synthetic",
+  "governance_question": "Was the posture warranted at the decision time using only available information?",
+  "forbidden_use_notice": "Synthetic local governance review fixture. Not for patient care, orders, diagnosis, treatment, or disposition instructions.",
+  "description": "Invalid fixture intentionally omits T2 for validator coverage.",
+  "actors": [],
+  "timepoints": [
+    {
+      "timepoint_id": "T0_triage",
+      "sequence_index": 0,
+      "time_label": "Arrival and triage",
+      "available_facts": [],
+      "information_gaps": [],
+      "pending_information": [],
+      "offered_therapies": [],
+      "therapy_response_observations": [],
+      "proposed_disposition_posture_under_review": {
+        "posture_under_review_id": "posture_invalid_t0",
+        "stated_plan_category": "unclear",
+        "assertiveness": "low",
+        "source_actor": "system",
+        "rationale_available_at_time": "Invalid fixture setup.",
+        "known_constraints": []
+      },
+      "hidden_future_facts": []
+    },
+    {
+      "timepoint_id": "T1_initial_workup",
+      "sequence_index": 1,
+      "time_label": "Initial workup available",
+      "available_facts": [],
+      "information_gaps": [],
+      "pending_information": [],
+      "offered_therapies": [],
+      "therapy_response_observations": [],
+      "proposed_disposition_posture_under_review": {
+        "posture_under_review_id": "posture_invalid_t1",
+        "stated_plan_category": "unclear",
+        "assertiveness": "low",
+        "source_actor": "system",
+        "rationale_available_at_time": "Invalid fixture setup.",
+        "known_constraints": []
+      },
+      "hidden_future_facts": []
+    },
+    {
+      "timepoint_id": "T3_disposition_decision",
+      "sequence_index": 3,
+      "time_label": "Decision point",
+      "available_facts": [],
+      "information_gaps": [],
+      "pending_information": [],
+      "offered_therapies": [],
+      "therapy_response_observations": [],
+      "proposed_disposition_posture_under_review": {
+        "posture_under_review_id": "posture_invalid_t3",
+        "stated_plan_category": "unclear",
+        "assertiveness": "low",
+        "source_actor": "system",
+        "rationale_available_at_time": "Invalid fixture setup.",
+        "known_constraints": []
+      },
+      "hidden_future_facts": []
+    }
+  ],
+  "expected_outputs": {
+    "expected_final_posture": "INDETERMINATE",
+    "covered_case_patterns": ["material_missing_input_before_disposition"],
+    "expected_material_gaps": [],
+    "expected_omission_flags": [],
+    "expected_commission_flags": [],
+    "expected_therapy_response_flags": [],
+    "expected_next_best_information": [],
+    "expected_future_leakage_blocked": true
+  }
+}

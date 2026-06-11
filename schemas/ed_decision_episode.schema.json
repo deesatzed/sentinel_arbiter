@@ -1,0 +1,748 @@
+{
+  "$defs": {
+    "AccessStatus": {
+      "enum": [
+        "clear",
+        "unclear",
+        "limited",
+        "unknown"
+      ],
+      "title": "AccessStatus",
+      "type": "string"
+    },
+    "Actor": {
+      "additionalProperties": false,
+      "properties": {
+        "actor_id": {
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "actor_type": {
+          "$ref": "#/$defs/ActorType"
+        },
+        "role": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Role"
+        }
+      },
+      "required": [
+        "actor_id",
+        "actor_type"
+      ],
+      "title": "Actor",
+      "type": "object"
+    },
+    "ActorType": {
+      "enum": [
+        "human",
+        "ai",
+        "system",
+        "patient",
+        "other"
+      ],
+      "title": "ActorType",
+      "type": "string"
+    },
+    "Assertiveness": {
+      "enum": [
+        "low",
+        "moderate",
+        "high",
+        "definitive"
+      ],
+      "title": "Assertiveness",
+      "type": "string"
+    },
+    "Burden": {
+      "enum": [
+        "low",
+        "moderate",
+        "high",
+        "very_high"
+      ],
+      "title": "Burden",
+      "type": "string"
+    },
+    "CasePattern": {
+      "enum": [
+        "material_missing_input_before_disposition",
+        "therapy_offered_documented_improvement",
+        "therapy_offered_nonresponse_or_unclear_response",
+        "therapy_plausibly_indicated_but_not_considered",
+        "discharge_home_plan_feasibility_problem",
+        "admission_or_observation_limited_added_value",
+        "ai_derived_or_weakly_sourced_fact_driving_decision"
+      ],
+      "title": "CasePattern",
+      "type": "string"
+    },
+    "CaseSyntheticity": {
+      "enum": [
+        "synthetic",
+        "deidentified_style_synthetic"
+      ],
+      "title": "CaseSyntheticity",
+      "type": "string"
+    },
+    "DecisionPointType": {
+      "enum": [
+        "admission_vs_non_inpatient_alternative",
+        "observation_vs_home_plan",
+        "continued_ed_management_vs_disposition",
+        "other_ed_disposition_review"
+      ],
+      "title": "DecisionPointType",
+      "type": "string"
+    },
+    "ExpectedOutputs": {
+      "additionalProperties": false,
+      "properties": {
+        "expected_final_posture": {
+          "$ref": "#/$defs/Posture"
+        },
+        "covered_case_patterns": {
+          "items": {
+            "$ref": "#/$defs/CasePattern"
+          },
+          "minItems": 1,
+          "title": "Covered Case Patterns",
+          "type": "array"
+        },
+        "expected_material_gaps": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Expected Material Gaps",
+          "type": "array"
+        },
+        "expected_omission_flags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Expected Omission Flags",
+          "type": "array"
+        },
+        "expected_commission_flags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Expected Commission Flags",
+          "type": "array"
+        },
+        "expected_therapy_response_flags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Expected Therapy Response Flags",
+          "type": "array"
+        },
+        "expected_next_best_information": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Expected Next Best Information",
+          "type": "array"
+        },
+        "expected_future_leakage_blocked": {
+          "default": true,
+          "title": "Expected Future Leakage Blocked",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "expected_final_posture",
+        "covered_case_patterns"
+      ],
+      "title": "ExpectedOutputs",
+      "type": "object"
+    },
+    "Fact": {
+      "additionalProperties": false,
+      "properties": {
+        "fact_id": {
+          "title": "Fact Id",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "source_type": {
+          "$ref": "#/$defs/SourceType"
+        },
+        "verification_status": {
+          "$ref": "#/$defs/VerificationStatus"
+        },
+        "information_bucket": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/InformationBucket"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "decision_criticality": {
+          "default": 0.0,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Decision Criticality",
+          "type": "number"
+        },
+        "ai_provenance_depth": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Ai Provenance Depth",
+          "type": "integer"
+        },
+        "source_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "fact_id",
+        "text",
+        "source_type",
+        "verification_status"
+      ],
+      "title": "Fact",
+      "type": "object"
+    },
+    "FollowUpFeasibility": {
+      "additionalProperties": false,
+      "properties": {
+        "follow_up_access": {
+          "$ref": "#/$defs/AccessStatus",
+          "default": "unknown"
+        },
+        "home_support": {
+          "$ref": "#/$defs/AccessStatus",
+          "default": "unknown"
+        },
+        "return_access": {
+          "$ref": "#/$defs/AccessStatus",
+          "default": "unknown"
+        },
+        "barrier_facts": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Barrier Facts",
+          "type": "array"
+        },
+        "barrier_source_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Barrier Source Refs",
+          "type": "array"
+        },
+        "barrier_reliability": {
+          "$ref": "#/$defs/Reliability",
+          "default": "unknown"
+        }
+      },
+      "title": "FollowUpFeasibility",
+      "type": "object"
+    },
+    "InformationBucket": {
+      "enum": [
+        "known",
+        "known_but_weak",
+        "knowable_but_unknown",
+        "pending",
+        "unknowable_now"
+      ],
+      "title": "InformationBucket",
+      "type": "string"
+    },
+    "InformationGap": {
+      "additionalProperties": false,
+      "properties": {
+        "gap_id": {
+          "title": "Gap Id",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "gap_type": {
+          "title": "Gap Type",
+          "type": "string"
+        },
+        "knowability": {
+          "$ref": "#/$defs/Knowability"
+        },
+        "time_to_obtain_hours": {
+          "minimum": 0,
+          "title": "Time To Obtain Hours",
+          "type": "number"
+        },
+        "burden": {
+          "$ref": "#/$defs/Burden"
+        },
+        "decision_relevance_prior": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Decision Relevance Prior",
+          "type": "number"
+        },
+        "candidate_input_mapping": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Candidate Input Mapping"
+        }
+      },
+      "required": [
+        "gap_id",
+        "description",
+        "gap_type",
+        "knowability",
+        "time_to_obtain_hours",
+        "burden",
+        "decision_relevance_prior"
+      ],
+      "title": "InformationGap",
+      "type": "object"
+    },
+    "Knowability": {
+      "enum": [
+        "knowable_now",
+        "knowable_later",
+        "pending",
+        "unknowable_now"
+      ],
+      "title": "Knowability",
+      "type": "string"
+    },
+    "OfferedTherapy": {
+      "additionalProperties": false,
+      "properties": {
+        "therapy_id": {
+          "title": "Therapy Id",
+          "type": "string"
+        },
+        "therapy_category": {
+          "title": "Therapy Category",
+          "type": "string"
+        },
+        "offered_at_timepoint": {
+          "$ref": "#/$defs/RequiredTimepoint"
+        },
+        "accepted_or_received": {
+          "$ref": "#/$defs/TherapyReceiptStatus"
+        },
+        "response_observed": {
+          "$ref": "#/$defs/TherapyResponse"
+        },
+        "response_timepoint": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RequiredTimepoint"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "response_source_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Response Source Refs",
+          "type": "array"
+        },
+        "response_reliability": {
+          "$ref": "#/$defs/Reliability",
+          "default": "unknown"
+        },
+        "therapy_plausibly_indicated_but_not_considered": {
+          "default": false,
+          "title": "Therapy Plausibly Indicated But Not Considered",
+          "type": "boolean"
+        },
+        "not_considered_rationale": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Not Considered Rationale"
+        }
+      },
+      "required": [
+        "therapy_id",
+        "therapy_category",
+        "offered_at_timepoint",
+        "accepted_or_received",
+        "response_observed"
+      ],
+      "title": "OfferedTherapy",
+      "type": "object"
+    },
+    "PendingInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "pending_id": {
+          "title": "Pending Id",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "expected_time_hours": {
+          "minimum": 0,
+          "title": "Expected Time Hours",
+          "type": "number"
+        }
+      },
+      "required": [
+        "pending_id",
+        "description",
+        "expected_time_hours"
+      ],
+      "title": "PendingInfo",
+      "type": "object"
+    },
+    "PlanCategory": {
+      "enum": [
+        "hospital_based_monitoring_or_treatment",
+        "non_inpatient_plan",
+        "observation_or_recheck_plan",
+        "defer_pending_information",
+        "unclear"
+      ],
+      "title": "PlanCategory",
+      "type": "string"
+    },
+    "Posture": {
+      "enum": [
+        "PROCEED",
+        "PROCEED_WITH_UNCERTAINTY_DISCLOSURE",
+        "PROCEED_WITH_SAFETY_NET_OR_RECHECK",
+        "OBTAIN_SPECIFIC_INFORMATION_FIRST",
+        "PAUSE_AND_ESCALATE",
+        "DO_NOT_PROCEED",
+        "HUMAN_REVIEW_REQUIRED",
+        "INDETERMINATE"
+      ],
+      "title": "Posture",
+      "type": "string"
+    },
+    "ProposedDispositionPosture": {
+      "additionalProperties": false,
+      "properties": {
+        "posture_under_review_id": {
+          "title": "Posture Under Review Id",
+          "type": "string"
+        },
+        "stated_plan_category": {
+          "$ref": "#/$defs/PlanCategory"
+        },
+        "assertiveness": {
+          "$ref": "#/$defs/Assertiveness"
+        },
+        "source_actor": {
+          "title": "Source Actor",
+          "type": "string"
+        },
+        "rationale_available_at_time": {
+          "title": "Rationale Available At Time",
+          "type": "string"
+        },
+        "known_constraints": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Known Constraints",
+          "type": "array"
+        }
+      },
+      "required": [
+        "posture_under_review_id",
+        "stated_plan_category",
+        "assertiveness",
+        "source_actor",
+        "rationale_available_at_time"
+      ],
+      "title": "ProposedDispositionPosture",
+      "type": "object"
+    },
+    "Reliability": {
+      "enum": [
+        "high",
+        "moderate",
+        "low",
+        "unknown"
+      ],
+      "title": "Reliability",
+      "type": "string"
+    },
+    "RequiredTimepoint": {
+      "enum": [
+        "T0_triage",
+        "T1_initial_workup",
+        "T2_post_treatment_reassessment",
+        "T3_disposition_decision",
+        "T4_follow_up_or_outcome"
+      ],
+      "title": "RequiredTimepoint",
+      "type": "string"
+    },
+    "SourceType": {
+      "enum": [
+        "primary_patient_statement",
+        "primary_observation",
+        "structured_data",
+        "human_authored_note",
+        "ai_generated_text",
+        "ai_summary_of_text",
+        "ai_inference",
+        "external_evidence",
+        "unknown"
+      ],
+      "title": "SourceType",
+      "type": "string"
+    },
+    "TherapyReceiptStatus": {
+      "enum": [
+        "yes",
+        "no",
+        "partial",
+        "unknown"
+      ],
+      "title": "TherapyReceiptStatus",
+      "type": "string"
+    },
+    "TherapyResponse": {
+      "enum": [
+        "improved",
+        "no_clear_change",
+        "worse",
+        "not_reassessed",
+        "unknown"
+      ],
+      "title": "TherapyResponse",
+      "type": "string"
+    },
+    "TherapyResponseObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "observation_id": {
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "therapy_id": {
+          "title": "Therapy Id",
+          "type": "string"
+        },
+        "response_observed": {
+          "$ref": "#/$defs/TherapyResponse"
+        },
+        "observed_at_timepoint": {
+          "$ref": "#/$defs/RequiredTimepoint"
+        },
+        "source_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Refs",
+          "type": "array"
+        },
+        "reliability": {
+          "$ref": "#/$defs/Reliability",
+          "default": "unknown"
+        }
+      },
+      "required": [
+        "observation_id",
+        "therapy_id",
+        "response_observed",
+        "observed_at_timepoint"
+      ],
+      "title": "TherapyResponseObservation",
+      "type": "object"
+    },
+    "TimelineState": {
+      "additionalProperties": false,
+      "properties": {
+        "timepoint_id": {
+          "$ref": "#/$defs/RequiredTimepoint"
+        },
+        "sequence_index": {
+          "minimum": 0,
+          "title": "Sequence Index",
+          "type": "integer"
+        },
+        "time_label": {
+          "title": "Time Label",
+          "type": "string"
+        },
+        "available_facts": {
+          "items": {
+            "$ref": "#/$defs/Fact"
+          },
+          "title": "Available Facts",
+          "type": "array"
+        },
+        "information_gaps": {
+          "items": {
+            "$ref": "#/$defs/InformationGap"
+          },
+          "title": "Information Gaps",
+          "type": "array"
+        },
+        "pending_information": {
+          "items": {
+            "$ref": "#/$defs/PendingInfo"
+          },
+          "title": "Pending Information",
+          "type": "array"
+        },
+        "offered_therapies": {
+          "items": {
+            "$ref": "#/$defs/OfferedTherapy"
+          },
+          "title": "Offered Therapies",
+          "type": "array"
+        },
+        "therapy_response_observations": {
+          "items": {
+            "$ref": "#/$defs/TherapyResponseObservation"
+          },
+          "title": "Therapy Response Observations",
+          "type": "array"
+        },
+        "proposed_disposition_posture_under_review": {
+          "$ref": "#/$defs/ProposedDispositionPosture"
+        },
+        "follow_up_feasibility": {
+          "$ref": "#/$defs/FollowUpFeasibility"
+        },
+        "hidden_future_facts": {
+          "items": {
+            "$ref": "#/$defs/Fact"
+          },
+          "title": "Hidden Future Facts",
+          "type": "array"
+        }
+      },
+      "required": [
+        "timepoint_id",
+        "sequence_index",
+        "time_label",
+        "proposed_disposition_posture_under_review"
+      ],
+      "title": "TimelineState",
+      "type": "object"
+    },
+    "VerificationStatus": {
+      "enum": [
+        "verified_primary",
+        "verified_deterministic",
+        "verified_human",
+        "unverified_ai_derived",
+        "unverified_human_reported",
+        "unknown_provenance",
+        "conflicting",
+        "stale"
+      ],
+      "title": "VerificationStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "episode_id": {
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "domain": {
+      "const": "emergency_department_disposition_replay",
+      "title": "Domain",
+      "type": "string"
+    },
+    "decision_point_type": {
+      "$ref": "#/$defs/DecisionPointType"
+    },
+    "case_syntheticity": {
+      "$ref": "#/$defs/CaseSyntheticity"
+    },
+    "governance_question": {
+      "title": "Governance Question",
+      "type": "string"
+    },
+    "forbidden_use_notice": {
+      "title": "Forbidden Use Notice",
+      "type": "string"
+    },
+    "description": {
+      "title": "Description",
+      "type": "string"
+    },
+    "actors": {
+      "items": {
+        "$ref": "#/$defs/Actor"
+      },
+      "title": "Actors",
+      "type": "array"
+    },
+    "timepoints": {
+      "items": {
+        "$ref": "#/$defs/TimelineState"
+      },
+      "minItems": 1,
+      "title": "Timepoints",
+      "type": "array"
+    },
+    "expected_outputs": {
+      "$ref": "#/$defs/ExpectedOutputs"
+    }
+  },
+  "required": [
+    "episode_id",
+    "title",
+    "domain",
+    "decision_point_type",
+    "case_syntheticity",
+    "governance_question",
+    "forbidden_use_notice",
+    "description",
+    "timepoints",
+    "expected_outputs"
+  ],
+  "title": "DecisionEpisode",
+  "type": "object"
+}

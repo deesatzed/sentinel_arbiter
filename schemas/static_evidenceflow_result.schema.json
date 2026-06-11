@@ -1,0 +1,165 @@
+{
+  "$defs": {
+    "EvidenceCandidateInput": {
+      "additionalProperties": false,
+      "properties": {
+        "input_id_template": {
+          "title": "Input Id Template",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "input_category": {
+          "title": "Input Category",
+          "type": "string"
+        },
+        "burden": {
+          "title": "Burden",
+          "type": "string"
+        },
+        "time_to_obtain_hours": {
+          "minimum": 0,
+          "title": "Time To Obtain Hours",
+          "type": "number"
+        },
+        "result_distribution": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Result Distribution",
+          "type": "array"
+        },
+        "expected_posture_shift": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Expected Posture Shift",
+          "type": "number"
+        },
+        "preventability_leverage": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Preventability Leverage",
+          "type": "number"
+        }
+      },
+      "required": [
+        "input_id_template",
+        "description",
+        "input_category",
+        "burden",
+        "time_to_obtain_hours",
+        "expected_posture_shift",
+        "preventability_leverage"
+      ],
+      "title": "EvidenceCandidateInput",
+      "type": "object"
+    },
+    "EvidenceFlowOutputs": {
+      "additionalProperties": false,
+      "properties": {
+        "required_variables": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Required Variables",
+          "type": "array"
+        },
+        "missing_variables": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Variables",
+          "type": "array"
+        },
+        "candidate_inputs": {
+          "items": {
+            "$ref": "#/$defs/EvidenceCandidateInput"
+          },
+          "title": "Candidate Inputs",
+          "type": "array"
+        },
+        "evidence_support_strength": {
+          "default": 0,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Evidence Support Strength",
+          "type": "number"
+        },
+        "evidence_conflict_strength": {
+          "default": 0,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Evidence Conflict Strength",
+          "type": "number"
+        },
+        "uncertainty_notes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Uncertainty Notes",
+          "type": "array"
+        }
+      },
+      "title": "EvidenceFlowOutputs",
+      "type": "object"
+    },
+    "RequiredTimepoint": {
+      "enum": [
+        "T0_triage",
+        "T1_initial_workup",
+        "T2_post_treatment_reassessment",
+        "T3_disposition_decision",
+        "T4_follow_up_or_outcome"
+      ],
+      "title": "RequiredTimepoint",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "flow_id_template": {
+      "title": "Flow Id Template",
+      "type": "string"
+    },
+    "flow_type": {
+      "title": "Flow Type",
+      "type": "string"
+    },
+    "timepoint_id": {
+      "$ref": "#/$defs/RequiredTimepoint"
+    },
+    "outputs": {
+      "$ref": "#/$defs/EvidenceFlowOutputs"
+    },
+    "confidence": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "sources": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Sources",
+      "type": "array"
+    },
+    "evidence_version": {
+      "title": "Evidence Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "flow_id_template",
+    "flow_type",
+    "timepoint_id",
+    "outputs",
+    "confidence",
+    "evidence_version"
+  ],
+  "title": "EvidenceFlowTemplate",
+  "type": "object"
+}

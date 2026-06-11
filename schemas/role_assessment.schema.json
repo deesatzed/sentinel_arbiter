@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RoleAssessment",
+  "type": "object",
+  "required": ["assessment_id", "role_name", "timepoint_id", "findings", "overall_confidence"],
+  "properties": {
+    "assessment_id": {"type": "string"},
+    "role_name": {
+      "type": "string",
+      "enum": [
+        "prudent_layperson",
+        "prudent_provider",
+        "prudent_healthcare_ai",
+        "duty_to_inquire",
+        "risk_horizon",
+        "evidenceflow",
+        "red_team",
+        "defense",
+        "synthesizer"
+      ]
+    },
+    "timepoint_id": {"type": "string"},
+    "assessment_scope": {"type": "string"},
+    "findings": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/Finding"},
+      "minItems": 1
+    },
+    "overall_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "missing_information_identified": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "uncertainty_notes": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "sources_used": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "$defs": {
+    "Finding": {
+      "type": "object",
+      "required": ["finding_id", "finding_type", "structured_value", "confidence", "node_targets"],
+      "properties": {
+        "finding_id": {"type": "string"},
+        "finding_type": {
+          "type": "string",
+          "enum": [
+            "information_gap",
+            "decision_relevance",
+            "harm_clock_estimate",
+            "information_clock_estimate",
+            "recoverability_estimate",
+            "future_correction_opportunity",
+            "ai_provenance_warning",
+            "primary_source_confirmation_need",
+            "prudent_layperson_threshold",
+            "prudent_provider_threshold",
+            "prudent_ai_threshold",
+            "next_input_candidate",
+            "evidence_support",
+            "evidence_conflict",
+            "uncertainty_disclosure_need",
+            "escalation_need",
+            "safety_net_need"
+          ]
+        },
+        "structured_value": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "rationale_short": {"type": "string"},
+        "source_refs": {"type": "array", "items": {"type": "string"}},
+        "node_targets": {"type": "array", "items": {"type": "string"}},
+        "evidence_tier": {"type": "string", "enum": ["tier_1", "tier_2", "tier_3", "tier_4"]}
+      }
+    }
+  }
+}

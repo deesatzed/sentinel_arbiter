@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SentinelReceipt",
+  "type": "object",
+  "required": ["receipt_id", "episode_id", "timepoint_id", "final_posture", "decision_weight", "versions", "signature"],
+  "properties": {
+    "receipt_id": {"type": "string"},
+    "episode_id": {"type": "string"},
+    "timepoint_id": {"type": "string"},
+    "run_id": {"type": "string"},
+    "mode": {"type": "string", "enum": ["replay", "shadow", "live"]},
+    "input_hashes": {
+      "type": "object",
+      "additionalProperties": {"type": "string"}
+    },
+    "final_posture": {
+      "type": "string",
+      "enum": [
+        "PROCEED",
+        "PROCEED_WITH_UNCERTAINTY_DISCLOSURE",
+        "PROCEED_WITH_SAFETY_NET_OR_RECHECK",
+        "OBTAIN_SPECIFIC_INFORMATION_FIRST",
+        "PAUSE_AND_ESCALATE",
+        "DO_NOT_PROCEED",
+        "HUMAN_REVIEW_REQUIRED",
+        "INDETERMINATE"
+      ]
+    },
+    "decision_weight": {"type": "number", "minimum": 0, "maximum": 1},
+    "decision_weight_explanation": {"type": "string"},
+    "information_state_summary": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "ai_provenance_warnings": {
+      "type": "array",
+      "items": {"type": "object", "additionalProperties": true}
+    },
+    "next_best_inputs": {
+      "type": "array",
+      "items": {"type": "object", "additionalProperties": true}
+    },
+    "role_disagreement_map": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "graph_nodes": {
+      "type": "array",
+      "items": {"type": "object", "additionalProperties": true}
+    },
+    "versions": {
+      "type": "object",
+      "required": ["graph_version", "node_library_version", "prompt_versions", "model_versions"],
+      "properties": {
+        "graph_version": {"type": "string"},
+        "node_library_version": {"type": "string"},
+        "prompt_versions": {"type": "object", "additionalProperties": {"type": "string"}},
+        "model_versions": {"type": "object", "additionalProperties": {"type": "string"}},
+        "evidence_versions": {"type": "object", "additionalProperties": {"type": "string"}}
+      }
+    },
+    "signature": {"type": "string"},
+    "created_at": {"type": "string"}
+  }
+}

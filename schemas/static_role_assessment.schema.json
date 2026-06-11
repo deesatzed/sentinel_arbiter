@@ -1,0 +1,135 @@
+{
+  "$defs": {
+    "RequiredTimepoint": {
+      "enum": [
+        "T0_triage",
+        "T1_initial_workup",
+        "T2_post_treatment_reassessment",
+        "T3_disposition_decision",
+        "T4_follow_up_or_outcome"
+      ],
+      "title": "RequiredTimepoint",
+      "type": "string"
+    },
+    "StaticFinding": {
+      "additionalProperties": false,
+      "properties": {
+        "finding_id_template": {
+          "title": "Finding Id Template",
+          "type": "string"
+        },
+        "finding_type": {
+          "title": "Finding Type",
+          "type": "string"
+        },
+        "structured_value": {
+          "additionalProperties": true,
+          "title": "Structured Value",
+          "type": "object"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "rationale_short": {
+          "title": "Rationale Short",
+          "type": "string"
+        },
+        "source_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Refs",
+          "type": "array"
+        },
+        "node_targets": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Node Targets",
+          "type": "array"
+        },
+        "evidence_tier": {
+          "title": "Evidence Tier",
+          "type": "string"
+        }
+      },
+      "required": [
+        "finding_id_template",
+        "finding_type",
+        "confidence",
+        "rationale_short",
+        "node_targets",
+        "evidence_tier"
+      ],
+      "title": "StaticFinding",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "assessment_id_template": {
+      "title": "Assessment Id Template",
+      "type": "string"
+    },
+    "role_name": {
+      "title": "Role Name",
+      "type": "string"
+    },
+    "timepoint_id": {
+      "$ref": "#/$defs/RequiredTimepoint"
+    },
+    "assessment_scope": {
+      "title": "Assessment Scope",
+      "type": "string"
+    },
+    "findings": {
+      "items": {
+        "$ref": "#/$defs/StaticFinding"
+      },
+      "minItems": 1,
+      "title": "Findings",
+      "type": "array"
+    },
+    "overall_confidence": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Overall Confidence",
+      "type": "number"
+    },
+    "missing_information_identified": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Missing Information Identified",
+      "type": "array"
+    },
+    "uncertainty_notes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Uncertainty Notes",
+      "type": "array"
+    },
+    "sources_used": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Sources Used",
+      "type": "array"
+    }
+  },
+  "required": [
+    "assessment_id_template",
+    "role_name",
+    "timepoint_id",
+    "assessment_scope",
+    "findings",
+    "overall_confidence"
+  ],
+  "title": "RoleAssessmentTemplate",
+  "type": "object"
+}

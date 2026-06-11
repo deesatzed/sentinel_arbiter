@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EvidenceFlowResult",
+  "type": "object",
+  "required": ["flow_id", "flow_type", "timepoint_id", "outputs", "confidence"],
+  "properties": {
+    "flow_id": {"type": "string"},
+    "flow_type": {
+      "type": "string",
+      "enum": [
+        "guideline_dependency",
+        "next_best_input",
+        "high_risk_alternative",
+        "prudent_ai_conduct",
+        "evidence_comparator"
+      ]
+    },
+    "timepoint_id": {"type": "string"},
+    "outputs": {
+      "type": "object",
+      "properties": {
+        "required_variables": {"type": "array", "items": {"type": "string"}},
+        "missing_variables": {"type": "array", "items": {"type": "string"}},
+        "candidate_inputs": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/CandidateInput"}
+        },
+        "evidence_support_strength": {"type": "number", "minimum": 0, "maximum": 1},
+        "evidence_conflict_strength": {"type": "number", "minimum": 0, "maximum": 1},
+        "uncertainty_notes": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "sources": {"type": "array", "items": {"type": "string"}},
+    "evidence_version": {"type": "string"}
+  },
+  "$defs": {
+    "CandidateInput": {
+      "type": "object",
+      "required": ["input_id", "description", "burden", "time_to_obtain_hours", "expected_posture_shift"],
+      "properties": {
+        "input_id": {"type": "string"},
+        "description": {"type": "string"},
+        "input_category": {"type": "string"},
+        "burden": {"type": "string", "enum": ["low", "moderate", "high", "very_high"]},
+        "time_to_obtain_hours": {"type": "number", "minimum": 0},
+        "result_distribution": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["result_label", "probability", "posture_effect"],
+            "properties": {
+              "result_label": {"type": "string"},
+              "probability": {"type": "number", "minimum": 0, "maximum": 1},
+              "posture_effect": {"type": "string"},
+              "preventability_effect": {"type": "number", "minimum": -1, "maximum": 1}
+            }
+          }
+        },
+        "expected_posture_shift": {"type": "number", "minimum": 0, "maximum": 1},
+        "preventability_leverage": {"type": "number"}
+      }
+    }
+  }
+}

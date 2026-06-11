@@ -1,0 +1,119 @@
+{
+  "receipt_id": "receipt_synthetic_ed_case_007_T3_deterministic",
+  "episode_id": "synthetic_ed_case_007",
+  "timepoint_id": "T3_disposition_decision",
+  "run_id": "run_synthetic_ed_case_007_deterministic_v0_1",
+  "mode": "replay",
+  "input_hashes": {
+    "episode_sha256": "01b217f12634a2fa67751b4735117c835108aeeaba60dccefa99330b8cd723d1",
+    "static_inputs_sha256": "20c94073c06d70ca4cecac51c4c4dc67374f583e5a251791aab4676aebd4ac70"
+  },
+  "prompt_or_dotflow_versions": {
+    "prudent_layperson": "0.1.0",
+    "prudent_provider": "0.1.0",
+    "prudent_healthcare_ai": "0.1.0",
+    "duty_to_inquire": "0.1.0",
+    "risk_horizon": "0.1.0",
+    "red_team": "0.1.0",
+    "defense": "0.1.0",
+    "guideline_dependency": "static_fixture_v0",
+    "next_best_input": "static_fixture_v0",
+    "high_risk_alternative": "static_fixture_v0",
+    "prudent_ai_conduct": "static_fixture_v0"
+  },
+  "model_versions": {},
+  "evidence_versions": {
+    "guideline_dependency": "static_fixture_v0",
+    "next_best_input": "static_fixture_v0",
+    "high_risk_alternative": "static_fixture_v0",
+    "prudent_ai_conduct": "static_fixture_v0"
+  },
+  "graph_version": "deterministic_graph_v0.1",
+  "node_library_version": "ed_node_library_v0.1",
+  "available_fact_ids": [
+    "c007_t0_fact",
+    "c007_t1_fact",
+    "c007_t2_fact",
+    "c007_t3_fact"
+  ],
+  "blocked_future_fact_ids": [
+    "c007_future_fact"
+  ],
+  "node_values": {
+    "information_sufficiency": 0.9,
+    "material_gap_strength": 0.1,
+    "harm_clock": 0.43,
+    "information_clock": 0.0,
+    "recoverability": 0.95,
+    "future_correction_opportunity": 0.8,
+    "decision_weight": 0.25,
+    "ai_provenance_risk": 0.0,
+    "commission_risk": 0.0,
+    "omission_risk": 0.0,
+    "therapy_response_relevance": 0.0,
+    "next_best_information_rank": 0,
+    "preventability_opportunity_score": 0.0
+  },
+  "rejected_or_downgraded_findings": [
+    "hidden_future_facts_blocked",
+    "unsupported_gap_assertions_require_current_time_source"
+  ],
+  "role_disagreement_map": {
+    "static_role_count": 7,
+    "graph_posture_source": "deterministic_graph",
+    "notes": [
+      "Static role templates are structured inputs only.",
+      "The graph computes final posture."
+    ]
+  },
+  "commission_lane": {
+    "risk_score": 0.0,
+    "relevance_score": 0,
+    "findings": []
+  },
+  "omission_lane": {
+    "risk_score": 0.0,
+    "relevance_score": 0,
+    "findings": []
+  },
+  "therapy_response_lane": {
+    "risk_score": 0.0,
+    "relevance_score": 0.0,
+    "findings": []
+  },
+  "next_best_information_ranking": [],
+  "preventability_opportunity_score": 0.0,
+  "preventability_opportunity_explanation": "Preventability opportunity is a proxy derived from material gap strength, decision weight, information clock, and burden modifiers. It is not a claim of clinical harm prevention.",
+  "final_posture": "PROCEED_WITH_UNCERTAINTY_DISCLOSURE",
+  "decision_weight": 0.25,
+  "signature_placeholder": "UNSIGNED_DETERMINISTIC_POC",
+  "human_summary_sections": {
+    "what_was_known": [
+      "At decision time, the only known missing input is low expected relevance and higher burden."
+    ],
+    "what_was_missing": [
+      "Low-value background detail remains missing but is not material to the posture under review."
+    ],
+    "what_would_have_changed_the_discussion": [
+      "No next-best-information item was ranked above the materiality threshold."
+    ],
+    "what_hospital_based_monitoring_or_treatment_might_add": [
+      "The receipt records whether a hospital-based path had a specific monitoring, information, or therapy-response target in the current-time facts."
+    ],
+    "what_non_inpatient_alternatives_might_add": [
+      "The receipt records whether support, follow-up access, return access, and recheck feasibility were represented in the current-time facts."
+    ],
+    "commission_concerns": [
+      "No commission-lane concern was raised by the deterministic graph."
+    ],
+    "omission_concerns": [
+      "No omission-lane concern was raised by the deterministic graph."
+    ],
+    "therapy_response_concerns": [
+      "No therapy-response concern was raised by the deterministic graph."
+    ],
+    "why_the_graph_selected_the_posture": [
+      "The graph selected PROCEED_WITH_UNCERTAINTY_DISCLOSURE from bounded node values, with decision weight 0.25 and preventability opportunity 0.0."
+    ]
+  }
+}

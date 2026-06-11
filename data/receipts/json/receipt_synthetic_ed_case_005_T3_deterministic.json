@@ -1,0 +1,125 @@
+{
+  "receipt_id": "receipt_synthetic_ed_case_005_T3_deterministic",
+  "episode_id": "synthetic_ed_case_005",
+  "timepoint_id": "T3_disposition_decision",
+  "run_id": "run_synthetic_ed_case_005_deterministic_v0_1",
+  "mode": "replay",
+  "input_hashes": {
+    "episode_sha256": "c2460e293423f6a7d64884abfc3bf160ffdf9edad586f46a80a018b1eb8a18eb",
+    "static_inputs_sha256": "20c94073c06d70ca4cecac51c4c4dc67374f583e5a251791aab4676aebd4ac70"
+  },
+  "prompt_or_dotflow_versions": {
+    "prudent_layperson": "0.1.0",
+    "prudent_provider": "0.1.0",
+    "prudent_healthcare_ai": "0.1.0",
+    "duty_to_inquire": "0.1.0",
+    "risk_horizon": "0.1.0",
+    "red_team": "0.1.0",
+    "defense": "0.1.0",
+    "guideline_dependency": "static_fixture_v0",
+    "next_best_input": "static_fixture_v0",
+    "high_risk_alternative": "static_fixture_v0",
+    "prudent_ai_conduct": "static_fixture_v0"
+  },
+  "model_versions": {},
+  "evidence_versions": {
+    "guideline_dependency": "static_fixture_v0",
+    "next_best_input": "static_fixture_v0",
+    "high_risk_alternative": "static_fixture_v0",
+    "prudent_ai_conduct": "static_fixture_v0"
+  },
+  "graph_version": "deterministic_graph_v0.1",
+  "node_library_version": "ed_node_library_v0.1",
+  "available_fact_ids": [
+    "c005_t0_fact",
+    "c005_t1_fact",
+    "c005_t2_fact",
+    "c005_t3_fact"
+  ],
+  "blocked_future_fact_ids": [
+    "c005_future_fact"
+  ],
+  "node_values": {
+    "information_sufficiency": 0.1,
+    "material_gap_strength": 0.9,
+    "harm_clock": 0.67,
+    "information_clock": 0.9917,
+    "recoverability": 0.55,
+    "future_correction_opportunity": 0.35,
+    "decision_weight": 0.565,
+    "ai_provenance_risk": 0.0,
+    "commission_risk": 0.75,
+    "omission_risk": 0.9,
+    "therapy_response_relevance": 0.0,
+    "next_best_information_rank": 1,
+    "preventability_opportunity_score": 0.4539
+  },
+  "rejected_or_downgraded_findings": [
+    "hidden_future_facts_blocked",
+    "unsupported_gap_assertions_require_current_time_source"
+  ],
+  "role_disagreement_map": {
+    "static_role_count": 7,
+    "graph_posture_source": "deterministic_graph",
+    "notes": [
+      "Static role templates are structured inputs only.",
+      "The graph computes final posture."
+    ]
+  },
+  "commission_lane": {
+    "risk_score": 0.75,
+    "relevance_score": 0,
+    "findings": [
+      "commission_overconfident_posture"
+    ]
+  },
+  "omission_lane": {
+    "risk_score": 0.9,
+    "relevance_score": 0,
+    "findings": [
+      "omission_home_plan_feasibility_gap"
+    ]
+  },
+  "therapy_response_lane": {
+    "risk_score": 0.0,
+    "relevance_score": 0.0,
+    "findings": []
+  },
+  "next_best_information_ranking": [
+    "clarify support, follow-up, and return access"
+  ],
+  "preventability_opportunity_score": 0.4539,
+  "preventability_opportunity_explanation": "Preventability opportunity is a proxy derived from material gap strength, decision weight, information clock, and burden modifiers. It is not a claim of clinical harm prevention.",
+  "final_posture": "OBTAIN_SPECIFIC_INFORMATION_FIRST",
+  "decision_weight": 0.565,
+  "signature_placeholder": "UNSIGNED_DETERMINISTIC_POC",
+  "human_summary_sections": {
+    "what_was_known": [
+      "At decision time, home support and return access are still not established."
+    ],
+    "what_was_missing": [
+      "Home-plan feasibility is unresolved."
+    ],
+    "what_would_have_changed_the_discussion": [
+      "clarify support, follow-up, and return access"
+    ],
+    "what_hospital_based_monitoring_or_treatment_might_add": [
+      "The receipt records whether a hospital-based path had a specific monitoring, information, or therapy-response target in the current-time facts."
+    ],
+    "what_non_inpatient_alternatives_might_add": [
+      "The receipt records whether support, follow-up access, return access, and recheck feasibility were represented in the current-time facts."
+    ],
+    "commission_concerns": [
+      "commission_overconfident_posture"
+    ],
+    "omission_concerns": [
+      "omission_home_plan_feasibility_gap"
+    ],
+    "therapy_response_concerns": [
+      "No therapy-response concern was raised by the deterministic graph."
+    ],
+    "why_the_graph_selected_the_posture": [
+      "The graph selected OBTAIN_SPECIFIC_INFORMATION_FIRST from bounded node values, with decision weight 0.565 and preventability opportunity 0.4539."
+    ]
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "episode_id": "synthetic_ed_case_002",
+  "title": "Synthetic ED replay with documented therapy improvement",
+  "domain": "emergency_department_disposition_replay",
+  "decision_point_type": "continued_ed_management_vs_disposition",
+  "case_syntheticity": "synthetic",
+  "governance_question": "Was the disposition posture warranted after documented response to therapy was available?",
+  "forbidden_use_notice": "Synthetic local governance review fixture. Not for patient care, orders, diagnosis, treatment, or disposition instructions.",
+  "description": "A synthetic case where offered therapy has documented improvement before the decision point.",
+  "actors": [{"actor_id": "clinician_002", "actor_type": "human", "role": "reviewed clinician"}],
+  "timepoints": [
+    {
+      "timepoint_id": "T0_triage",
+      "sequence_index": 0,
+      "time_label": "Arrival and triage",
+      "available_facts": [{"fact_id": "c002_t0_fact", "text": "Synthetic adult has a time-limited symptom concern and stable initial context.", "source_type": "primary_patient_statement", "verification_status": "verified_primary", "information_bucket": "known", "decision_criticality": 0.4, "ai_provenance_depth": 0, "source_refs": ["triage_note"]}],
+      "information_gaps": [],
+      "pending_information": [],
+      "offered_therapies": [],
+      "therapy_response_observations": [],
+      "proposed_disposition_posture_under_review": {"posture_under_review_id": "c002_p0", "stated_plan_category": "unclear", "assertiveness": "low", "source_actor": "clinician_002", "rationale_available_at_time": "No disposition posture yet.", "known_constraints": []},
+      "hidden_future_facts": []
+    },
+    {
+      "timepoint_id": "T1_initial_workup",
+      "sequence_index": 1,
+      "time_label": "Initial workup",
+      "available_facts": [{"fact_id": "c002_t1_fact", "text": "Initial structured information does not create a decisive governance concern in this synthetic fixture.", "source_type": "structured_data", "verification_status": "verified_deterministic", "information_bucket": "known", "decision_criticality": 0.5, "ai_provenance_depth": 0, "source_refs": ["structured_results"]}],
+      "information_gaps": [],
+      "pending_information": [{"pending_id": "c002_pending_response", "description": "Response to offered therapy is pending.", "expected_time_hours": 1.0}],
+      "offered_therapies": [{"therapy_id": "c002_therapy", "therapy_category": "synthetic_ed_therapy", "offered_at_timepoint": "T1_initial_workup", "accepted_or_received": "yes", "response_observed": "not_reassessed", "response_timepoint": null, "response_source_refs": [], "response_reliability": "unknown", "therapy_plausibly_indicated_but_not_considered": false, "not_considered_rationale": null}],
+      "therapy_response_observations": [],
+      "proposed_disposition_posture_under_review": {"posture_under_review_id": "c002_p1", "stated_plan_category": "defer_pending_information", "assertiveness": "moderate", "source_actor": "clinician_002", "rationale_available_at_time": "Therapy response is pending.", "known_constraints": ["response pending"]},
+      "hidden_future_facts": []
+    },
+    {
+      "timepoint_id": "T2_post_treatment_reassessment",
+      "sequence_index": 2,
+      "time_label": "Post-treatment reassessment",
+      "available_facts": [{"fact_id": "c002_t2_fact", "text": "The available reassessment documents improvement after the offered therapy.", "source_type": "human_authored_note", "verification_status": "verified_human", "information_bucket": "known", "decision_criticality": 0.8, "ai_provenance_depth": 0, "source_refs": ["reassessment_note"]}],
+      "information_gaps": [],
+      "pending_information": [],
+      "offered_therapies": [{"therapy_id": "c002_therapy", "therapy_category": "synthetic_ed_therapy", "offered_at_timepoint": "T1_initial_workup", "accepted_or_received": "yes", "response_observed": "improved", "response_timepoint": "T2_post_treatment_reassessment", "response_source_refs": ["reassessment_note"], "response_reliability": "high", "therapy_plausibly_indicated_but_not_considered": false, "not_considered_rationale": null}],
+      "therapy_response_observations": [{"observation_id": "c002_response", "therapy_id": "c002_therapy", "response_observed": "improved", "observed_at_timepoint": "T2_post_treatment_reassessment", "source_refs": ["reassessment_note"], "reliability": "high"}],
+      "proposed_disposition_posture_under_review": {"posture_under_review_id": "c002_p2", "stated_plan_category": "observation_or_recheck_plan", "assertiveness": "moderate", "source_actor": "clinician_002", "rationale_available_at_time": "The posture under review includes a documented response to therapy.", "known_constraints": []},
+      "hidden_future_facts": []
+    },
+    {
+      "timepoint_id": "T3_disposition_decision",
+      "sequence_index": 3,
+      "time_label": "Disposition decision",
+      "available_facts": [{"fact_id": "c002_t3_fact", "text": "At decision time, therapy response is documented and follow-up access is clear in the synthetic case.", "source_type": "human_authored_note", "verification_status": "verified_human", "information_bucket": "known", "decision_criticality": 0.7, "ai_provenance_depth": 0, "source_refs": ["decision_note"]}],
+      "information_gaps": [],
+      "pending_information": [],
+      "offered_therapies": [{"therapy_id": "c002_therapy", "therapy_category": "synthetic_ed_therapy", "offered_at_timepoint": "T1_initial_workup", "accepted_or_received": "yes", "response_observed": "improved", "response_timepoint": "T2_post_treatment_reassessment", "response_source_refs": ["reassessment_note"], "response_reliability": "high", "therapy_plausibly_indicated_but_not_considered": false, "not_considered_rationale": null}],
+      "therapy_response_observations": [{"observation_id": "c002_response", "therapy_id": "c002_therapy", "response_observed": "improved", "observed_at_timepoint": "T2_post_treatment_reassessment", "source_refs": ["reassessment_note"], "reliability": "high"}],
+      "proposed_disposition_posture_under_review": {"posture_under_review_id": "c002_p3", "stated_plan_category": "observation_or_recheck_plan", "assertiveness": "moderate", "source_actor": "clinician_002", "rationale_available_at_time": "Documented improvement is available to the review at decision time.", "known_constraints": []},
+      "follow_up_feasibility": {"follow_up_access": "clear", "home_support": "clear", "return_access": "clear", "barrier_facts": [], "barrier_source_refs": ["decision_note"], "barrier_reliability": "moderate"},
+      "hidden_future_facts": []
+    },
+    {
+      "timepoint_id": "T4_follow_up_or_outcome",
+      "sequence_index": 4,
+      "time_label": "Hidden validation label",
+      "available_facts": [{"fact_id": "c002_future_fact", "text": "Hidden synthetic follow-up label reserved only for retrospective evaluation.", "source_type": "human_authored_note", "verification_status": "verified_human", "information_bucket": "unknowable_now", "decision_criticality": 1.0, "ai_provenance_depth": 0, "source_refs": ["retrospective_label"]}],
+      "information_gaps": [],
+      "pending_information": [],
+      "offered_therapies": [],
+      "therapy_response_observations": [],
+      "proposed_disposition_posture_under_review": {"posture_under_review_id": "c002_p4", "stated_plan_category": "unclear", "assertiveness": "low", "source_actor": "system", "rationale_available_at_time": "Hidden from current-time replay.", "known_constraints": ["hidden from T0 through T3"]},
+      "hidden_future_facts": []
+    }
+  ],
+  "expected_outputs": {
+    "expected_final_posture": "PROCEED_WITH_SAFETY_NET_OR_RECHECK",
+    "covered_case_patterns": ["therapy_offered_documented_improvement"],
+    "expected_material_gaps": [],
+    "expected_omission_flags": [],
+    "expected_commission_flags": [],
+    "expected_therapy_response_flags": ["therapy_response_observed"],
+    "expected_next_best_information": [],
+    "expected_future_leakage_blocked": true
+  }
+}

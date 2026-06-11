@@ -1,0 +1,141 @@
+{
+  "receipt_id": "receipt_synthetic_ed_case_001_T3_deterministic",
+  "episode_id": "synthetic_ed_case_001",
+  "timepoint_id": "T3_disposition_decision",
+  "run_id": "run_synthetic_ed_case_001_deterministic_v0_1",
+  "mode": "replay",
+  "input_hashes": {
+    "episode_sha256": "c69f09dad09c443091600a531dbafc2f8d1c1ad0da725dd17947a4747f68f99f",
+    "static_inputs_sha256": "20c94073c06d70ca4cecac51c4c4dc67374f583e5a251791aab4676aebd4ac70"
+  },
+  "prompt_or_dotflow_versions": {
+    "prudent_layperson": "0.1.0",
+    "prudent_provider": "0.1.0",
+    "prudent_healthcare_ai": "0.1.0",
+    "duty_to_inquire": "0.1.0",
+    "risk_horizon": "0.1.0",
+    "red_team": "0.1.0",
+    "defense": "0.1.0",
+    "guideline_dependency": "static_fixture_v0",
+    "next_best_input": "static_fixture_v0",
+    "high_risk_alternative": "static_fixture_v0",
+    "prudent_ai_conduct": "static_fixture_v0"
+  },
+  "model_versions": {},
+  "evidence_versions": {
+    "guideline_dependency": "static_fixture_v0",
+    "next_best_input": "static_fixture_v0",
+    "high_risk_alternative": "static_fixture_v0",
+    "prudent_ai_conduct": "static_fixture_v0"
+  },
+  "graph_version": "deterministic_graph_v0.1",
+  "node_library_version": "ed_node_library_v0.1",
+  "available_fact_ids": [
+    "ai_fact_001",
+    "decision_fact_001",
+    "reassessment_fact_001",
+    "triage_fact_001",
+    "workup_fact_001"
+  ],
+  "blocked_future_fact_ids": [
+    "future_outcome_fact_001"
+  ],
+  "node_values": {
+    "information_sufficiency": 0.1,
+    "material_gap_strength": 0.9,
+    "harm_clock": 0.9,
+    "information_clock": 0.9896,
+    "recoverability": 0.4,
+    "future_correction_opportunity": 0.35,
+    "decision_weight": 0.875,
+    "ai_provenance_risk": 0.8,
+    "commission_risk": 0.8,
+    "omission_risk": 0.9,
+    "therapy_response_relevance": 0.75,
+    "next_best_information_rank": 3,
+    "preventability_opportunity_score": 0.7014
+  },
+  "rejected_or_downgraded_findings": [
+    "hidden_future_facts_blocked",
+    "unsupported_gap_assertions_require_current_time_source",
+    "unverified_ai_derived_fact_downgraded"
+  ],
+  "role_disagreement_map": {
+    "static_role_count": 7,
+    "graph_posture_source": "deterministic_graph",
+    "notes": [
+      "Static role templates are structured inputs only.",
+      "The graph computes final posture."
+    ]
+  },
+  "commission_lane": {
+    "risk_score": 0.8,
+    "relevance_score": 0,
+    "findings": [
+      "commission_overconfident_posture",
+      "commission_unverified_driver"
+    ]
+  },
+  "omission_lane": {
+    "risk_score": 0.9,
+    "relevance_score": 0,
+    "findings": [
+      "omission_ai_fact_verification_gap",
+      "omission_home_plan_feasibility_gap",
+      "omission_unassessed_response"
+    ]
+  },
+  "therapy_response_lane": {
+    "risk_score": 0.75,
+    "relevance_score": 0.75,
+    "findings": [
+      "therapy_response_obs_001:no_clear_change",
+      "therapy_supportive_001:no_clear_change"
+    ]
+  },
+  "next_best_information_ranking": [
+    "confirm support and return access",
+    "verify source statement behind AI summary",
+    "document observed response to therapy"
+  ],
+  "preventability_opportunity_score": 0.7014,
+  "preventability_opportunity_explanation": "Preventability opportunity is a proxy derived from material gap strength, decision weight, information clock, and burden modifiers. It is not a claim of clinical harm prevention.",
+  "final_posture": "OBTAIN_SPECIFIC_INFORMATION_FIRST",
+  "decision_weight": 0.875,
+  "signature_placeholder": "UNSIGNED_DETERMINISTIC_POC",
+  "human_summary_sections": {
+    "what_was_known": [
+      "At the decision time, home support and recheck access remain unclear in this synthetic case."
+    ],
+    "what_was_missing": [
+      "Home-plan feasibility remains unresolved at the decision point."
+    ],
+    "what_would_have_changed_the_discussion": [
+      "confirm support and return access",
+      "verify source statement behind AI summary",
+      "document observed response to therapy"
+    ],
+    "what_hospital_based_monitoring_or_treatment_might_add": [
+      "The receipt records whether a hospital-based path had a specific monitoring, information, or therapy-response target in the current-time facts."
+    ],
+    "what_non_inpatient_alternatives_might_add": [
+      "The receipt records whether support, follow-up access, return access, and recheck feasibility were represented in the current-time facts."
+    ],
+    "commission_concerns": [
+      "commission_overconfident_posture",
+      "commission_unverified_driver"
+    ],
+    "omission_concerns": [
+      "omission_ai_fact_verification_gap",
+      "omission_home_plan_feasibility_gap",
+      "omission_unassessed_response"
+    ],
+    "therapy_response_concerns": [
+      "therapy_response_obs_001:no_clear_change",
+      "therapy_supportive_001:no_clear_change"
+    ],
+    "why_the_graph_selected_the_posture": [
+      "The graph selected OBTAIN_SPECIFIC_INFORMATION_FIRST from bounded node values, with decision weight 0.875 and preventability opportunity 0.7014."
+    ]
+  }
+}

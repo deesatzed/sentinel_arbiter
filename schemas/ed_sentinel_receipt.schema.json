@@ -1,0 +1,181 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "receipt_id": {
+      "title": "Receipt Id",
+      "type": "string"
+    },
+    "episode_id": {
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "timepoint_id": {
+      "title": "Timepoint Id",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "mode": {
+      "title": "Mode",
+      "type": "string"
+    },
+    "input_hashes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Input Hashes",
+      "type": "object"
+    },
+    "prompt_or_dotflow_versions": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Prompt Or Dotflow Versions",
+      "type": "object"
+    },
+    "model_versions": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Model Versions",
+      "type": "object"
+    },
+    "evidence_versions": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Evidence Versions",
+      "type": "object"
+    },
+    "graph_version": {
+      "title": "Graph Version",
+      "type": "string"
+    },
+    "node_library_version": {
+      "title": "Node Library Version",
+      "type": "string"
+    },
+    "available_fact_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Available Fact Ids",
+      "type": "array"
+    },
+    "blocked_future_fact_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Blocked Future Fact Ids",
+      "type": "array"
+    },
+    "node_values": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "integer"
+          }
+        ]
+      },
+      "title": "Node Values",
+      "type": "object"
+    },
+    "rejected_or_downgraded_findings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Rejected Or Downgraded Findings",
+      "type": "array"
+    },
+    "role_disagreement_map": {
+      "additionalProperties": true,
+      "title": "Role Disagreement Map",
+      "type": "object"
+    },
+    "commission_lane": {
+      "additionalProperties": true,
+      "title": "Commission Lane",
+      "type": "object"
+    },
+    "omission_lane": {
+      "additionalProperties": true,
+      "title": "Omission Lane",
+      "type": "object"
+    },
+    "therapy_response_lane": {
+      "additionalProperties": true,
+      "title": "Therapy Response Lane",
+      "type": "object"
+    },
+    "next_best_information_ranking": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Next Best Information Ranking",
+      "type": "array"
+    },
+    "preventability_opportunity_score": {
+      "title": "Preventability Opportunity Score",
+      "type": "number"
+    },
+    "preventability_opportunity_explanation": {
+      "title": "Preventability Opportunity Explanation",
+      "type": "string"
+    },
+    "final_posture": {
+      "title": "Final Posture",
+      "type": "string"
+    },
+    "decision_weight": {
+      "title": "Decision Weight",
+      "type": "number"
+    },
+    "signature_placeholder": {
+      "title": "Signature Placeholder",
+      "type": "string"
+    },
+    "human_summary_sections": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Human Summary Sections",
+      "type": "object"
+    }
+  },
+  "required": [
+    "receipt_id",
+    "episode_id",
+    "timepoint_id",
+    "run_id",
+    "mode",
+    "input_hashes",
+    "prompt_or_dotflow_versions",
+    "graph_version",
+    "node_library_version",
+    "available_fact_ids",
+    "blocked_future_fact_ids",
+    "node_values",
+    "rejected_or_downgraded_findings",
+    "role_disagreement_map",
+    "commission_lane",
+    "omission_lane",
+    "therapy_response_lane",
+    "next_best_information_ranking",
+    "preventability_opportunity_score",
+    "preventability_opportunity_explanation",
+    "final_posture",
+    "decision_weight",
+    "signature_placeholder",
+    "human_summary_sections"
+  ],
+  "title": "SentinelReceipt",
+  "type": "object"
+}

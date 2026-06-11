@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DecisionEpisode",
+  "type": "object",
+  "required": ["episode_id", "artifact_type", "title", "timepoints"],
+  "properties": {
+    "episode_id": {"type": "string"},
+    "title": {"type": "string"},
+    "artifact_type": {
+      "type": "string",
+      "enum": [
+        "clinical_recommendation",
+        "patient_facing_response",
+        "care_management_plan",
+        "agentic_action_request",
+        "utilization_or_coverage_rationale",
+        "other"
+      ]
+    },
+    "description": {"type": "string"},
+    "actors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["actor_id", "actor_type"],
+        "properties": {
+          "actor_id": {"type": "string"},
+          "actor_type": {"type": "string", "enum": ["human", "ai", "system", "patient", "other"]},
+          "role": {"type": "string"}
+        }
+      }
+    },
+    "timepoints": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/TimelineState"},
+      "minItems": 1
+    },
+    "expected_outputs": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "TimelineState": {
+      "type": "object",
+      "required": ["timepoint_id", "sequence_index", "available_facts", "proposed_action"],
+      "properties": {
+        "timepoint_id": {"type": "string"},
+        "sequence_index": {"type": "integer", "minimum": 0},
+        "time_label": {"type": "string"},
+        "available_facts": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/Fact"}
+        },
+        "information_gaps": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/InformationGap"}
+        },
+        "pending_information": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/PendingInfo"}
+        },
+        "proposed_action": {"$ref": "#/$defs/ProposedAction"},
+        "hidden_future_facts": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/Fact"}
+        }
+      }
+    },
+    "Fact": {
+      "type": "object",
+      "required": ["fact_id", "text", "source_type", "verification_status"],
+      "properties": {
+        "fact_id": {"type": "string"},
+        "text": {"type": "string"},
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "primary_patient_statement",
+            "primary_observation",
+            "structured_data",
+            "human_authored_note",
+            "ai_generated_text",
+            "ai_summary_of_text",
+            "ai_inference",
+            "external_evidence",
+            "unknown"
+          ]
+        },
+        "verification_status": {
+          "type": "string",
+          "enum": [
+            "verified_primary",
+            "verified_deterministic",
+            "verified_human",
+            "unverified_ai_derived",
+            "unverified_human_reported",
+            "unknown_provenance",
+            "conflicting",
+            "stale"
+          ]
+        },
+        "information_bucket": {
+          "type": "string",
+          "enum": ["known", "known_but_weak", "knowable_but_unknown", "pending", "unknowable_now"]
+        },
+        "decision_criticality": {"type": "number", "minimum": 0, "maximum": 1},
+        "ai_provenance_depth": {"type": "integer", "minimum": 0},
+        "source_refs": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "InformationGap": {
+      "type": "object",
+      "required": ["gap_id", "description", "knowability"],
+      "properties": {
+        "gap_id": {"type": "string"},
+        "description": {"type": "string"},
+        "gap_type": {"type": "string"},
+        "knowability": {"type": "string", "enum": ["knowable_now", "knowable_later", "pending", "unknowable_now"]},
+        "time_to_obtain_hours": {"type": "number", "minimum": 0},
+        "burden": {"type": "string", "enum": ["low", "moderate", "high", "very_high"]},
+        "decision_relevance_prior": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "PendingInfo": {
+      "type": "object",
+      "required": ["pending_id", "description", "expected_time_hours"],
+      "properties": {
+        "pending_id": {"type": "string"},
+        "description": {"type": "string"},
+        "expected_time_hours": {"type": "number", "minimum": 0}
+      }
+    },
+    "ProposedAction": {
+      "type": "object",
+      "required": ["action_id", "description", "action_type"],
+      "properties": {
+        "action_id": {"type": "string"},
+        "description": {"type": "string"},
+        "action_type": {
+          "type": "string",
+          "enum": ["proceed", "defer", "escalate", "send_message", "order_or_action", "recommendation", "coverage_or_utilization", "other"]
+        },
+        "actor_id": {"type": "string"},
+        "assertiveness": {"type": "string", "enum": ["low", "moderate", "high", "definitive"]}
+      }
+    }
+  }
+}

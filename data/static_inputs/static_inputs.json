@@ -1,0 +1,241 @@
+{
+  "bundle_id": "static_ed_role_evidence_bundle_v0",
+  "version": "0.1.0",
+  "applies_to": "all_valid_synthetic_ed_cases",
+  "role_assessment_templates": [
+    {
+      "assessment_id_template": "{episode_id}_prudent_layperson_t3",
+      "role_name": "prudent_layperson",
+      "timepoint_id": "T3_disposition_decision",
+      "assessment_scope": "Static layperson-threshold review for synthetic ED disposition replay.",
+      "findings": [
+        {
+          "finding_id_template": "{episode_id}_layperson_threshold",
+          "finding_type": "prudent_layperson_threshold",
+          "structured_value": {"salient_danger_concern": 0.5, "communication_clarity_concern": 0.5, "urgency_expectation": "moderate", "safety_net_need": "moderate"},
+          "confidence": 0.65,
+          "rationale_short": "Static fixture asks whether salient uncertainty and access context are clear to a non-clinician reviewer.",
+          "source_refs": ["T3_disposition_decision"],
+          "node_targets": ["prudent_layperson_threshold", "safety_net_need"],
+          "evidence_tier": "tier_2"
+        }
+      ],
+      "overall_confidence": 0.65,
+      "missing_information_identified": ["case-specific material gaps from T3 fixture"],
+      "uncertainty_notes": ["Static template uses only current-time fixture fields."],
+      "sources_used": ["T3_disposition_decision"]
+    },
+    {
+      "assessment_id_template": "{episode_id}_prudent_provider_t3",
+      "role_name": "prudent_provider",
+      "timepoint_id": "T3_disposition_decision",
+      "assessment_scope": "Static provider-threshold review for synthetic ED disposition replay.",
+      "findings": [
+        {
+          "finding_id_template": "{episode_id}_provider_information",
+          "finding_type": "decision_relevance",
+          "structured_value": {"information_sufficiency_estimate": 0.5, "over_action_risk": 0.4, "under_action_risk": 0.4, "reasonable_uncertainty": true},
+          "confidence": 0.7,
+          "rationale_short": "Static fixture maps provider review to information sufficiency and action-balance nodes without making a disposition order.",
+          "source_refs": ["T3_disposition_decision"],
+          "node_targets": ["prudent_provider_threshold", "information_sufficiency", "over_action_risk", "under_action_risk"],
+          "evidence_tier": "tier_2"
+        }
+      ],
+      "overall_confidence": 0.7,
+      "missing_information_identified": ["case-specific T3 information gaps"],
+      "uncertainty_notes": ["Static provider output is a structured input, not final judgment."],
+      "sources_used": ["T3_disposition_decision"]
+    },
+    {
+      "assessment_id_template": "{episode_id}_prudent_healthcare_ai_t3",
+      "role_name": "prudent_healthcare_ai",
+      "timepoint_id": "T3_disposition_decision",
+      "assessment_scope": "Static responsible-AI conduct review for synthetic ED disposition replay.",
+      "findings": [
+        {
+          "finding_id_template": "{episode_id}_ai_conduct",
+          "finding_type": "ai_provenance_warning",
+          "structured_value": {"should_answer": "with_limits", "uncertainty_disclosure_needed": 0.8, "primary_source_confirmation_needed": true, "assertiveness_too_high": true},
+          "confidence": 0.75,
+          "rationale_short": "Static fixture requires AI provenance warnings and uncertainty disclosure when support is incomplete.",
+          "source_refs": ["T3_disposition_decision"],
+          "node_targets": ["prudent_ai_threshold", "uncertainty_disclosure_need", "primary_source_confirmation_need", "ai_provenance_warning"],
+          "evidence_tier": "tier_2"
+        }
+      ],
+      "overall_confidence": 0.75,
+      "missing_information_identified": ["unverified or weak provenance when present"],
+      "uncertainty_notes": ["Static AI role cannot decide final posture."],
+      "sources_used": ["T3_disposition_decision"]
+    },
+    {
+      "assessment_id_template": "{episode_id}_duty_to_inquire_t3",
+      "role_name": "duty_to_inquire",
+      "timepoint_id": "T3_disposition_decision",
+      "assessment_scope": "Static material-gap review for synthetic ED disposition replay.",
+      "findings": [
+        {
+          "finding_id_template": "{episode_id}_material_gap",
+          "finding_type": "information_gap",
+          "structured_value": {"decision_relevance_probability": 0.75, "expected_posture_shift": 0.6, "knowability": "knowable_now"},
+          "confidence": 0.75,
+          "rationale_short": "Static fixture maps case-specific knowable gaps to material-gap and information-clock nodes.",
+          "source_refs": ["T3_disposition_decision"],
+          "node_targets": ["material_gap_present", "gap_decision_relevance", "information_clock"],
+          "evidence_tier": "tier_2"
+        }
+      ],
+      "overall_confidence": 0.75,
+      "missing_information_identified": ["case-specific knowable gaps"],
+      "uncertainty_notes": ["Does not list generic low-value gaps as material by default."],
+      "sources_used": ["T3_disposition_decision"]
+    },
+    {
+      "assessment_id_template": "{episode_id}_risk_horizon_t3",
+      "role_name": "risk_horizon",
+      "timepoint_id": "T3_disposition_decision",
+      "assessment_scope": "Static risk-horizon review for synthetic ED disposition replay.",
+      "findings": [
+        {
+          "finding_id_template": "{episode_id}_risk_horizon",
+          "finding_type": "harm_clock_estimate",
+          "structured_value": {"severity_if_wrong": 0.6, "recoverability": 0.5, "future_correction_opportunity": 0.4, "monitoring_density": "moderate"},
+          "confidence": 0.65,
+          "rationale_short": "Static fixture estimates time and recoverability dimensions from current-time case fields.",
+          "source_refs": ["T3_disposition_decision"],
+          "node_targets": ["harm_clock", "information_clock", "recoverability", "future_correction_opportunity", "decision_weight"],
+          "evidence_tier": "tier_2"
+        }
+      ],
+      "overall_confidence": 0.65,
+      "missing_information_identified": [],
+      "uncertainty_notes": ["No outcome facts are available to this role."],
+      "sources_used": ["T3_disposition_decision"]
+    },
+    {
+      "assessment_id_template": "{episode_id}_red_team_t3",
+      "role_name": "red_team",
+      "timepoint_id": "T3_disposition_decision",
+      "assessment_scope": "Static red-team review of unwarranted-posture concerns.",
+      "findings": [
+        {
+          "finding_id_template": "{episode_id}_red_team_risk",
+          "finding_type": "evidence_conflict",
+          "structured_value": {"strongest_risk_argument": "Current-time gaps, weak provenance, or unclear response may make the reviewed posture overconfident.", "confidence": 0.65},
+          "confidence": 0.65,
+          "rationale_short": "Static red-team output identifies warrant concerns without recommending a disposition action.",
+          "source_refs": ["T3_disposition_decision"],
+          "node_targets": ["evidence_conflict", "escalation_need", "under_action_risk"],
+          "evidence_tier": "tier_2"
+        }
+      ],
+      "overall_confidence": 0.65,
+      "missing_information_identified": ["case-specific red-team gaps"],
+      "uncertainty_notes": ["Risk argument is bounded by current-time facts."],
+      "sources_used": ["T3_disposition_decision"]
+    },
+    {
+      "assessment_id_template": "{episode_id}_defense_t3",
+      "role_name": "defense",
+      "timepoint_id": "T3_disposition_decision",
+      "assessment_scope": "Static defense review of pragmatic warrant considerations.",
+      "findings": [
+        {
+          "finding_id_template": "{episode_id}_defense_balance",
+          "finding_type": "future_correction_opportunity",
+          "structured_value": {"burden_concern": 0.4, "future_correction_opportunity": 0.4, "missing_gaps_may_not_change_posture": false},
+          "confidence": 0.6,
+          "rationale_short": "Static defense output keeps burden and future correction visible without dismissing high-weight gaps.",
+          "source_refs": ["T3_disposition_decision"],
+          "node_targets": ["over_action_risk", "future_correction_opportunity", "safety_net_need"],
+          "evidence_tier": "tier_2"
+        }
+      ],
+      "overall_confidence": 0.6,
+      "missing_information_identified": [],
+      "uncertainty_notes": ["Defense role does not override graph posture."],
+      "sources_used": ["T3_disposition_decision"]
+    }
+  ],
+  "evidenceflow_templates": [
+    {
+      "flow_id_template": "{episode_id}_guideline_dependency_t3",
+      "flow_type": "guideline_dependency",
+      "timepoint_id": "T3_disposition_decision",
+      "outputs": {
+        "required_variables": ["current-time facts", "specific added-value target", "home-plan feasibility when relevant"],
+        "missing_variables": ["case-specific unresolved variables from T3"],
+        "candidate_inputs": [],
+        "evidence_support_strength": 0.4,
+        "evidence_conflict_strength": 0.4,
+        "uncertainty_notes": ["Static EvidenceFlow uses curated synthetic fixture fields only."]
+      },
+      "confidence": 0.65,
+      "sources": ["synthetic_fixture_current_time"],
+      "evidence_version": "static_fixture_v0"
+    },
+    {
+      "flow_id_template": "{episode_id}_next_best_input_t3",
+      "flow_type": "next_best_input",
+      "timepoint_id": "T3_disposition_decision",
+      "outputs": {
+        "required_variables": ["candidate input", "burden", "time to obtain", "result distribution", "posture implication"],
+        "missing_variables": [],
+        "candidate_inputs": [
+          {
+            "input_id_template": "{episode_id}_candidate_input_001",
+            "description": "Resolve the highest-relevance current-time gap named in the synthetic fixture.",
+            "input_category": "case_specific_current_time_gap",
+            "burden": "low",
+            "time_to_obtain_hours": 0.25,
+            "result_distribution": [
+              {"result_label": "gap_resolved", "probability": 0.5, "posture_effect": "may reduce uncertainty", "preventability_effect": 0.3},
+              {"result_label": "gap_persists", "probability": 0.5, "posture_effect": "may preserve caution posture", "preventability_effect": 0.1}
+            ],
+            "expected_posture_shift": 0.6,
+            "preventability_leverage": 0.5
+          }
+        ],
+        "evidence_support_strength": 0.5,
+        "evidence_conflict_strength": 0.3,
+        "uncertainty_notes": ["Candidate input is specific to fixture gaps after expansion."]
+      },
+      "confidence": 0.7,
+      "sources": ["synthetic_fixture_current_time"],
+      "evidence_version": "static_fixture_v0"
+    },
+    {
+      "flow_id_template": "{episode_id}_high_risk_alternative_t3",
+      "flow_type": "high_risk_alternative",
+      "timepoint_id": "T3_disposition_decision",
+      "outputs": {
+        "required_variables": ["alternative risk", "minimum information", "harm clock", "safety-net adequacy"],
+        "missing_variables": ["case-specific minimum information when present"],
+        "candidate_inputs": [],
+        "evidence_support_strength": 0.3,
+        "evidence_conflict_strength": 0.5,
+        "uncertainty_notes": ["High-risk alternative remains a structured concern, not a diagnosis."]
+      },
+      "confidence": 0.6,
+      "sources": ["synthetic_fixture_current_time"],
+      "evidence_version": "static_fixture_v0"
+    },
+    {
+      "flow_id_template": "{episode_id}_prudent_ai_conduct_t3",
+      "flow_type": "prudent_ai_conduct",
+      "timepoint_id": "T3_disposition_decision",
+      "outputs": {
+        "required_variables": ["uncertainty disclosure", "missing information disclosure", "source/provenance warning"],
+        "missing_variables": [],
+        "candidate_inputs": [],
+        "evidence_support_strength": 0.5,
+        "evidence_conflict_strength": 0.2,
+        "uncertainty_notes": ["Static output requires limited, provenance-aware AI conduct."]
+      },
+      "confidence": 0.75,
+      "sources": ["synthetic_fixture_current_time"],
+      "evidence_version": "static_fixture_v0"
+    }
+  ]
+}

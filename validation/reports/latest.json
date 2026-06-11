@@ -1,0 +1,374 @@
+{
+  "valid_case_count": 7,
+  "schema_validity": {
+    "valid_cases": 7,
+    "invalid_cases_skipped": true
+  },
+  "future_leakage_failures": 0,
+  "forbidden_phrase_violations": 0,
+  "expected_posture_agreement": {
+    "matched": 7,
+    "total": 7
+  },
+  "lane_coverage": {
+    "commission_lane_cases": 5,
+    "omission_lane_cases": 4,
+    "therapy_response_lane_cases": 3
+  },
+  "automated_validation": {
+    "omission_detection": {
+      "expected": 5,
+      "matched": 5,
+      "missing": []
+    },
+    "commission_warning_detection": {
+      "expected": 6,
+      "matched": 6,
+      "missing": []
+    },
+    "therapy_response_integration": {
+      "expected": 3,
+      "matched": 3,
+      "missing": []
+    },
+    "next_best_information_usefulness": {
+      "expected": 6,
+      "matched": 6,
+      "missing": []
+    }
+  },
+  "static_input_validation": {
+    "role_template_count": 7,
+    "evidenceflow_template_count": 4,
+    "errors": []
+  },
+  "receipt_completeness": {
+    "complete": true,
+    "expected_receipts": 7,
+    "json_receipts": 7,
+    "markdown_receipts": 7,
+    "missing_json": [],
+    "missing_markdown": []
+  },
+  "case_results": [
+    {
+      "episode_id": "synthetic_ed_case_006",
+      "timepoint_id": "T3_disposition_decision",
+      "final_posture": "OBTAIN_SPECIFIC_INFORMATION_FIRST",
+      "expected_final_posture": "OBTAIN_SPECIFIC_INFORMATION_FIRST",
+      "expected_posture_match": true,
+      "node_values": {
+        "information_sufficiency": 0.1,
+        "material_gap_strength": 0.9,
+        "harm_clock": 0.76,
+        "information_clock": 0.9917,
+        "recoverability": 0.55,
+        "future_correction_opportunity": 0.35,
+        "decision_weight": 0.745,
+        "ai_provenance_risk": 0.9,
+        "commission_risk": 0.9,
+        "omission_risk": 0.9,
+        "therapy_response_relevance": 0.0,
+        "next_best_information_rank": 1,
+        "preventability_opportunity_score": 0.5984
+      },
+      "commission_lane": {
+        "risk_score": 0.9,
+        "relevance_score": 0,
+        "findings": [
+          "commission_overconfident_posture",
+          "commission_unverified_driver"
+        ]
+      },
+      "omission_lane": {
+        "risk_score": 0.9,
+        "relevance_score": 0,
+        "findings": [
+          "omission_ai_fact_verification_gap"
+        ]
+      },
+      "therapy_response_lane": {
+        "risk_score": 0.0,
+        "relevance_score": 0.0,
+        "findings": []
+      },
+      "next_best_information_ranking": [
+        "verify or downgrade AI-derived driver"
+      ],
+      "leaked_timepoints": []
+    },
+    {
+      "episode_id": "synthetic_ed_case_005",
+      "timepoint_id": "T3_disposition_decision",
+      "final_posture": "OBTAIN_SPECIFIC_INFORMATION_FIRST",
+      "expected_final_posture": "OBTAIN_SPECIFIC_INFORMATION_FIRST",
+      "expected_posture_match": true,
+      "node_values": {
+        "information_sufficiency": 0.1,
+        "material_gap_strength": 0.9,
+        "harm_clock": 0.67,
+        "information_clock": 0.9917,
+        "recoverability": 0.55,
+        "future_correction_opportunity": 0.35,
+        "decision_weight": 0.565,
+        "ai_provenance_risk": 0.0,
+        "commission_risk": 0.75,
+        "omission_risk": 0.9,
+        "therapy_response_relevance": 0.0,
+        "next_best_information_rank": 1,
+        "preventability_opportunity_score": 0.4539
+      },
+      "commission_lane": {
+        "risk_score": 0.75,
+        "relevance_score": 0,
+        "findings": [
+          "commission_overconfident_posture"
+        ]
+      },
+      "omission_lane": {
+        "risk_score": 0.9,
+        "relevance_score": 0,
+        "findings": [
+          "omission_home_plan_feasibility_gap"
+        ]
+      },
+      "therapy_response_lane": {
+        "risk_score": 0.0,
+        "relevance_score": 0.0,
+        "findings": []
+      },
+      "next_best_information_ranking": [
+        "clarify support, follow-up, and return access"
+      ],
+      "leaked_timepoints": []
+    },
+    {
+      "episode_id": "synthetic_ed_case_004",
+      "timepoint_id": "T3_disposition_decision",
+      "final_posture": "PROCEED_WITH_UNCERTAINTY_DISCLOSURE",
+      "expected_final_posture": "PROCEED_WITH_UNCERTAINTY_DISCLOSURE",
+      "expected_posture_match": true,
+      "node_values": {
+        "information_sufficiency": 0.25,
+        "material_gap_strength": 0.75,
+        "harm_clock": 0.625,
+        "information_clock": 0.9917,
+        "recoverability": 0.625,
+        "future_correction_opportunity": 0.8,
+        "decision_weight": 0.5125,
+        "ai_provenance_risk": 0.0,
+        "commission_risk": 0.75,
+        "omission_risk": 0.0,
+        "therapy_response_relevance": 0.0,
+        "next_best_information_rank": 1,
+        "preventability_opportunity_score": 0.3431
+      },
+      "commission_lane": {
+        "risk_score": 0.75,
+        "relevance_score": 0,
+        "findings": [
+          "commission_added_burden",
+          "commission_low_added_value",
+          "commission_overconfident_posture"
+        ]
+      },
+      "omission_lane": {
+        "risk_score": 0.0,
+        "relevance_score": 0,
+        "findings": []
+      },
+      "therapy_response_lane": {
+        "risk_score": 0.0,
+        "relevance_score": 0.0,
+        "findings": []
+      },
+      "next_best_information_ranking": [
+        "identify the information, monitoring, or therapy target"
+      ],
+      "leaked_timepoints": []
+    },
+    {
+      "episode_id": "synthetic_ed_case_007",
+      "timepoint_id": "T3_disposition_decision",
+      "final_posture": "PROCEED_WITH_UNCERTAINTY_DISCLOSURE",
+      "expected_final_posture": "PROCEED_WITH_UNCERTAINTY_DISCLOSURE",
+      "expected_posture_match": true,
+      "node_values": {
+        "information_sufficiency": 0.9,
+        "material_gap_strength": 0.1,
+        "harm_clock": 0.43,
+        "information_clock": 0.0,
+        "recoverability": 0.95,
+        "future_correction_opportunity": 0.8,
+        "decision_weight": 0.25,
+        "ai_provenance_risk": 0.0,
+        "commission_risk": 0.0,
+        "omission_risk": 0.0,
+        "therapy_response_relevance": 0.0,
+        "next_best_information_rank": 0,
+        "preventability_opportunity_score": 0.0
+      },
+      "commission_lane": {
+        "risk_score": 0.0,
+        "relevance_score": 0,
+        "findings": []
+      },
+      "omission_lane": {
+        "risk_score": 0.0,
+        "relevance_score": 0,
+        "findings": []
+      },
+      "therapy_response_lane": {
+        "risk_score": 0.0,
+        "relevance_score": 0.0,
+        "findings": []
+      },
+      "next_best_information_ranking": [],
+      "leaked_timepoints": []
+    },
+    {
+      "episode_id": "synthetic_ed_case_001",
+      "timepoint_id": "T3_disposition_decision",
+      "final_posture": "OBTAIN_SPECIFIC_INFORMATION_FIRST",
+      "expected_final_posture": "OBTAIN_SPECIFIC_INFORMATION_FIRST",
+      "expected_posture_match": true,
+      "node_values": {
+        "information_sufficiency": 0.1,
+        "material_gap_strength": 0.9,
+        "harm_clock": 0.9,
+        "information_clock": 0.9896,
+        "recoverability": 0.4,
+        "future_correction_opportunity": 0.35,
+        "decision_weight": 0.875,
+        "ai_provenance_risk": 0.8,
+        "commission_risk": 0.8,
+        "omission_risk": 0.9,
+        "therapy_response_relevance": 0.75,
+        "next_best_information_rank": 3,
+        "preventability_opportunity_score": 0.7014
+      },
+      "commission_lane": {
+        "risk_score": 0.8,
+        "relevance_score": 0,
+        "findings": [
+          "commission_overconfident_posture",
+          "commission_unverified_driver"
+        ]
+      },
+      "omission_lane": {
+        "risk_score": 0.9,
+        "relevance_score": 0,
+        "findings": [
+          "omission_ai_fact_verification_gap",
+          "omission_home_plan_feasibility_gap",
+          "omission_unassessed_response"
+        ]
+      },
+      "therapy_response_lane": {
+        "risk_score": 0.75,
+        "relevance_score": 0.75,
+        "findings": [
+          "therapy_response_obs_001:no_clear_change",
+          "therapy_supportive_001:no_clear_change"
+        ]
+      },
+      "next_best_information_ranking": [
+        "confirm support and return access",
+        "verify source statement behind AI summary",
+        "document observed response to therapy"
+      ],
+      "leaked_timepoints": []
+    },
+    {
+      "episode_id": "synthetic_ed_case_002",
+      "timepoint_id": "T3_disposition_decision",
+      "final_posture": "PROCEED_WITH_SAFETY_NET_OR_RECHECK",
+      "expected_final_posture": "PROCEED_WITH_SAFETY_NET_OR_RECHECK",
+      "expected_posture_match": true,
+      "node_values": {
+        "information_sufficiency": 1.0,
+        "material_gap_strength": 0.0,
+        "harm_clock": 0.47,
+        "information_clock": 1.0,
+        "recoverability": 0.93,
+        "future_correction_opportunity": 0.8,
+        "decision_weight": 0.32,
+        "ai_provenance_risk": 0.0,
+        "commission_risk": 0.0,
+        "omission_risk": 0.0,
+        "therapy_response_relevance": 0.35,
+        "next_best_information_rank": 0,
+        "preventability_opportunity_score": 0.0
+      },
+      "commission_lane": {
+        "risk_score": 0.0,
+        "relevance_score": 0,
+        "findings": []
+      },
+      "omission_lane": {
+        "risk_score": 0.0,
+        "relevance_score": 0,
+        "findings": []
+      },
+      "therapy_response_lane": {
+        "risk_score": 0.35,
+        "relevance_score": 0.35,
+        "findings": [
+          "c002_response:documented_improvement",
+          "c002_therapy:documented_improvement"
+        ]
+      },
+      "next_best_information_ranking": [],
+      "leaked_timepoints": []
+    },
+    {
+      "episode_id": "synthetic_ed_case_003",
+      "timepoint_id": "T3_disposition_decision",
+      "final_posture": "OBTAIN_SPECIFIC_INFORMATION_FIRST",
+      "expected_final_posture": "OBTAIN_SPECIFIC_INFORMATION_FIRST",
+      "expected_posture_match": true,
+      "node_values": {
+        "information_sufficiency": 0.2,
+        "material_gap_strength": 0.8,
+        "harm_clock": 0.82,
+        "information_clock": 0.9792,
+        "recoverability": 0.42,
+        "future_correction_opportunity": 0.35,
+        "decision_weight": 0.71,
+        "ai_provenance_risk": 0.0,
+        "commission_risk": 0.75,
+        "omission_risk": 0.8,
+        "therapy_response_relevance": 0.9,
+        "next_best_information_rank": 2,
+        "preventability_opportunity_score": 0.4171
+      },
+      "commission_lane": {
+        "risk_score": 0.75,
+        "relevance_score": 0,
+        "findings": [
+          "commission_overconfident_posture"
+        ]
+      },
+      "omission_lane": {
+        "risk_score": 0.8,
+        "relevance_score": 0,
+        "findings": [
+          "omission_unassessed_response"
+        ]
+      },
+      "therapy_response_lane": {
+        "risk_score": 0.9,
+        "relevance_score": 0.9,
+        "findings": [
+          "c003_therapy_not_considered:not_considered",
+          "c003_therapy_not_considered:unknown"
+        ]
+      },
+      "next_best_information_ranking": [
+        "explain whether therapy-response observation would change review posture",
+        "capture response observation if clinically available"
+      ],
+      "leaked_timepoints": []
+    }
+  ]
+}

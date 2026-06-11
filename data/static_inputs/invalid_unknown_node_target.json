@@ -1,0 +1,30 @@
+{
+  "bundle_id": "invalid_unknown_node_target",
+  "version": "0.1.0",
+  "applies_to": "test_only",
+  "role_assessment_templates": [
+    {
+      "assessment_id_template": "{episode_id}_bad_target_role_t3",
+      "role_name": "prudent_provider",
+      "timepoint_id": "T3_disposition_decision",
+      "assessment_scope": "Invalid test fixture.",
+      "findings": [
+        {
+          "finding_id_template": "{episode_id}_bad_target",
+          "finding_type": "decision_relevance",
+          "structured_value": {"bad": true},
+          "confidence": 0.5,
+          "rationale_short": "This invalid role uses an unknown node target.",
+          "source_refs": ["T3_disposition_decision"],
+          "node_targets": ["disposition_recommendation_node"],
+          "evidence_tier": "tier_2"
+        }
+      ],
+      "overall_confidence": 0.5,
+      "missing_information_identified": [],
+      "uncertainty_notes": [],
+      "sources_used": ["T3_disposition_decision"]
+    }
+  ],
+  "evidenceflow_templates": []
+}
