@@ -42,6 +42,13 @@
     "evidenceflow_template_count": 4,
     "errors": []
   },
+  "node_audit_completeness": {
+    "complete": true,
+    "case_count": 7,
+    "expected_nodes_per_case": 13,
+    "missing": [],
+    "incomplete": []
+  },
   "receipt_completeness": {
     "complete": true,
     "expected_receipts": 7,

@@ -2,11 +2,11 @@
 
 ## Project Type
 
-Local deterministic Sentinel Governance Workbench POC. The first build wedge is synthetic Emergency Department disposition replay for governance review, now extended with constructed-input preparation and reviewer approval artifacts.
+Local deterministic Sentinel Governance Workbench POC. The first build wedge is synthetic Emergency Department disposition replay for governance review, now extended with constructed-input preparation, reviewer approval artifacts, and deterministic node-audit methodology.
 
 ## Tech Stack
 
-Current target folder has a minimal Python substrate plus planning docs, JSON Schema, deterministic artifacts, a CLI-first constructed-input preparation path, and reviewer approval artifacts.
+Current target folder has a minimal Python substrate plus planning docs, JSON Schema, deterministic artifacts, a CLI-first constructed-input preparation path, reviewer approval artifacts, and node-audit methodology objects.
 
 - Python package
 - Pydantic 2 schema models
@@ -16,6 +16,7 @@ Current target folder has a minimal Python substrate plus planning docs, JSON Sc
 - Static offline reviewer workbench UI generated from deterministic artifacts
 - Deterministic redaction floor and constructed-text draft intake
 - Reviewer approval manifest and hash-chained approval trace
+- Node audit bundle with definitions, evidence, estimates, ranges, medians, methods, confidence, and sensitivity notes
 
 ## Package Manager
 
@@ -53,6 +54,7 @@ Current runtime entry points:
 - `sentinel_workbench.constructed_intake`: constructed/deidentified-style text preparation command that emits redacted input, redaction report, and draft episode artifacts.
 - `sentinel_workbench.graph`: deterministic node groups, lanes, preventability-opportunity proxy, and posture taxonomy output.
 - `sentinel_workbench.loader`: JSON fixture loading and safety preflight.
+- `sentinel_workbench.node_audit`: deterministic node audit bundle, node evidence, node estimates, and node-audit completeness summary.
 - `sentinel_workbench.replay`: current-time replay view and blocked future fact reporting.
 - `sentinel_workbench.redaction`: deterministic redaction floor and redaction report schema.
 - `sentinel_workbench.receipts`: deterministic JSON and Markdown receipt generation.
@@ -106,6 +108,7 @@ Current planning entry points:
 - Constructed/deidentified text must pass deterministic redaction and residual-risk checks before it can become a draft episode.
 - Draft constructed episodes are reviewer-editable artifacts, not approved graph inputs.
 - Approved constructed episodes require `approval_manifest.json`, `approval_trace.json`, hash checks, and trace-chain validation.
+- Every current graph metric should have a schema-backed node audit before receipt or workbench rendering claims methodology transparency.
 
 ## Reference Patterns Inspected
 
@@ -142,6 +145,8 @@ Current tests cover:
 - reviewer approval artifact generation and validation.
 - unapproved draft rejection through `load_approved_episode`.
 - approval manifest and trace schema export.
+- node audit schema export and node-audit completeness reporting.
+- weak AI-derived evidence is marked weak and limitation-bearing in node audits.
 
 Receipt completeness and explicit automated validation categories are tracked in `validation/reports/latest.json`. The generated reviewer workbench is `data/workbench/index.html`.
 
@@ -166,6 +171,7 @@ Receipt completeness and explicit automated validation categories are tracked in
 - `src/sentinel_workbench/redaction.py`
 - `src/sentinel_workbench/constructed_intake.py`
 - `src/sentinel_workbench/approval.py`
+- `src/sentinel_workbench/node_audit.py`
 - `data/constructed_inputs/*.txt`
 - `data/prepared_inputs/**/*.json`
 - `data/prepared_inputs/**/*.txt`
@@ -178,10 +184,12 @@ Receipt completeness and explicit automated validation categories are tracked in
 - `tests/test_phase7_workbench.py`
 - `tests/test_phase_b_constructed_intake.py`
 - `tests/test_phase_c_reviewer_approval.py`
+- `tests/test_phase_d_node_audit.py`
 - `tests/test_full_poc_documentation.py`
 
 ## Unknowns
 
 - Whether a later UI should replace the static offline report with a full local web app.
-- Node audit, distribution/range/median methodology, and ensemble contribution normalization remain the next major trust-layer work.
+- Ensemble contribution normalization remains the next major trust-layer work.
+- Receipts and workbench do not yet render node audit details directly.
 - Exact scoring constants for future graph versions remain intentionally provisional until static role/EvidenceFlow inputs and receipt review exist.

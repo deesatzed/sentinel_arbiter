@@ -1,0 +1,355 @@
+{
+  "$defs": {
+    "EnsembleContribution": {
+      "additionalProperties": false,
+      "properties": {
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "contributor_role": {
+          "title": "Contributor Role",
+          "type": "string"
+        },
+        "proposed_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Proposed Value"
+        },
+        "proposed_range_min": {
+          "title": "Proposed Range Min",
+          "type": "number"
+        },
+        "proposed_range_max": {
+          "title": "Proposed Range Max",
+          "type": "number"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "rationale": {
+          "title": "Rationale",
+          "type": "string"
+        },
+        "disposition": {
+          "enum": [
+            "accepted",
+            "rejected",
+            "downgraded"
+          ],
+          "title": "Disposition",
+          "type": "string"
+        },
+        "disposition_reason": {
+          "title": "Disposition Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_id",
+        "contributor_role",
+        "proposed_value",
+        "proposed_range_min",
+        "proposed_range_max",
+        "rationale",
+        "disposition",
+        "disposition_reason"
+      ],
+      "title": "EnsembleContribution",
+      "type": "object"
+    },
+    "NodeAudit": {
+      "additionalProperties": false,
+      "properties": {
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "definition": {
+          "$ref": "#/$defs/NodeDefinition"
+        },
+        "definition_version": {
+          "title": "Definition Version",
+          "type": "string"
+        },
+        "dependencies": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/NodeEvidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "estimate": {
+          "$ref": "#/$defs/NodeEstimate"
+        },
+        "ensemble_contributions": {
+          "items": {
+            "$ref": "#/$defs/EnsembleContribution"
+          },
+          "title": "Ensemble Contributions",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Conflicts",
+          "type": "array"
+        },
+        "sensitivity_note": {
+          "title": "Sensitivity Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_id",
+        "definition",
+        "definition_version",
+        "dependencies",
+        "estimate",
+        "sensitivity_note"
+      ],
+      "title": "NodeAudit",
+      "type": "object"
+    },
+    "NodeDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "lane": {
+          "title": "Lane",
+          "type": "string"
+        },
+        "question": {
+          "title": "Question",
+          "type": "string"
+        },
+        "dependent_inputs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Dependent Inputs",
+          "type": "array"
+        },
+        "output_scale": {
+          "title": "Output Scale",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "lane",
+        "question",
+        "dependent_inputs",
+        "output_scale",
+        "version"
+      ],
+      "title": "NodeDefinition",
+      "type": "object"
+    },
+    "NodeEstimate": {
+      "additionalProperties": false,
+      "properties": {
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Value"
+        },
+        "range_min": {
+          "title": "Range Min",
+          "type": "number"
+        },
+        "range_max": {
+          "title": "Range Max",
+          "type": "number"
+        },
+        "median": {
+          "title": "Median",
+          "type": "number"
+        },
+        "distribution_kind": {
+          "title": "Distribution Kind",
+          "type": "string"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "method": {
+          "title": "Method",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "node_id",
+        "value",
+        "range_min",
+        "range_max",
+        "median",
+        "distribution_kind",
+        "confidence",
+        "method"
+      ],
+      "title": "NodeEstimate",
+      "type": "object"
+    },
+    "NodeEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "ref_id": {
+          "title": "Ref Id",
+          "type": "string"
+        },
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "source_type": {
+          "title": "Source Type",
+          "type": "string"
+        },
+        "source_timepoint": {
+          "title": "Source Timepoint",
+          "type": "string"
+        },
+        "quoted_or_structured_fact": {
+          "title": "Quoted Or Structured Fact",
+          "type": "string"
+        },
+        "provenance": {
+          "title": "Provenance",
+          "type": "string"
+        },
+        "supports": {
+          "title": "Supports",
+          "type": "string"
+        },
+        "weight": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Weight",
+          "type": "number"
+        },
+        "quality": {
+          "enum": [
+            "strong",
+            "moderate",
+            "weak",
+            "unknown"
+          ],
+          "title": "Quality",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "ref_id",
+        "node_id",
+        "source_type",
+        "source_timepoint",
+        "quoted_or_structured_fact",
+        "provenance",
+        "supports",
+        "weight",
+        "quality"
+      ],
+      "title": "NodeEvidence",
+      "type": "object"
+    },
+    "RequiredTimepoint": {
+      "enum": [
+        "T0_triage",
+        "T1_initial_workup",
+        "T2_post_treatment_reassessment",
+        "T3_disposition_decision",
+        "T4_follow_up_or_outcome"
+      ],
+      "title": "RequiredTimepoint",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "episode_id": {
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "timepoint_id": {
+      "$ref": "#/$defs/RequiredTimepoint"
+    },
+    "graph_version": {
+      "title": "Graph Version",
+      "type": "string"
+    },
+    "node_library_version": {
+      "title": "Node Library Version",
+      "type": "string"
+    },
+    "node_audits": {
+      "items": {
+        "$ref": "#/$defs/NodeAudit"
+      },
+      "title": "Node Audits",
+      "type": "array"
+    }
+  },
+  "required": [
+    "episode_id",
+    "timepoint_id",
+    "graph_version",
+    "node_library_version",
+    "node_audits"
+  ],
+  "title": "NodeAuditBundle",
+  "type": "object"
+}

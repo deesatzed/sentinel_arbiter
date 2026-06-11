@@ -473,3 +473,31 @@
 - Constructed input now has a CLI-first path through redaction, draft episode generation, reviewer approval, manifest validation, and hash-chained approval trace.
 - Direct draft JSON is rejected by `load_approved_episode`; later constructed-input analysis should use the approved directory path.
 - Phase D node audit methodology remains the next major trust-layer step.
+
+## 2026-06-11 - Phase D Node Audit Methodology Started
+
+### Completed So Far
+
+- Added `src/sentinel_workbench/node_audit.py`.
+- Added `tests/test_phase_d_node_audit.py`.
+- Added `schemas/node_audit.schema.json`.
+- Extended `schema_export.py` to export the node audit schema.
+- Extended `evaluate.py` so `validation/reports/latest.json` includes `node_audit_completeness`.
+- Implemented deterministic `NodeAuditBundle` generation for every current graph metric in `REQUIRED_GRAPH_METRICS`.
+- Added schema-backed `NodeDefinition`, `NodeEvidence`, `NodeEstimate`, `EnsembleContribution`, and `NodeAudit` models.
+- Added evidence mapping that excludes T4 future facts and marks unverified AI-derived evidence as weak with limitations.
+- Added `DECISIONS.md` entry `2026-06-11-16` documenting the node-audit-before-receipt/UI decision.
+
+### Verification Evidence
+
+- Initial Phase D test run failed with `ModuleNotFoundError: No module named 'sentinel_workbench.node_audit'`, confirming tests covered missing behavior before implementation.
+- `python3 -m pytest tests/test_phase_d_node_audit.py -q` passed: `6 passed`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.schema_export schemas/ed_decision_episode.schema.json` exported `schemas/node_audit.schema.json`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts` passed with `cases=7 future_leakage_failures=0`.
+- `validation/reports/latest.json` reports `node_audit_completeness.complete=true`, `case_count=7`, `expected_nodes_per_case=13`, and no missing or incomplete node audits.
+
+### Current State
+
+- Every existing deterministic graph node now has a schema-backed audit object with definition, dependencies, evidence, value, range, median, distribution kind, confidence, method, and sensitivity note.
+- Ensemble contribution objects are schema-defined, but Phase E still needs static role/EvidenceFlow contribution normalization and accept/reject/downgrade logic.
+- Phase F still needs receipts and the workbench to render the node audit methodology directly.

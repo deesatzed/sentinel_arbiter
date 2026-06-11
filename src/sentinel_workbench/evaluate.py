@@ -9,6 +9,7 @@ from pydantic import Field
 from .graph import compute_prudence_graph
 from .loader import load_case_library
 from .models import RequiredTimepoint, StrictModel
+from .node_audit import summarize_node_audit_completeness
 from .replay import build_replay_view
 from .safety import scan_forbidden_content
 from .static_inputs import load_static_input_bundle, validate_static_inputs
@@ -227,6 +228,7 @@ def generate_evaluation_report(
         "lane_coverage": report.lane_coverage,
         "automated_validation": report.automated_validation,
         "static_input_validation": static_payload,
+        "node_audit_completeness": summarize_node_audit_completeness(episodes),
         "receipt_completeness": receipt_completeness_payload(episodes, receipt_dir),
         "case_results": report.case_results,
     }
