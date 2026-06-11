@@ -71,3 +71,9 @@ Reason: `GOAL.md` requires the project to document what is implemented, what is 
 `sentinel_codex_handoff` is now its own local git repository with no remote configured.
 
 Reason: Full POC proof of done requires `git diff --check` to be clean. The target folder was previously outside any git repository, so a local baseline repository was needed to make that verification command meaningful inside the allowed target folder.
+
+## Decision 2026-06-11-13 - Publish To Sentinel Arbiter GitHub Repository
+
+The local repository uses `https://github.com/deesatzed/sentinel_arbiter.git` as `origin` and `main` as the primary branch.
+
+Reason: The user requested this project be committed and pushed to that GitHub repository. Publishing notes are recorded in `docs/19_repository_publishing.md`.

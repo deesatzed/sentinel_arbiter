@@ -371,3 +371,18 @@
 - `sentinel_codex_handoff` is now a standalone local git repository on branch `master`.
 - No remote is configured.
 - `git diff --check` can now be used as the Full POC proof command.
+
+## 2026-06-11 - GitHub Publishing Setup
+
+### Completed So Far
+
+- Confirmed the project is already a local git repository.
+- Confirmed GitHub CLI is installed and authenticated for the `deesatzed` account.
+- Confirmed `https://github.com/deesatzed/sentinel_arbiter.git` is reachable and has no refs returned by `git ls-remote`.
+- Added `docs/19_repository_publishing.md`.
+- Updated `README.md`, `REPO_MAP.md`, and `DECISIONS.md` with the GitHub publishing target.
+
+### Current State
+
+- Publishing target: `https://github.com/deesatzed/sentinel_arbiter.git`.
+- Planned primary branch: `main`.

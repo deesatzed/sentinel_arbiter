@@ -55,6 +55,7 @@ Current runtime entry points:
 - `sentinel_workbench.validate`: deterministic fixture validation command.
 - `sentinel_workbench.evaluate`: deterministic evaluation report command.
 - `docs/18_deterministic_poc_status.md`: implemented/deferred/pre-real-use status boundary.
+- `docs/19_repository_publishing.md`: GitHub remote, branch, and pre-push verification notes.
 
 Current planning entry points:
 
@@ -137,6 +138,7 @@ Receipt completeness and explicit automated validation categories are tracked in
 - `data/cases/*.json`
 - `data/workbench/index.html`
 - `docs/18_deterministic_poc_status.md`
+- `docs/19_repository_publishing.md`
 - `tests/test_phase1_models.py`
 - `tests/test_phase2_case_library.py`
 - `tests/test_phase3_prudence_graph.py`

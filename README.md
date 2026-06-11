@@ -4,6 +4,8 @@ Version: 0.1
 Date: 2026-06-11
 Status: Deterministic ED replay POC with static reviewer workbench and status boundary. No production clinical use implied.
 
+Repository: https://github.com/deesatzed/sentinel_arbiter.git
+
 ## Product thesis
 
 Sentinel is a governance workbench for AI-assisted healthcare decisions. It does **not** try to be a medical reference tool, a diagnosis app, or a generic multi-agent debate system. It evaluates whether a proposed AI/human decision is **warranted yet** given:
@@ -86,6 +88,7 @@ sentinel_codex_handoff/
     16_repo_structure_and_work_packages.md
     17_model_and_framework_strategy.md
     18_deterministic_poc_status.md
+    19_repository_publishing.md
   roadmaps/
     01_short_term_poc_roadmap.md
     02_long_term_roadmap_after_poc.md
@@ -160,3 +163,5 @@ python3 -m pip install -e . --dry-run --no-deps
 The generated reviewer workbench is a static offline file at `data/workbench/index.html`.
 
 Implemented/deferred boundaries and requirements before real clinical, prospective, or production use are summarized in `docs/18_deterministic_poc_status.md`.
+
+Repository publishing notes are in `docs/19_repository_publishing.md`.
