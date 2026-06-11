@@ -258,6 +258,27 @@
 ### Current State
 
 - Deterministic local replay can now generate reconstructable JSON receipts and human-readable Markdown receipts for all seven synthetic cases.
+
+## 2026-06-11 - EMEX And AdmSVE Reuse Evaluation
+
+### Completed So Far
+
+- Evaluated sibling repositories `../EMEX` and `../AdmSVE` read-only as potential donors for Sentinel's next demo layer.
+- Saved the evaluation in `docs/20_emex_admsve_reuse_evaluation.md`.
+- Identified AdmSVE as the primary donor for a local app pattern, redaction abstraction, intake extraction, hash-chained trace, tiered provenance output, metrics, and HTML reporting.
+- Identified EMEX as the secondary donor for artifact-first prepare/ingest workflow, manual companion prose ingestion, packet building, leakage reporting, and a simple static demo flow.
+- Documented that Sentinel still needs a native node-audit methodology layer for node definitions, evidence, distributions, ranges, medians, ensemble contribution, disagreements, and sensitivity notes.
+
+### Verification Evidence
+
+- `PYTHONPATH=src uv run --no-project --with pytest python -m pytest -q` in `../EMEX` passed: `21 passed`.
+- `PYTHONPATH=src:. uv run --no-project --with pytest --with fastapi --with uvicorn --with httpx python -m pytest -q` in `../AdmSVE` passed: `134 passed`.
+- The first direct `python3 -m pytest -q` attempts in both sibling repos failed only because the active Homebrew Python 3.14 environment did not have `pytest` installed.
+
+### Current State
+
+- No source code was copied from EMEX or AdmSVE.
+- The recommended next Sentinel step is to build a CLI-first constructed-text intake and node-audit layer before adding a live local app endpoint.
 - Receipts are unsigned POC artifacts with `UNSIGNED_DETERMINISTIC_POC` placeholders.
 - Receipts use static role/EvidenceFlow template versions and deterministic graph outputs.
 - Reviewer workbench UI now exists as `data/workbench/index.html`.
