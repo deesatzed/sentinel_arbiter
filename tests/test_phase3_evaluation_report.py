@@ -92,4 +92,9 @@ def test_evaluation_report_covers_redaction_workbench_and_local_app_completeness
     assert local_app["approve_and_run_endpoint"] is True
     assert local_app["console_script_registered"] is True
     assert local_app["review_html_exists"] is True
+    assert local_app["review_question_choice_visible"] is True
+    assert local_app["preprocess_control_visible"] is True
+    assert local_app["node_audit_checkpoint_visible"] is True
+    assert local_app["review_html_has_clinician_summary"] is True
+    assert local_app["review_html_has_deeper_dive"] is True
     assert local_app["review_html_forbidden_phrase_violations"] == 0

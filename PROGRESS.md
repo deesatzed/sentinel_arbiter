@@ -697,3 +697,32 @@
 - `qwen/qwen3.7-max` produced parseable structured output but shifted several nodes substantially and used action-oriented wording that needs stricter wording gates before app use.
 - `google/gemini-3.5-flash`, `nvidia/nemotron-3-ultra-550b-a55b`, and `stepfun/step-3.7-flash` produced invalid or truncated JSON in this run.
 - `anthropic/claude-haiku-latest` was rejected by OpenRouter as an invalid model ID.
+
+## 2026-06-11 - Phase H Staged Local App UX Started
+
+### Completed So Far
+
+- Updated the local stdlib app first screen to require one review question before pre-processing:
+  - Disposition Information Sufficiency,
+  - AI Response Use Sufficiency.
+- Renamed the primary input action to `Pre-process`.
+- Added a pre-processing review page that shows redacted input, editable structured episode JSON, Node Audit Methodology, Ensemble Contributions, `OK`, `Adjust`, `Re-check Selected Nodes`, and an `Are you sure?` confirmation note.
+- Added `run_manifest.json` for local app runs with `selected_review_question`.
+- Added a node-audit checkpoint requirement before `/approve-and-run` processing.
+- Added a clinician-facing summary-first result page with `Deeper Dive` before structured/raw artifacts.
+- Passed the selected review question into receipt `workflow_artifacts`.
+- Strengthened `local_app_completeness` in `validation/reports/latest.json` to cover review-question choice, pre-process control, node-audit checkpoint, clinician summary, and deeper-dive rendering.
+- Regenerated `data/prepared_inputs/constructed_demo_case/analysis/review.html`, its JSON receipt, `validation/reports/latest.json`, and `data/workbench/index.html`.
+
+### Verification Evidence
+
+- `python3 -m pytest tests/test_phase_g_local_demo_app.py -q` passed: `4 passed`.
+- `python3 -m pytest tests/test_phase3_evaluation_report.py::test_evaluation_report_covers_redaction_workbench_and_local_app_completeness -q` passed: `1 passed`.
+- `python3 -m pytest -q` passed: `65 passed`.
+- `validation/reports/latest.json` reports `local_app_completeness.complete=true`.
+- Constructed-demo receipt now includes `workflow_artifacts.selected_review_question=disposition_information_sufficiency`.
+
+### Current State
+
+- Phase H is partially implemented and verifiable for paste-based local input.
+- Full multipart file upload handling and durable adjustment/re-check trace artifacts remain future work for later Phase H/I completion.

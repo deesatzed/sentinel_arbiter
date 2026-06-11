@@ -99,6 +99,11 @@
     "console_script_registered": true,
     "review_html_exists": true,
     "review_html_has_run_summary": true,
+    "review_question_choice_visible": true,
+    "preprocess_control_visible": true,
+    "node_audit_checkpoint_visible": true,
+    "review_html_has_clinician_summary": true,
+    "review_html_has_deeper_dive": true,
     "review_html_forbidden_phrase_violations": 0
   },
   "case_results": [

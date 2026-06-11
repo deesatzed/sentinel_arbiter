@@ -24,11 +24,16 @@ def run_approved_demo(
     prepared_dir: str | Path,
     static_inputs_path: str | Path,
     output_dir: str | Path,
+    review_question: str | None = None,
 ) -> DemoRunResult:
     base = Path(prepared_dir)
     manifest = validate_approved_input(base)
     episode = load_approved_episode(base)
-    workflow_artifacts = _workflow_artifacts(base, manifest.raw_input_sha256)
+    workflow_artifacts = _workflow_artifacts(
+        base,
+        manifest.raw_input_sha256,
+        review_question=review_question,
+    )
     receipt = build_receipt(
         episode,
         static_inputs_path,
@@ -44,6 +49,7 @@ def run_approved_demo(
         prepared_dir=base,
         receipt_json_path=receipt_paths["json_path"],
         receipt_markdown_path=receipt_paths["markdown_path"],
+        review_question=review_question,
     )
     findings = scan_forbidden_content(review_html, allow_safety_rule_lists=False)
     if findings:
@@ -63,6 +69,7 @@ def render_demo_review_html(
     prepared_dir: Path,
     receipt_json_path: Path,
     receipt_markdown_path: Path,
+    review_question: str | None = None,
 ) -> str:
     redacted_input = _read_optional(prepared_dir / "redacted_input.txt")
     approved_episode = json.loads((prepared_dir / "approved_episode.json").read_text(encoding="utf-8"))
@@ -106,6 +113,8 @@ def render_demo_review_html(
             f"<td>{_esc(rejected['disposition_reason'])}</td>"
             "</tr>"
         )
+    clinician_summary = build_clinician_summary(receipt, review_question)
+    review_question_label = review_question_display(review_question)
 
     return f"""<!doctype html>
 <html lang="en">
@@ -134,6 +143,13 @@ def render_demo_review_html(
   </header>
   <main>
     <section>
+      <h2>Clinician Summary</h2>
+      <p><strong>Review question:</strong> {_esc(review_question_label)}</p>
+      <p>{_esc(clinician_summary)}</p>
+      <p>This output is governance review support, not a clinical action recommendation.</p>
+      <p><a href="#deeper-dive">Deeper Dive</a></p>
+    </section>
+    <section>
       <h2>Run Summary</h2>
       <table><tbody>
         <tr><th>Final posture</th><td>{_esc(receipt.final_posture)}</td></tr>
@@ -142,6 +158,10 @@ def render_demo_review_html(
         <tr><th>Receipt Markdown</th><td>{_esc(receipt_markdown_path)}</td></tr>
         <tr><th>Signature placeholder</th><td>{_esc(receipt.signature_placeholder)}</td></tr>
       </tbody></table>
+    </section>
+    <section id="deeper-dive">
+      <h2>Deeper Dive</h2>
+      <p>Review the structured episode, node audit tables, ensemble tables, receipts, trace hashes, and validation-linked artifacts below.</p>
     </section>
     <section>
       <h2>Redacted Input</h2>
@@ -167,7 +187,34 @@ def render_demo_review_html(
 """
 
 
-def _workflow_artifacts(prepared_dir: Path, raw_input_sha256: str | None) -> dict[str, object]:
+def build_clinician_summary(receipt: SentinelReceipt, review_question: str | None = None) -> str:
+    missing = receipt.human_summary_sections.get("what_was_missing", [])
+    would_change = receipt.human_summary_sections.get("what_would_have_changed_the_discussion", [])
+    question_text = review_question_display(review_question).lower()
+    main_gap = missing[0] if missing else "The current-time record has unresolved information gaps."
+    next_input = would_change[0] if would_change else "No next-best information item was ranked above the materiality threshold."
+    return (
+        f"For {question_text}, Sentinel found information sufficiency {receipt.node_values.get('information_sufficiency')} "
+        f"with material gap strength {receipt.node_values.get('material_gap_strength')} and decision weight "
+        f"{receipt.decision_weight}. The main driver is: {main_gap} "
+        f"The most useful next review input is: {next_input}"
+    )
+
+
+def review_question_display(review_question: str | None) -> str:
+    labels = {
+        "disposition_information_sufficiency": "Disposition information sufficiency",
+        "ai_response_use_sufficiency": "AI response use sufficiency",
+    }
+    return labels.get(review_question or "", "Unspecified governance review question")
+
+
+def _workflow_artifacts(
+    prepared_dir: Path,
+    raw_input_sha256: str | None,
+    *,
+    review_question: str | None = None,
+) -> dict[str, object]:
     artifacts: dict[str, object] = {
         "prepared_dir": str(prepared_dir),
         "redacted_input_sha256": sha256_file(prepared_dir / "redacted_input.txt"),
@@ -179,6 +226,11 @@ def _workflow_artifacts(prepared_dir: Path, raw_input_sha256: str | None) -> dic
     }
     if raw_input_sha256:
         artifacts["raw_input_sha256"] = raw_input_sha256
+    if review_question:
+        artifacts["selected_review_question"] = review_question
+    run_manifest = prepared_dir / "run_manifest.json"
+    if run_manifest.exists():
+        artifacts["run_manifest_sha256"] = sha256_file(run_manifest)
     return artifacts
 
 
@@ -197,11 +249,13 @@ def main() -> None:
     parser.add_argument("--prepared-dir", required=True)
     parser.add_argument("--static-inputs", default="data/static_inputs/static_inputs.json")
     parser.add_argument("--out", required=True)
+    parser.add_argument("--review-question")
     args = parser.parse_args()
     result = run_approved_demo(
         prepared_dir=args.prepared_dir,
         static_inputs_path=args.static_inputs,
         output_dir=args.out,
+        review_question=args.review_question,
     )
     print(f"review={result.review_html_path} receipt={result.receipt_json_path}")
 

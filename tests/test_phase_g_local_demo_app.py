@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 import threading
 import tomllib
+from urllib.error import HTTPError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -36,6 +37,13 @@ def _post_form(url: str, payload: dict[str, str]) -> str:
     )
     with urlopen(request, timeout=5) as response:
         return response.read().decode("utf-8")
+
+
+def _post_form_allow_error(url: str, payload: dict[str, str]) -> str:
+    try:
+        return _post_form(url, payload)
+    except HTTPError as exc:
+        return exc.read().decode("utf-8")
 
 
 def test_run_approved_demo_writes_receipts_review_html_and_workflow_refs(tmp_path):
@@ -91,19 +99,32 @@ def test_local_demo_http_app_prepares_approves_runs_and_reviews_constructed_inpu
         with urlopen(base_url, timeout=5) as response:
             index_html = response.read().decode("utf-8")
         assert "Sentinel Local Demo" in index_html
+        assert "Disposition Information Sufficiency" in index_html
+        assert "AI Response Use Sufficiency" in index_html
+        assert "Pre-process" in index_html
         assert "Planning / governance POC - not for patient care." in index_html
 
-        prepare_html = _post_form(
+        prepare_html = _post_form_allow_error(
             f"{base_url}/prepare",
             {
                 "episode_id": "constructed_http_case",
                 "title": "Constructed HTTP case",
+                "review_question": "disposition_information_sufficiency",
                 "clinical_text": _constructed_text(),
             },
         )
         prepared_dir = tmp_path / "prepared_inputs" / "constructed_http_case"
         assert "Redacted Input" in prepare_html
         assert "Editable Structured Episode" in prepare_html
+        assert "Node Audit Methodology" in prepare_html
+        assert "Ensemble Contributions" in prepare_html
+        assert "OK" in prepare_html
+        assert "Adjust" in prepare_html
+        assert "Re-check Selected Nodes" in prepare_html
+        assert "Are you sure?" in prepare_html
+        assert (prepared_dir / "run_manifest.json").exists()
+        manifest = json.loads((prepared_dir / "run_manifest.json").read_text(encoding="utf-8"))
+        assert manifest["selected_review_question"] == "disposition_information_sufficiency"
         assert (prepared_dir / "redacted_input.txt").exists()
         assert (prepared_dir / "draft_episode.json").exists()
         assert not (prepared_dir / "raw_input.txt").exists()
@@ -113,6 +134,8 @@ def test_local_demo_http_app_prepares_approves_runs_and_reviews_constructed_inpu
             f"{base_url}/approve-and-run",
             {
                 "prepared_dir": str(prepared_dir),
+                "review_question": "disposition_information_sufficiency",
+                "node_audit_checkpoint": "ok",
                 "reviewer_id": "reviewer_http",
                 "approval_note": "HTTP approval for constructed demo.",
                 "approved_episode_json": draft_json,
@@ -120,12 +143,48 @@ def test_local_demo_http_app_prepares_approves_runs_and_reviews_constructed_inpu
         )
 
         assert "Run Complete" in review_html
+        assert "Clinician Summary" in review_html
+        assert "Deeper Dive" in review_html
+        assert review_html.index("Clinician Summary") < review_html.index("Approved Structured Episode")
+        assert "disposition information sufficiency" in review_html.lower()
         assert "Node Audit Methodology" in review_html
         assert "Ensemble Contributions" in review_html
         assert "Receipt JSON" in review_html
         assert (prepared_dir / "approval_manifest.json").exists()
         assert (prepared_dir / "analysis" / "review.html").exists()
+        receipt_json = json.loads(
+            (prepared_dir / "analysis" / "receipts" / "json" / "receipt_constructed_http_case_T3_deterministic.json")
+            .read_text(encoding="utf-8")
+        )
+        assert receipt_json["workflow_artifacts"]["selected_review_question"] == "disposition_information_sufficiency"
         assert scan_forbidden_content(review_html, allow_safety_rule_lists=False) == []
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=5)
+
+
+def test_local_demo_requires_review_question_before_preprocess(tmp_path):
+    server = create_demo_server(
+        host="127.0.0.1",
+        port=0,
+        workspace_dir=tmp_path,
+        static_inputs_path=STATIC_INPUTS,
+    )
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    base_url = f"http://{server.server_address[0]}:{server.server_address[1]}"
+    try:
+        prepare_html = _post_form_allow_error(
+            f"{base_url}/prepare",
+            {
+                "episode_id": "missing_choice_case",
+                "title": "Missing choice case",
+                "clinical_text": _constructed_text(),
+            },
+        )
+        assert "Validation Error" in prepare_html
+        assert "review question is required" in prepare_html
     finally:
         server.shutdown()
         server.server_close()

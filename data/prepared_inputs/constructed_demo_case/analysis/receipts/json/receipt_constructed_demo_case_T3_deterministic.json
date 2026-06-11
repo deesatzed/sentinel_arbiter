@@ -1256,6 +1256,7 @@
     "approved_episode_sha256": "4fad9599f561e9101c46f48de44268139182d2db68432e80cc891b6f6e730f6d",
     "approval_manifest_sha256": "92bee26f2ffb97c3847bbca80c1c1dcbf23884aae4047b6ab4ef901a624a411d",
     "approval_trace_sha256": "8293d526a2ee4b1a25113a0d06f10d0f51cbfbb9dbceed729ebb5e06903c9e19",
-    "raw_input_sha256": "bc433cd0e9898905e8147b60c14536436643767f39d635ef38d37e54fe8d3427"
+    "raw_input_sha256": "bc433cd0e9898905e8147b60c14536436643767f39d635ef38d37e54fe8d3427",
+    "selected_review_question": "disposition_information_sufficiency"
   }
 }

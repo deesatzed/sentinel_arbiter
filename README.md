@@ -255,7 +255,7 @@ Then open:
 http://127.0.0.1:8765
 ```
 
-The local app lets a reviewer paste constructed/deidentified-style text, run deterministic redaction, inspect the redacted text and editable draft episode JSON, approve the structured episode, run deterministic analysis, and review the generated HTML/receipt output. The default app workspace is `.sentinel_local_demo/`, which is gitignored.
+The local app now starts with the staged reviewer flow from `GOAL.md`: choose either Disposition Information Sufficiency or AI Response Use Sufficiency, paste constructed/deidentified-style text, click `Pre-process`, review Node Audit Methodology and Ensemble Contributions, confirm the node-audit checkpoint, click `Process`, then read a clinician-facing summary before opening the deeper-dive artifacts. The default app workspace is `.sentinel_local_demo/`, which is gitignored.
 
 ## OpenRouter model comparison
 
@@ -330,7 +330,7 @@ PYTHONPATH=src python3 -m sentinel_workbench.static_inputs --static-inputs data/
 PYTHONPATH=src python3 -m sentinel_workbench.constructed_intake --input data/constructed_inputs/constructed_demo_case.txt --out data/prepared_inputs/constructed_demo_case --episode-id constructed_demo_case --title "Constructed demo case"
 PYTHONPATH=src python3 -m sentinel_workbench.approval --prepared-dir data/prepared_inputs/constructed_demo_case --reviewer-id reviewer_demo --approval-note "Demo structured episode reviewed for local deterministic workflow."
 PYTHONPATH=src python3 -m sentinel_workbench.approval --validate-approved data/prepared_inputs/constructed_demo_case
-PYTHONPATH=src python3 -m sentinel_workbench.demo_run --prepared-dir data/prepared_inputs/constructed_demo_case --static-inputs data/static_inputs/static_inputs.json --out data/prepared_inputs/constructed_demo_case/analysis
+PYTHONPATH=src python3 -m sentinel_workbench.demo_run --prepared-dir data/prepared_inputs/constructed_demo_case --static-inputs data/static_inputs/static_inputs.json --out data/prepared_inputs/constructed_demo_case/analysis --review-question disposition_information_sufficiency
 PYTHONPATH=src python3 -m sentinel_workbench.receipts --case-dir data/cases --static-inputs data/static_inputs/static_inputs.json --out data/receipts
 PYTHONPATH=src python3 -m sentinel_workbench.schema_export schemas/ed_decision_episode.schema.json
 PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts

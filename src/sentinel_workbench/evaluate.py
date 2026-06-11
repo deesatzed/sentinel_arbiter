@@ -162,6 +162,13 @@ def local_app_completeness_payload(
         and scripts.get("sentinel-workbench-run-approved-demo") == "sentinel_workbench.demo_run:main",
         "review_html_exists": review_path.exists(),
         "review_html_has_run_summary": "Run Complete" in review_html and "Receipt JSON" in review_html,
+        "review_question_choice_visible": "Disposition Information Sufficiency" in local_app_source
+        and "AI Response Use Sufficiency" in local_app_source,
+        "preprocess_control_visible": "Pre-process" in local_app_source,
+        "node_audit_checkpoint_visible": "node_audit_checkpoint" in local_app_source
+        and "Re-check Selected Nodes" in local_app_source,
+        "review_html_has_clinician_summary": "Clinician Summary" in review_html,
+        "review_html_has_deeper_dive": "Deeper Dive" in review_html,
         "review_html_forbidden_phrase_violations": len(scan_forbidden_content(review_html, allow_safety_rule_lists=False)),
     }
     complete = all(value for key, value in checks.items() if key != "review_html_forbidden_phrase_violations") and checks[
