@@ -165,6 +165,9 @@ def local_app_completeness_payload(
         "review_question_choice_visible": "Disposition Information Sufficiency" in local_app_source
         and "AI Response Use Sufficiency" in local_app_source,
         "preprocess_control_visible": "Pre-process" in local_app_source,
+        "multipart_file_upload_supported": 'enctype="multipart/form-data"' in local_app_source
+        and "_parse_multipart_form" in local_app_source
+        and "clinical_file" in local_app_source,
         "node_audit_checkpoint_visible": "node_audit_checkpoint" in local_app_source
         and "Re-check Selected Nodes" in local_app_source,
         "adjustment_controls_visible": "selected_node_ids" in local_app_source

@@ -65,7 +65,11 @@ def create_demo_server(
 
         def _read_form(self) -> dict[str, str]:
             length = int(self.headers.get("Content-Length", "0"))
-            payload = self.rfile.read(length).decode("utf-8")
+            payload = self.rfile.read(length)
+            content_type = self.headers.get("Content-Type", "")
+            if content_type.startswith("multipart/form-data"):
+                return _parse_multipart_form(payload, content_type)
+            payload = payload.decode("utf-8")
             parsed = parse_qs(payload, keep_blank_values=True)
             return {key: values[0] if values else "" for key, values in parsed.items()}
 
@@ -84,7 +88,7 @@ def _handle_prepare(fields: dict[str, str], workspace: Path, static_inputs_path:
     episode_id = _safe_episode_id(fields.get("episode_id", "constructed_demo_case"))
     title = fields.get("title", "").strip() or episode_id.replace("_", " ").title()
     review_question = _require_review_question(fields.get("review_question", ""))
-    clinical_text = fields.get("clinical_text", "")
+    clinical_text, input_mode, uploaded_filename = _clinical_text_from_fields(fields)
     if not clinical_text.strip():
         raise ValueError("constructed input text is required")
     prepared_dir = workspace / "prepared_inputs" / episode_id
@@ -115,7 +119,10 @@ def _handle_prepare(fields: dict[str, str], workspace: Path, static_inputs_path:
         "episode_id": episode_id,
         "stage": "preprocessed",
         "node_audit_checkpoint_required": True,
+        "input_mode": input_mode,
     }
+    if uploaded_filename:
+        run_manifest["uploaded_filename"] = uploaded_filename
     (prepared_dir / "run_manifest.json").write_text(json.dumps(run_manifest, indent=2) + "\n", encoding="utf-8")
     episode = load_episode(artifacts.draft_episode_path)
     static_bundle = load_static_input_bundle(static_inputs_path)
@@ -225,7 +232,7 @@ def _index_page() -> str:
         <section>
           <h2>Choose Review Question</h2>
           <p>Select one governance review question before pre-processing input.</p>
-          <form method="post" action="/prepare">
+          <form method="post" action="/prepare" enctype="multipart/form-data">
             <div class="choice-grid">
               <label class="choice"><input type="radio" name="review_question" value="disposition_information_sufficiency" required> <strong>A - Disposition Information Sufficiency</strong><span>Is there enough information to make a disposition decision?</span></label>
               <label class="choice"><input type="radio" name="review_question" value="ai_response_use_sufficiency" required> <strong>B - AI Response Use Sufficiency</strong><span>Is there enough information to use this AI-generated response?</span></label>
@@ -312,6 +319,17 @@ def _require_review_question(value: str) -> str:
     if value not in REVIEW_QUESTION_LABELS:
         raise ValueError("review question is required before pre-processing")
     return value
+
+
+def _clinical_text_from_fields(fields: dict[str, str]) -> tuple[str, str, str | None]:
+    pasted = fields.get("clinical_text", "")
+    uploaded = fields.get("clinical_file", "")
+    uploaded_filename = fields.get("clinical_file__filename") or None
+    if pasted.strip():
+        return pasted, "pasted_text", uploaded_filename
+    if uploaded.strip():
+        return uploaded, "uploaded_file", uploaded_filename
+    return "", "missing", uploaded_filename
 
 
 def _review_question_from_fields_or_manifest(fields: dict[str, str], prepared_dir: Path) -> str:
@@ -428,6 +446,55 @@ def _read_text(path: Path) -> str:
 
 def _esc(value: object) -> str:
     return html.escape(str(value), quote=True)
+
+
+def _parse_multipart_form(payload: bytes, content_type: str) -> dict[str, str]:
+    boundary = _multipart_boundary(content_type)
+    delimiter = b"--" + boundary
+    fields: dict[str, str] = {}
+    for raw_part in payload.split(delimiter):
+        part = raw_part.strip(b"\r\n")
+        if not part or part == b"--":
+            continue
+        if part.endswith(b"--"):
+            part = part[:-2].rstrip(b"\r\n")
+        header_bytes, separator, body = part.partition(b"\r\n\r\n")
+        if not separator:
+            continue
+        headers = header_bytes.decode("utf-8", errors="replace").split("\r\n")
+        disposition = next((header for header in headers if header.lower().startswith("content-disposition:")), "")
+        params = _parse_content_disposition(disposition)
+        name = params.get("name")
+        if not name:
+            continue
+        filename = params.get("filename")
+        text = body.rstrip(b"\r\n").decode("utf-8", errors="replace")
+        fields[name] = text
+        if filename:
+            fields[f"{name}__filename"] = filename
+    return fields
+
+
+def _multipart_boundary(content_type: str) -> bytes:
+    for item in content_type.split(";"):
+        item = item.strip()
+        if item.startswith("boundary="):
+            boundary = item.split("=", 1)[1].strip().strip('"')
+            if boundary:
+                return boundary.encode("utf-8")
+    raise ValueError("multipart boundary missing")
+
+
+def _parse_content_disposition(value: str) -> dict[str, str]:
+    _, _, remainder = value.partition(":")
+    params: dict[str, str] = {}
+    for item in remainder.split(";"):
+        item = item.strip()
+        if "=" not in item:
+            continue
+        key, raw = item.split("=", 1)
+        params[key.strip().lower()] = raw.strip().strip('"')
+    return params
 
 
 def main() -> None:

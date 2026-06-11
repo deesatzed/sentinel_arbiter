@@ -751,3 +751,26 @@
 
 - Phase I is partially implemented for artifact-backed adjustment and selected-node re-check traceability.
 - Reviewer edits to actual node estimates remain intentionally non-authoritative; the current implementation records the reviewer checkpoint and deterministic re-check values without replacing graph-derived node estimates.
+
+## 2026-06-11 - Phase H Multipart Upload Path Added
+
+### Completed So Far
+
+- Converted the local app input form to `multipart/form-data`.
+- Added a small stdlib multipart parser for local text-file uploads.
+- Added upload-or-paste input selection: pasted text wins when present; otherwise the uploaded text file is used.
+- Added `input_mode` and `uploaded_filename` to `run_manifest.json` for upload-based runs.
+- Added HTTP tests that post real multipart bytes through the local stdlib server.
+- Strengthened `local_app_completeness` with `multipart_file_upload_supported`.
+
+### Verification Evidence
+
+- `python3 -m pytest tests/test_phase_g_local_demo_app.py -q` passed: `6 passed`.
+- `python3 -m pytest tests/test_phase3_evaluation_report.py::test_evaluation_report_covers_redaction_workbench_and_local_app_completeness -q` passed: `1 passed`.
+- `python3 -m pytest -q` passed: `67 passed`.
+- `validation/reports/latest.json` reports `local_app_completeness.multipart_file_upload_supported=true`.
+
+### Current State
+
+- Phase H now supports both paste input and local text-file upload for the app demo.
+- Uploaded file content still passes through the same deterministic redaction, intake, node audit, ensemble, reviewer checkpoint, processing, summary, and deeper-dive path.

@@ -101,6 +101,7 @@
     "review_html_has_run_summary": true,
     "review_question_choice_visible": true,
     "preprocess_control_visible": true,
+    "multipart_file_upload_supported": true,
     "node_audit_checkpoint_visible": true,
     "adjustment_controls_visible": true,
     "node_audit_review_manifest_supported": true,

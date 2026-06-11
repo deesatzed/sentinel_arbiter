@@ -255,7 +255,7 @@ Then open:
 http://127.0.0.1:8765
 ```
 
-The local app now starts with the staged reviewer flow from `GOAL.md`: choose either Disposition Information Sufficiency or AI Response Use Sufficiency, paste constructed/deidentified-style text, click `Pre-process`, review Node Audit Methodology and Ensemble Contributions, choose `OK`, `Adjust`, or `Re-check Selected Nodes`, confirm any methodology-changing checkpoint, click `Process`, then read a clinician-facing summary before opening the deeper-dive artifacts. The default app workspace is `.sentinel_local_demo/`, which is gitignored.
+The local app now starts with the staged reviewer flow from `GOAL.md`: choose either Disposition Information Sufficiency or AI Response Use Sufficiency, paste constructed/deidentified-style text or upload a local text file, click `Pre-process`, review Node Audit Methodology and Ensemble Contributions, choose `OK`, `Adjust`, or `Re-check Selected Nodes`, confirm any methodology-changing checkpoint, click `Process`, then read a clinician-facing summary before opening the deeper-dive artifacts. The default app workspace is `.sentinel_local_demo/`, which is gitignored.
 
 Adjustment and re-check checkpoints are saved separately from generated facts in `node_audit_review_manifest.json`. The deterministic graph remains the final posture authority.
 

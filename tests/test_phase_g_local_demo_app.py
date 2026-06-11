@@ -46,6 +46,41 @@ def _post_form_allow_error(url: str, payload: dict[str, str]) -> str:
         return exc.read().decode("utf-8")
 
 
+def _post_multipart(url: str, fields: dict[str, str], files: dict[str, tuple[str, str]]) -> str:
+    boundary = "----sentinel-test-boundary"
+    chunks: list[bytes] = []
+    for name, value in fields.items():
+        chunks.extend(
+            [
+                f"--{boundary}\r\n".encode("utf-8"),
+                f'Content-Disposition: form-data; name="{name}"\r\n\r\n'.encode("utf-8"),
+                value.encode("utf-8"),
+                b"\r\n",
+            ]
+        )
+    for name, (filename, value) in files.items():
+        chunks.extend(
+            [
+                f"--{boundary}\r\n".encode("utf-8"),
+                (
+                    f'Content-Disposition: form-data; name="{name}"; filename="{filename}"\r\n'
+                    "Content-Type: text/plain; charset=utf-8\r\n\r\n"
+                ).encode("utf-8"),
+                value.encode("utf-8"),
+                b"\r\n",
+            ]
+        )
+    chunks.append(f"--{boundary}--\r\n".encode("utf-8"))
+    request = Request(
+        url,
+        data=b"".join(chunks),
+        headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
+        method="POST",
+    )
+    with urlopen(request, timeout=5) as response:
+        return response.read().decode("utf-8")
+
+
 def test_run_approved_demo_writes_receipts_review_html_and_workflow_refs(tmp_path):
     prepared = prepare_constructed_text(
         raw_text=_constructed_text(),
@@ -242,6 +277,47 @@ def test_local_demo_records_adjustment_and_recheck_manifest_before_processing(tm
         assert receipt_json["workflow_artifacts"]["selected_review_question"] == "ai_response_use_sufficiency"
         assert "Clinician Summary" in review_html
         assert scan_forbidden_content(review_html, allow_safety_rule_lists=False) == []
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=5)
+
+
+def test_local_demo_accepts_uploaded_constructed_text_file_for_preprocess(tmp_path):
+    server = create_demo_server(
+        host="127.0.0.1",
+        port=0,
+        workspace_dir=tmp_path,
+        static_inputs_path=STATIC_INPUTS,
+    )
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    base_url = f"http://{server.server_address[0]}:{server.server_address[1]}"
+    try:
+        with urlopen(base_url, timeout=5) as response:
+            index_html = response.read().decode("utf-8")
+        assert 'enctype="multipart/form-data"' in index_html
+
+        prepare_html = _post_multipart(
+            f"{base_url}/prepare",
+            fields={
+                "episode_id": "uploaded_file_case",
+                "title": "Uploaded file case",
+                "review_question": "ai_response_use_sufficiency",
+                "clinical_text": "",
+            },
+            files={"clinical_file": ("constructed_upload.txt", _constructed_text())},
+        )
+
+        prepared_dir = tmp_path / "prepared_inputs" / "uploaded_file_case"
+        assert "Redacted Input" in prepare_html
+        assert "Node Audit Methodology" in prepare_html
+        assert (prepared_dir / "draft_episode.json").exists()
+        manifest = json.loads((prepared_dir / "run_manifest.json").read_text(encoding="utf-8"))
+        assert manifest["selected_review_question"] == "ai_response_use_sufficiency"
+        assert manifest["input_mode"] == "uploaded_file"
+        assert manifest["uploaded_filename"] == "constructed_upload.txt"
+        assert not (prepared_dir / "raw_input.txt").exists()
     finally:
         server.shutdown()
         server.server_close()
