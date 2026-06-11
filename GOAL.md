@@ -2,18 +2,21 @@
 
 ## Outcome
 
-Build Sentinel into a local, trustworthy governance workbench for replaying Emergency Department disposition decision points and reviewing whether the documented decision posture was warranted from the information available at that time.
+Build Sentinel into a local, trustworthy governance workbench where a reviewer can paste or upload redacted clinical-style input, choose the review question, inspect the methodology before analysis, run the ensemble, and receive a concise clinician-readable governance summary with a deeper audit trail available on demand.
 
-The next milestone is no longer just a deterministic framework. It is a usable local demo where a reviewer can:
+The next milestone is no longer just a deterministic framework or a raw artifact demo. It is a clinician-facing staged local app where a reviewer can:
 
-1. enter constructed, synthetic, or governance-approved deidentified clinical input,
-2. run redaction and residual-risk checks before analysis,
-3. convert the input into a reviewer-editable structured `DecisionEpisode`,
-4. approve or revise the structured episode,
-5. run deterministic Sentinel analysis,
-6. inspect each dependent node, evidence item, range, median, uncertainty method, and ensemble contribution,
-7. review generated JSON, Markdown, and workbench outputs,
-8. understand exactly how the final Sentinel posture was produced.
+1. choose one of two review questions:
+   - A. Is there enough information to make a disposition decision?
+   - B. Is there enough information to use this AI-generated response?
+2. paste redacted text or upload a constructed or governance-approved deidentified file,
+3. click `Pre-process` to run redaction, intake, timepoint extraction, and residual-risk checks before analysis,
+4. review the generated Node Audit Methodology before graph execution,
+5. accept the methodology or adjust and re-check one or more nodes with an explicit confirmation step,
+6. review Ensemble Contributions before final processing,
+7. click `Process` and see the deterministic ensemble analysis run,
+8. receive a usable clinician-facing summary that explains what the result means and why in no more than one or two short paragraphs,
+9. open a `Deeper Dive` view for node evidence, ranges, medians, distributions, ensemble disagreements, trace receipts, validation status, and raw structured artifacts.
 
 Sentinel remains a governance and review workbench. It must not become a bedside alert system, autonomous disposition agent, diagnosis recommender, prescribing tool, ordering tool, clearance tool, patient-facing advice product, or clinical outcome-claim engine.
 
@@ -37,19 +40,60 @@ The new work must build on that baseline instead of replacing it.
 
 ## Next Milestone
 
-The next milestone is the transparent local demo:
+The next milestone is the clinician-facing staged local demo:
 
 - constructed or approved deidentified input can be pasted or loaded,
+- the landing page explains and enforces review question A or B before input is analyzed,
 - redaction happens before any intake or model-like analysis,
 - residual PII/PHI risk blocks or quarantines input,
 - intake extraction creates a structured draft rather than a final judgment,
-- a reviewer can inspect and edit the structured case before analysis,
+- a reviewer can inspect and edit the structured case and Node Audit Methodology before analysis,
+- the reviewer can approve, adjust, or re-check selected nodes before processing,
+- Ensemble Contributions are shown before final graph execution,
 - every computed node exposes its dependencies and evidence,
 - every node estimate includes value, range, median, distribution kind, confidence, method, and evidence references,
 - static ensemble contributors produce bounded estimates and rationales,
 - accepted, rejected, and downgraded findings are visible,
 - graph posture is computed from typed nodes, not from prose or prompt authority,
-- receipts and the workbench make the methodology transparent enough for skeptical review.
+- the first result is a concise, clinically usable governance summary rather than raw JSON,
+- a deeper-dive view exposes the full methodology, receipts, and validation artifacts for skeptical review.
+
+## Clinician-Facing UX Contract
+
+The app's first screen must be the real review workflow, not a generic landing page or marketing page.
+
+The first screen must explain two choices in plain language:
+
+- `A - Disposition Information Sufficiency`: review whether the available information is enough to support a documented disposition decision discussion.
+- `B - AI Response Use Sufficiency`: review whether the available information is enough to trust or use an AI-generated clinical response as governance-reviewed input.
+
+The selected choice must follow the run:
+
+- it must be saved in the run manifest and receipts,
+- it must influence the wording of the clinician-facing summary,
+- it must not bypass the same redaction, reviewer approval, node audit, ensemble, and receipt requirements,
+- it must not create direct clinical action instructions.
+
+The reviewer journey must be staged:
+
+1. `Choose`: select review question A or B.
+2. `Input`: paste redacted text or upload a local constructed/deidentified file.
+3. `Pre-process`: run redaction, residual-risk checks, structured intake, timepoint extraction, and draft node methodology.
+4. `Node Audit`: show dependent nodes, evidence, missing inputs, probability or score distribution, range, median, method, confidence, and limitations.
+5. `Review`: allow `OK`, `Adjust`, or `Re-check selected nodes`. Any adjustment must show an `Are you sure?` confirmation before replacing generated methodology.
+6. `Ensemble`: show role and EvidenceFlow contributions, accepted/downgraded/rejected status, disagreement, and rationale.
+7. `Process`: run deterministic graph analysis only after the reviewer checkpoint.
+8. `Summary`: show a short clinician-readable governance interpretation first.
+9. `Deeper Dive`: show complete audit tables, receipts, trace hashes, validation report, structured episode, and raw JSON/Markdown artifacts.
+
+The summary result must be written for clinician review:
+
+- no raw JSON as the first visible answer,
+- no unexplained internal node names as the first visible answer,
+- no more than one or two short paragraphs,
+- explicitly state what the result means for the selected review question,
+- briefly name the main uncertainty drivers and evidence gaps,
+- state that the output is governance review support, not a clinical action recommendation.
 
 ## Source Of Truth
 
@@ -206,58 +250,93 @@ The workbench and receipts must expose:
 
 ## Required Demo Workflow
 
-### 1. Input Stage
+### 1. Landing And Choice Stage
+
+Purpose: orient the reviewer to the exact governance question before any input is processed.
+
+Requirements:
+
+- show the two review choices as the first meaningful interaction,
+- require exactly one selected choice before `Pre-process` is enabled,
+- explain each choice in plain language without clinical recommendation language,
+- persist the selected choice into the run manifest, receipt, and summary,
+- keep visible POC and non-clinical-use warnings without making them the whole page.
+
+### 2. Input Stage
 
 Purpose: accept constructed or approved deidentified input without letting risky text flow directly into analysis.
 
 Requirements:
 
-- provide a CLI path first,
-- optionally provide a local app endpoint after the CLI path is tested,
+- provide a local app paste/upload path as the primary demo path,
+- keep the deterministic CLI path as the authoritative verification path,
+- accept pasted redacted text and local file upload,
 - apply deterministic redaction before intake,
 - emit a redaction report,
 - block or quarantine residual PII/PHI patterns,
 - hash the original local input without exposing it in generated review artifacts,
 - preserve a redacted review copy.
 
-### 2. Intake Stage
+### 3. Pre-process And Intake Stage
 
 Purpose: convert redacted input into a structured draft case without inventing facts.
 
 Requirements:
 
+- expose a `Pre-process` control in the app,
+- run redaction, residual-risk checking, intake extraction, timepoint tagging, and draft node-methodology construction before analysis,
 - create a draft `DecisionEpisode`,
 - tag facts by timepoint,
 - mark missing, unknown, inferred, weakly sourced, and reviewer-supplied fields,
 - reject hidden future facts from current-time evaluation,
-- require reviewer approval before graph execution,
+- require reviewer approval or confirmation before graph execution,
 - save the reviewer-approved structured episode as an artifact.
 
-### 3. Node Audit Stage
+### 4. Node Audit Stage
 
 Purpose: make every dependent node inspectable.
 
 Requirements:
 
+- display the Node Audit Methodology immediately after pre-processing and before final processing,
 - define node dependencies explicitly,
 - attach evidence references to node estimates,
 - compute or assign value, range, median, distribution kind, confidence, and method,
 - distinguish deterministic fixture-derived estimates from static role-derived or future LLM-derived estimates,
-- record conflicts and sensitivity notes.
+- record conflicts and sensitivity notes,
+- allow a reviewer to approve the methodology, adjust reviewer-editable fields, or request re-check for selected nodes,
+- require an `Are you sure?` confirmation before accepting reviewer adjustments that change node inputs, evidence disposition, or estimates.
 
-### 4. Ensemble Stage
+### 5. Ensemble Stage
 
 Purpose: make role and EvidenceFlow influence transparent.
 
 Requirements:
 
+- display Ensemble Contributions before the reviewer clicks `Process`,
 - static ensemble contributors must emit bounded proposed values and rationales,
 - each contribution maps to allowed node IDs only,
 - each contribution is accepted, rejected, or downgraded with a reason,
+- disagreements must be visible in plain language and in audit tables,
 - graph posture must remain deterministic from normalized typed inputs,
 - no role or prompt may decide the final posture.
 
-### 5. Receipt Stage
+### 6. Process And Summary Stage
+
+Purpose: make the result understandable to a clinician reviewer before exposing detailed audit artifacts.
+
+Requirements:
+
+- provide a visible `Process` control after the reviewer has seen Node Audit Methodology and Ensemble Contributions,
+- show progress or step status while the deterministic pipeline runs,
+- show the summary result first,
+- keep the summary to one or two short paragraphs,
+- state what the result means for the selected review question,
+- explain the main reasons and uncertainty drivers,
+- avoid raw JSON, unexplained internal labels, and disposition recommendation language in the primary summary,
+- provide a clear `Deeper Dive` button for complete methodology.
+
+### 7. Receipt Stage
 
 Purpose: make the result reconstructable.
 
@@ -269,12 +348,13 @@ Requirements:
 - include trace hashes for the run sequence,
 - keep receipts free of raw PHI.
 
-### 6. Workbench Stage
+### 8. Workbench And Deeper Dive Stage
 
 Purpose: make the demo usable without reading raw JSON.
 
 Requirements:
 
+- use the app as the first review surface,
 - show redacted input and structured episode,
 - show timeline replay,
 - show node cards with evidence, range, median, distribution kind, confidence, and method,
@@ -282,9 +362,10 @@ Requirements:
 - show graph posture and sensitivity notes,
 - show generated receipts,
 - show validation status and warnings,
+- allow the reviewer to open raw structured artifacts only from the deeper-dive view,
 - keep visible POC and non-clinical-use warnings.
 
-### 7. Optional Companion Prose Stage
+### 9. Optional Companion Prose Stage
 
 Purpose: allow future OpenEvidence-like or LLM prose to become structured evidence input without handing it authority.
 
@@ -299,30 +380,39 @@ Requirements:
 
 ## Full Demo Proof Of Done
 
-The transparent local demo is complete only when all of the following are true:
+The clinician-facing staged local demo is complete only when all of the following are true:
 
-1. A user can run a local CLI command with constructed text input and receive a redaction report plus draft structured episode.
-2. Residual PII/PHI risk is detected and blocks or quarantines unsafe input.
-3. A reviewer-approved structured episode can be saved and used for deterministic analysis.
-4. Synthetic and constructed demo inputs validate against schemas.
-5. Hidden future facts cannot enter current-time node computation.
-6. Every graph node has a `NodeAudit` or equivalent schema-backed audit object.
-7. Every node audit has dependencies, evidence refs, value, range, median, distribution kind, confidence, method, and sensitivity note.
-8. Every ensemble contribution is accepted, rejected, or downgraded with a reason.
-9. The graph computes final Sentinel posture from normalized typed node values.
-10. Final posture remains one of the Sentinel posture categories, not a disposition recommendation.
-11. JSON receipts include redaction, intake, node audit, ensemble, trace, graph, and signature-placeholder fields.
-12. Human-readable receipts explain what was known, what was missing, what would have changed the discussion, what facility-based monitoring or treatment might add, what non-inpatient alternatives might add, commission concerns, omission concerns, therapy-response concerns, and why the graph selected the posture.
-13. The workbench renders the redacted input, structured episode, node methodology, distributions, range, median, ensemble disagreement, graph posture, receipts, and validation status.
-14. Automated validation reports cover schema validity, future leakage, redaction gating, expected posture agreement on fixtures, omission detection, commission warning detection, therapy-response integration, next-best-information usefulness, node-audit completeness, receipt completeness, workbench completeness, and forbidden phrase violations.
-15. The project documents what is implemented, what is deferred, and what would be required before any real clinical, prospective, production, or live-evidence use.
-16. Full local verification commands pass and `git diff --check` is clean.
+1. A user can open the local app and choose either review question A or B before input is processed.
+2. The selected review question is saved into the run manifest, receipts, and summary.
+3. A user can paste redacted text or upload a constructed/deidentified local file and click `Pre-process`.
+4. A user can run a local CLI command with constructed text input and receive a redaction report plus draft structured episode.
+5. Residual PII/PHI risk is detected and blocks or quarantines unsafe input.
+6. A reviewer-approved structured episode can be saved and used for deterministic analysis.
+7. Synthetic and constructed demo inputs validate against schemas.
+8. Hidden future facts cannot enter current-time node computation.
+9. Every graph node has a `NodeAudit` or equivalent schema-backed audit object.
+10. Every node audit has dependencies, evidence refs, value, range, median, distribution kind, confidence, method, and sensitivity note.
+11. The app displays Node Audit Methodology after pre-processing and before processing.
+12. A reviewer can choose `OK`, `Adjust`, or `Re-check selected nodes`; adjustments require confirmation before replacing generated methodology.
+13. Every ensemble contribution is accepted, rejected, or downgraded with a reason.
+14. The app displays Ensemble Contributions before `Process`.
+15. The graph computes final Sentinel posture from normalized typed node values.
+16. Final posture remains one of the Sentinel posture categories, not a disposition recommendation.
+17. The primary result is a clinician-readable governance summary of no more than one or two short paragraphs.
+18. The primary summary explains what the result means for the selected review question and why, including the main uncertainty drivers.
+19. A `Deeper Dive` button exposes node audit tables, ensemble tables, receipts, trace hashes, validation status, structured episode, and raw JSON/Markdown artifacts.
+20. JSON receipts include selected review question, redaction, intake, node audit, ensemble, trace, graph, and signature-placeholder fields.
+21. Human-readable receipts explain what was known, what was missing, what would have changed the discussion, what facility-based monitoring or treatment might add, what non-inpatient alternatives might add, commission concerns, omission concerns, therapy-response concerns, and why the graph selected the posture.
+22. The workbench renders the redacted input, structured episode, node methodology, distributions, range, median, ensemble disagreement, graph posture, clinician summary, deeper-dive artifacts, receipts, and validation status.
+23. Automated validation reports cover schema validity, future leakage, redaction gating, expected posture agreement on fixtures, omission detection, commission warning detection, therapy-response integration, next-best-information usefulness, node-audit completeness, receipt completeness, workbench completeness, app-flow completeness, summary completeness, and forbidden phrase violations.
+24. The project documents what is implemented, what is deferred, and what would be required before any real clinical, prospective, production, or live-evidence use.
+25. Full local verification commands pass and `git diff --check` is clean.
 
 ## Phase Plan
 
 ### Phase A - Goal And Roadmap Refresh
 
-Purpose: align the project source of truth with the new transparent-demo milestone.
+Purpose: align the project source of truth with the new clinician-facing staged-demo milestone.
 
 Deliverables:
 
@@ -333,7 +423,7 @@ Deliverables:
 
 Acceptance criteria:
 
-- goal explicitly covers constructed/deidentified input, redaction, intake, node audit, ensemble transparency, workbench, receipts, and safety boundaries,
+- goal explicitly covers constructed/deidentified input, A/B review choice, redaction, intake, node audit, ensemble transparency, summary-first UX, deeper dive, workbench, receipts, and safety boundaries,
 - current deterministic POC is preserved as the baseline.
 
 ### Phase B - Redaction And Constructed-Input Intake
@@ -436,11 +526,11 @@ Acceptance criteria:
 
 ### Phase G - Local App Demo
 
-Purpose: provide the first app-like demo surface after the CLI and artifact workflow are safe.
+Purpose: preserve the current local app as the safe app substrate after the CLI and artifact workflow are safe.
 
 Deliverables:
 
-- local FastAPI or equivalent app,
+- local stdlib, FastAPI, or equivalent app,
 - input/redaction endpoint,
 - intake endpoint,
 - reviewer approval endpoint or local form workflow,
@@ -456,7 +546,69 @@ Acceptance criteria:
 - the deterministic CLI remains the authoritative verification path,
 - no external service is required.
 
-### Phase H - Optional Companion Prose Or LLM Mode
+### Phase H - Clinician-Facing Staged UX Rebuild
+
+Purpose: turn the technical local demo into the staged clinician-facing workflow described in the UX contract.
+
+Deliverables:
+
+- first-screen review-question selector for A and B,
+- plain-language explanation for both review choices,
+- paste/upload input panel,
+- `Pre-process` button and pre-process status,
+- staged app state machine for `Choose`, `Input`, `Pre-process`, `Node Audit`, `Ensemble`, `Process`, `Summary`, and `Deeper Dive`,
+- run manifest field for the selected review question,
+- README startup and demo instructions.
+
+Acceptance criteria:
+
+- the app cannot pre-process input until A or B is selected,
+- the selected review question follows the run into generated artifacts,
+- the first user-visible workflow is the real demo, not a static report page,
+- existing CLI and receipt tests continue to pass.
+
+### Phase I - Reviewer Node Audit Adjustment And Re-check Loop
+
+Purpose: make the pre-analysis trust checkpoint interactive enough to support reviewer trust without letting it bypass provenance.
+
+Deliverables:
+
+- Node Audit Methodology review screen,
+- `OK`, `Adjust`, and `Re-check selected nodes` controls,
+- confirmation prompt for methodology-changing adjustments,
+- adjustment manifest or trace events,
+- re-check result display for selected nodes,
+- tests for approve, adjust-confirm, adjust-cancel, and re-check flows.
+
+Acceptance criteria:
+
+- graph processing refuses to run before the node-audit checkpoint is satisfied,
+- reviewer adjustments are recorded separately from generated facts,
+- re-checks do not invent unsupported facts,
+- adjustments and re-checks remain visible in receipts or deeper-dive artifacts.
+
+### Phase J - Clinician Summary And Deeper Dive
+
+Purpose: make the result meaningful on first read while preserving full transparency for skeptical review.
+
+Deliverables:
+
+- clinician-readable summary renderer,
+- selected-review-question-specific summary framing,
+- concise uncertainty-driver extraction,
+- visible `Deeper Dive` button,
+- deeper-dive view for node tables, ensemble tables, receipts, trace hashes, validation report, structured episode, and raw artifacts,
+- summary completeness validation.
+
+Acceptance criteria:
+
+- the first visible result is not raw JSON,
+- the summary is no more than one or two short paragraphs,
+- the summary explains what the result means and why for the selected review question,
+- the deeper-dive view contains every methodology artifact needed to reconstruct the run,
+- forbidden phrase and non-clinical-use checks pass.
+
+### Phase K - Optional Companion Prose Or LLM Mode
 
 Purpose: add model or outside-prose support only after the local deterministic transparency layer is complete.
 
@@ -493,6 +645,12 @@ Primary demo metrics:
 - disagreement traceability,
 - receipt completeness,
 - workbench completeness,
+- app-flow completeness,
+- selected-review-question propagation,
+- node-audit checkpoint completion,
+- reviewer adjustment and re-check traceability,
+- clinician-summary completeness,
+- deeper-dive artifact completeness,
 - omission detection on fixtures,
 - commission warning detection on fixtures,
 - therapy-response integration on fixtures,
@@ -577,7 +735,7 @@ Pause and summarize instead of continuing if:
 
 Mark a phase complete only when its proof items pass using actual command output or direct artifact inspection.
 
-Mark the transparent local demo complete only when the full demo proof items pass, local verification succeeds, receipts and workbench artifacts are generated from both synthetic fixtures and at least one constructed text demo input, and the final status report clearly separates:
+Mark the clinician-facing staged local demo complete only when the full demo proof items pass, local verification succeeds, the app demonstrates the A/B review-question path from input through summary and deeper dive, receipts and workbench artifacts are generated from both synthetic fixtures and at least one constructed text demo input, and the final status report clearly separates:
 
 - implemented deterministic behavior,
 - implemented local demo behavior,

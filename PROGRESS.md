@@ -653,3 +653,21 @@
 
 - The transparent local demo milestone is supported by a saved requirement-by-requirement audit.
 - Future work remains possible, but the current milestone evidence supports marking the active `GOAL.md` objective complete after commit/push and clean status verification.
+
+## 2026-06-11 - GOAL.md UX Reset For Clinician-Facing Demo
+
+### Completed So Far
+
+- Updated `GOAL.md` so the next milestone is a clinician-facing staged local demo rather than a raw technical output surface.
+- Added the required A/B landing choice:
+  - A. enough information to make a disposition decision,
+  - B. enough information to use an AI-generated response.
+- Added staged workflow requirements for paste/upload, `Pre-process`, Node Audit Methodology review, `OK`/`Adjust`/`Re-check selected nodes`, Ensemble Contributions, `Process`, short clinician-readable summary, and `Deeper Dive`.
+- Added new proof-of-done items for selected-review-question propagation, app-flow completeness, summary completeness, reviewer adjustment/re-check traceability, and deeper-dive artifacts.
+- Added Phase H, Phase I, and Phase J to make the UX rebuild, node-audit checkpoint, clinician summary, and deeper-dive view explicit.
+- Added Decision 2026-06-11-20 to preserve why the milestone changed.
+
+### Current State
+
+- The prior transparent local demo remains the baseline substrate.
+- The new active target is to build the staged clinician-facing UX over the existing deterministic pipeline without weakening redaction, reviewer approval, node audit, ensemble, receipt, or safety constraints.
