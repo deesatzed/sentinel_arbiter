@@ -6,6 +6,7 @@ from pathlib import Path
 
 from pydantic import Field
 
+from .ensemble import summarize_ensemble_contribution_completeness
 from .graph import compute_prudence_graph
 from .loader import load_case_library
 from .models import RequiredTimepoint, StrictModel
@@ -229,6 +230,16 @@ def generate_evaluation_report(
         "automated_validation": report.automated_validation,
         "static_input_validation": static_payload,
         "node_audit_completeness": summarize_node_audit_completeness(episodes),
+        "ensemble_contribution_completeness": summarize_ensemble_contribution_completeness(episodes, static_bundle)
+        if static_path.exists()
+        else {
+            "complete": False,
+            "case_count": len(episodes),
+            "contribution_count": 0,
+            "rejected_input_count": 0,
+            "missing_dispositions": ["static_input_bundle_missing"],
+            "invalid_node_targets": [],
+        },
         "receipt_completeness": receipt_completeness_payload(episodes, receipt_dir),
         "case_results": report.case_results,
     }

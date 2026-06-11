@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .models import DecisionEpisode
 from .approval import export_approval_schemas
+from .ensemble import export_ensemble_contribution_schema
 from .node_audit import export_node_audit_schema
 from .receipts import export_receipt_schema
 from .redaction import export_redaction_report_schema
@@ -29,6 +30,7 @@ def main() -> None:
     export_redaction_report_schema(Path(args.output_path).parent / "redaction_report.schema.json")
     export_approval_schemas(Path(args.output_path).parent)
     export_node_audit_schema(Path(args.output_path).parent / "node_audit.schema.json")
+    export_ensemble_contribution_schema(Path(args.output_path).parent / "ensemble_contribution.schema.json")
     print(path)
 
 

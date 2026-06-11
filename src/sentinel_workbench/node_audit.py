@@ -14,6 +14,7 @@ from .models import (
     VerificationStatus,
 )
 from .replay import build_replay_view
+from .static_inputs import StaticInputBundle
 
 
 EvidenceQuality = Literal["strong", "moderate", "weak", "unknown"]
@@ -201,9 +202,18 @@ NODE_DEFINITIONS: dict[str, NodeDefinition] = {
 def build_node_audit_bundle(
     episode: DecisionEpisode,
     timepoint_id: RequiredTimepoint | str = RequiredTimepoint.T3_DISPOSITION_DECISION,
+    *,
+    static_bundle: StaticInputBundle | None = None,
 ) -> NodeAuditBundle:
     target = RequiredTimepoint(timepoint_id)
     graph = compute_prudence_graph(episode, target)
+    contributions_by_node: dict[str, list[EnsembleContribution]] = {}
+    if static_bundle is not None:
+        from .ensemble import build_ensemble_contribution_bundle
+
+        ensemble = build_ensemble_contribution_bundle(episode, static_bundle, target)
+        for contribution in ensemble.contributions:
+            contributions_by_node.setdefault(contribution.node_id, []).append(contribution)
     audits: list[NodeAudit] = []
     for node_id in REQUIRED_GRAPH_METRICS:
         definition = NODE_DEFINITIONS[node_id]
@@ -217,7 +227,7 @@ def build_node_audit_bundle(
                 dependencies=definition.dependent_inputs,
                 evidence=evidence,
                 estimate=estimate,
-                ensemble_contributions=[],
+                ensemble_contributions=contributions_by_node.get(node_id, []),
                 conflicts=_conflicts_for_node(evidence),
                 sensitivity_note=_sensitivity_note(node_id),
             )

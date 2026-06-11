@@ -2,7 +2,7 @@
 
 Version: 0.1
 Date: 2026-06-11
-Status: Deterministic ED replay POC with constructed-input preparation, reviewer approval artifacts, and node-audit methodology started. No production clinical use implied.
+Status: Deterministic ED replay POC with constructed-input preparation, reviewer approval artifacts, node-audit methodology, and ensemble contribution normalization started. No production clinical use implied.
 
 Repository: https://github.com/deesatzed/sentinel_arbiter.git
 
@@ -121,6 +121,7 @@ sentinel_codex_handoff/
     approval_manifest.schema.json
     approval_trace.schema.json
     ed_sentinel_receipt.schema.json
+    ensemble_contribution.schema.json
     node_audit.schema.json
     redaction_report.schema.json
     static_role_assessment.schema.json
@@ -129,6 +130,7 @@ sentinel_codex_handoff/
   src/
     sentinel_workbench/
       approval.py
+      ensemble.py
       models.py
       case_library.py
       constructed_intake.py
@@ -155,6 +157,7 @@ sentinel_codex_handoff/
     test_phase_b_constructed_intake.py
     test_phase_c_reviewer_approval.py
     test_phase_d_node_audit.py
+    test_phase_e_ensemble_contributions.py
     test_full_poc_documentation.py
   prompts/
     01_role_agent_prompt_contracts.md
@@ -168,7 +171,7 @@ sentinel_codex_handoff/
 
 ## Recommended first Codex task
 
-Ask Codex to read `GOAL.md`, this README, `DECISIONS.md`, `PROGRESS.md`, `REPO_MAP.md`, `RISK_NOTES.md`, `docs/20_emex_admsve_reuse_evaluation.md`, and the JSON schemas. Then continue from Phase E ensemble transparency before adding a local app endpoint.
+Ask Codex to read `GOAL.md`, this README, `DECISIONS.md`, `PROGRESS.md`, `REPO_MAP.md`, `RISK_NOTES.md`, `docs/20_emex_admsve_reuse_evaluation.md`, and the JSON schemas. Then continue from Phase F receipt/workbench methodology rendering before adding a local app endpoint.
 
 ## Constructed input preparation
 
@@ -223,6 +226,12 @@ Phase D adds schema-backed node methodology objects for every current graph metr
 - `NodeAudit`
 
 `validation/reports/latest.json` now includes `node_audit_completeness`. The current deterministic node audits expose dependencies, evidence refs, value, range, median, distribution kind, confidence, method, and sensitivity notes. Receipt and workbench rendering of these audits is still a later Phase F task.
+
+## Ensemble contribution normalization
+
+Phase E normalizes static role and EvidenceFlow inputs into bounded `EnsembleContribution` records. Contributions are accepted or downgraded with reasons when they map to deterministic graph nodes. Static targets outside the graph are rejected with reasons and tracked separately.
+
+`validation/reports/latest.json` now includes `ensemble_contribution_completeness`. The graph still computes final posture; static roles and EvidenceFlows remain inspectable structured inputs.
 
 ## Current local verification
 

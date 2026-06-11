@@ -2,11 +2,11 @@
 
 ## Project Type
 
-Local deterministic Sentinel Governance Workbench POC. The first build wedge is synthetic Emergency Department disposition replay for governance review, now extended with constructed-input preparation, reviewer approval artifacts, and deterministic node-audit methodology.
+Local deterministic Sentinel Governance Workbench POC. The first build wedge is synthetic Emergency Department disposition replay for governance review, now extended with constructed-input preparation, reviewer approval artifacts, deterministic node-audit methodology, and ensemble contribution normalization.
 
 ## Tech Stack
 
-Current target folder has a minimal Python substrate plus planning docs, JSON Schema, deterministic artifacts, a CLI-first constructed-input preparation path, reviewer approval artifacts, and node-audit methodology objects.
+Current target folder has a minimal Python substrate plus planning docs, JSON Schema, deterministic artifacts, a CLI-first constructed-input preparation path, reviewer approval artifacts, node-audit methodology objects, and bounded ensemble contribution normalization.
 
 - Python package
 - Pydantic 2 schema models
@@ -17,6 +17,7 @@ Current target folder has a minimal Python substrate plus planning docs, JSON Sc
 - Deterministic redaction floor and constructed-text draft intake
 - Reviewer approval manifest and hash-chained approval trace
 - Node audit bundle with definitions, evidence, estimates, ranges, medians, methods, confidence, and sensitivity notes
+- Ensemble contribution bundle with accepted/downgraded contributions and rejected unsupported static targets
 
 ## Package Manager
 
@@ -50,6 +51,7 @@ Current runtime entry points:
 
 - `sentinel_workbench.models`: ED disposition replay Pydantic models.
 - `sentinel_workbench.approval`: reviewer approval gate for prepared constructed input, including approved episode loading, manifest validation, and hash-chained trace validation.
+- `sentinel_workbench.ensemble`: static role/EvidenceFlow normalization into bounded ensemble contributions and rejected-input tracking.
 - `sentinel_workbench.case_library`: required case-pattern coverage summary.
 - `sentinel_workbench.constructed_intake`: constructed/deidentified-style text preparation command that emits redacted input, redaction report, and draft episode artifacts.
 - `sentinel_workbench.graph`: deterministic node groups, lanes, preventability-opportunity proxy, and posture taxonomy output.
@@ -109,6 +111,7 @@ Current planning entry points:
 - Draft constructed episodes are reviewer-editable artifacts, not approved graph inputs.
 - Approved constructed episodes require `approval_manifest.json`, `approval_trace.json`, hash checks, and trace-chain validation.
 - Every current graph metric should have a schema-backed node audit before receipt or workbench rendering claims methodology transparency.
+- Static role and EvidenceFlow inputs do not decide final posture; they become bounded, inspectable contributions only when they map to deterministic graph nodes.
 
 ## Reference Patterns Inspected
 
@@ -147,6 +150,8 @@ Current tests cover:
 - approval manifest and trace schema export.
 - node audit schema export and node-audit completeness reporting.
 - weak AI-derived evidence is marked weak and limitation-bearing in node audits.
+- ensemble contribution schema export and completeness reporting.
+- unsupported static node targets are rejected with reasons.
 
 Receipt completeness and explicit automated validation categories are tracked in `validation/reports/latest.json`. The generated reviewer workbench is `data/workbench/index.html`.
 
@@ -171,6 +176,7 @@ Receipt completeness and explicit automated validation categories are tracked in
 - `src/sentinel_workbench/redaction.py`
 - `src/sentinel_workbench/constructed_intake.py`
 - `src/sentinel_workbench/approval.py`
+- `src/sentinel_workbench/ensemble.py`
 - `src/sentinel_workbench/node_audit.py`
 - `data/constructed_inputs/*.txt`
 - `data/prepared_inputs/**/*.json`
@@ -185,11 +191,12 @@ Receipt completeness and explicit automated validation categories are tracked in
 - `tests/test_phase_b_constructed_intake.py`
 - `tests/test_phase_c_reviewer_approval.py`
 - `tests/test_phase_d_node_audit.py`
+- `tests/test_phase_e_ensemble_contributions.py`
 - `tests/test_full_poc_documentation.py`
 
 ## Unknowns
 
 - Whether a later UI should replace the static offline report with a full local web app.
-- Ensemble contribution normalization remains the next major trust-layer work.
 - Receipts and workbench do not yet render node audit details directly.
+- Receipts and workbench do not yet render ensemble contribution details directly.
 - Exact scoring constants for future graph versions remain intentionally provisional until static role/EvidenceFlow inputs and receipt review exist.

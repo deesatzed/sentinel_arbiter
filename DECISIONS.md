@@ -95,3 +95,9 @@ Reason: The user requested this project be committed and pushed to that GitHub r
 | ID | Date | Category | Decision | Rationale | Alternatives Considered | Status |
 |---|---|---|---|---|---|---|
 | 2026-06-11-16 | 2026-06-11 | Data Model | Add a schema-backed `NodeAuditBundle` that emits `NodeDefinition`, `NodeEvidence`, `NodeEstimate`, `EnsembleContribution`, and `NodeAudit` records for every current graph metric before integrating the methodology into receipts and the workbench. | `GOAL.md` requires dependent nodes, evidence, provenance, ranges, medians, methods, confidence, ensemble contribution shape, and sensitivity notes. A deterministic bundle lets tests prove methodology completeness before changing receipt and UI rendering. | Adding methodology text directly to receipts was deferred because it would not create a reusable schema layer. Waiting until the local app was rejected because trust artifacts need to exist before app presentation. | Accepted |
+
+## Decision 2026-06-11-17 - Normalize Static Role And EvidenceFlow Inputs Into Bounded Contributions
+
+| ID | Date | Category | Decision | Rationale | Alternatives Considered | Status |
+|---|---|---|---|---|---|---|
+| 2026-06-11-17 | 2026-06-11 | Data Model | Static role and EvidenceFlow inputs are normalized into bounded `EnsembleContribution` records only when they target deterministic graph nodes; unsupported static node targets are rejected with reasons and tracked separately. | `GOAL.md` requires ensemble contribution and disagreement to be transparent without letting prompts or prose decide final posture. Bounded contributions make role influence inspectable while preserving graph authority. | Passing static role outputs directly into graph scoring was rejected because it would blur prompt authority and deterministic graph authority. Dropping unsupported role targets silently was rejected because it would hide why static inputs did not affect graph nodes. | Accepted |

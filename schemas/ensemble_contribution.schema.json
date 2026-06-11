@@ -1,0 +1,119 @@
+{
+  "$defs": {
+    "EnsembleContribution": {
+      "additionalProperties": false,
+      "properties": {
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "contributor_role": {
+          "title": "Contributor Role",
+          "type": "string"
+        },
+        "proposed_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Proposed Value"
+        },
+        "proposed_range_min": {
+          "title": "Proposed Range Min",
+          "type": "number"
+        },
+        "proposed_range_max": {
+          "title": "Proposed Range Max",
+          "type": "number"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "rationale": {
+          "title": "Rationale",
+          "type": "string"
+        },
+        "disposition": {
+          "enum": [
+            "accepted",
+            "rejected",
+            "downgraded"
+          ],
+          "title": "Disposition",
+          "type": "string"
+        },
+        "disposition_reason": {
+          "title": "Disposition Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_id",
+        "contributor_role",
+        "proposed_value",
+        "proposed_range_min",
+        "proposed_range_max",
+        "rationale",
+        "disposition",
+        "disposition_reason"
+      ],
+      "title": "EnsembleContribution",
+      "type": "object"
+    },
+    "RequiredTimepoint": {
+      "enum": [
+        "T0_triage",
+        "T1_initial_workup",
+        "T2_post_treatment_reassessment",
+        "T3_disposition_decision",
+        "T4_follow_up_or_outcome"
+      ],
+      "title": "RequiredTimepoint",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "episode_id": {
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "timepoint_id": {
+      "$ref": "#/$defs/RequiredTimepoint"
+    },
+    "contribution_version": {
+      "title": "Contribution Version",
+      "type": "string"
+    },
+    "contributions": {
+      "items": {
+        "$ref": "#/$defs/EnsembleContribution"
+      },
+      "title": "Contributions",
+      "type": "array"
+    },
+    "rejected_inputs": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Rejected Inputs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "episode_id",
+    "timepoint_id",
+    "contribution_version"
+  ],
+  "title": "EnsembleContributionBundle",
+  "type": "object"
+}

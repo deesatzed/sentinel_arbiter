@@ -49,6 +49,14 @@
     "missing": [],
     "incomplete": []
   },
+  "ensemble_contribution_completeness": {
+    "complete": true,
+    "case_count": 7,
+    "contribution_count": 91,
+    "rejected_input_count": 112,
+    "missing_dispositions": [],
+    "invalid_node_targets": []
+  },
   "receipt_completeness": {
     "complete": true,
     "expected_receipts": 7,

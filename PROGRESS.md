@@ -501,3 +501,32 @@
 - Every existing deterministic graph node now has a schema-backed audit object with definition, dependencies, evidence, value, range, median, distribution kind, confidence, method, and sensitivity note.
 - Ensemble contribution objects are schema-defined, but Phase E still needs static role/EvidenceFlow contribution normalization and accept/reject/downgrade logic.
 - Phase F still needs receipts and the workbench to render the node audit methodology directly.
+
+## 2026-06-11 - Phase E Ensemble Contribution Normalization Started
+
+### Completed So Far
+
+- Added `src/sentinel_workbench/ensemble.py`.
+- Added `tests/test_phase_e_ensemble_contributions.py`.
+- Added `schemas/ensemble_contribution.schema.json`.
+- Extended `schema_export.py` to export the ensemble contribution schema.
+- Extended `evaluate.py` so `validation/reports/latest.json` includes `ensemble_contribution_completeness`.
+- Extended `node_audit.py` so `build_node_audit_bundle(..., static_bundle=...)` attaches normalized ensemble contributions to the matching node audits.
+- Implemented static role and EvidenceFlow normalization into bounded `EnsembleContribution` records with proposed values, proposed ranges, evidence refs, rationales, dispositions, and disposition reasons.
+- Implemented rejected-input tracking for static targets that are not deterministic graph nodes.
+- Added `DECISIONS.md` entry `2026-06-11-17` documenting graph-node-only contribution normalization.
+
+### Verification Evidence
+
+- Initial Phase E test run failed with `ModuleNotFoundError: No module named 'sentinel_workbench.ensemble'`, confirming tests covered missing behavior before implementation.
+- `python3 -m pytest tests/test_phase_e_ensemble_contributions.py -q` passed: `7 passed`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.schema_export schemas/ed_decision_episode.schema.json` exported `schemas/ensemble_contribution.schema.json`.
+- `PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts` passed with `cases=7 future_leakage_failures=0`.
+- `validation/reports/latest.json` reports `ensemble_contribution_completeness.complete=true`, `case_count=7`, `contribution_count=91`, `rejected_input_count=112`, no missing dispositions, and no invalid node targets.
+- Direct smoke check for `valid_material_gap_case.json` reported `contributions=13`, `rejected=16`, and dispositions `accepted` and `downgraded`.
+
+### Current State
+
+- Static role and EvidenceFlow influence is now inspectable as bounded contribution records instead of implicit prose influence.
+- Unsupported static targets are rejected with reasons rather than silently dropped.
+- Phase F still needs receipts and the workbench to render node audits and ensemble contributions directly.
