@@ -77,3 +77,9 @@ Reason: Full POC proof of done requires `git diff --check` to be clean. The targ
 The local repository uses `https://github.com/deesatzed/sentinel_arbiter.git` as `origin` and `main` as the primary branch.
 
 Reason: The user requested this project be committed and pushed to that GitHub repository. Publishing notes are recorded in `docs/19_repository_publishing.md`.
+
+## Decision 2026-06-11-14 - Promote The Next Milestone To A Transparent Local Demo
+
+| ID | Date | Category | Decision | Rationale | Alternatives Considered | Status |
+|---|---|---|---|---|---|---|
+| 2026-06-11-14 | 2026-06-11 | Scope | Treat the completed deterministic POC as the baseline and promote the next milestone to a transparent local demo with constructed or approved deidentified input, redaction-before-intake, reviewer-approved structured episodes, node-audit methodology, ensemble transparency, upgraded receipts, and a reviewer-facing workbench or local app surface. | The user clarified that trust requires more than final posture output. Sentinel must expose chosen dependent nodes, evidence for each node, probability or score distributions, range, median, method, ensemble contribution, disagreements, accepted/rejected/downgraded findings, and sensitivity of the final posture. | Keeping the deterministic POC as the end goal was rejected because it is not yet a real input-to-review demo. Jumping directly to a FastAPI app was rejected because a live app without a tested artifact path would increase safety risk. Copying AdmSVE or EMEX wholesale was rejected because those repos solve adjacent workflows rather than Sentinel's native trust layer. | Accepted |

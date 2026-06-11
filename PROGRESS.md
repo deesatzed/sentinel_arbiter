@@ -407,3 +407,17 @@
 
 - Publishing target: `https://github.com/deesatzed/sentinel_arbiter.git`.
 - Planned primary branch: `main`.
+
+## 2026-06-11 - Goal Refresh For Transparent Local Demo
+
+### Completed So Far
+
+- Replaced `GOAL.md` with a refreshed project contract that treats the existing deterministic POC as the baseline and defines the next milestone as a transparent local demo.
+- Added explicit requirements for constructed or governance-approved deidentified input, redaction-before-intake, residual-risk blocking/quarantine, reviewer-approved structured episodes, node audit methodology, ensemble transparency, upgraded receipts, and workbench/local-app review.
+- Incorporated the EMEX and AdmSVE reuse findings from `docs/20_emex_admsve_reuse_evaluation.md`.
+- Added `DECISIONS.md` entry `2026-06-11-14` documenting the scope promotion from deterministic framework to transparent local demo.
+
+### Current State
+
+- The new `GOAL.md` is now the source-of-truth contract for the next build phase.
+- The next implementation should start with a CLI-first redaction and constructed-text intake path, then add reviewer approval, node audit objects, ensemble contribution handling, upgraded receipts, workbench rendering, and only then a local app endpoint.
