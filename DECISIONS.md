@@ -65,3 +65,9 @@ Reason: The deterministic POC needs a reviewer-inspectable surface with no exter
 The implemented/deferred boundary and requirements before real clinical, prospective, or production use are recorded in `docs/18_deterministic_poc_status.md` and checked by tests.
 
 Reason: `GOAL.md` requires the project to document what is implemented, what is deferred, and what would be required before any real clinical, prospective, or production use. Treating this as a tested artifact prevents the safety boundary from drifting into informal progress notes.
+
+## Decision 2026-06-11-12 - Initialize A Local Repository Baseline
+
+`sentinel_codex_handoff` is now its own local git repository with no remote configured.
+
+Reason: Full POC proof of done requires `git diff --check` to be clean. The target folder was previously outside any git repository, so a local baseline repository was needed to make that verification command meaningful inside the allowed target folder.
