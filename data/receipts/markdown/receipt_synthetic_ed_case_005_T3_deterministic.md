@@ -8,7 +8,7 @@
 - Signature placeholder: `UNSIGNED_DETERMINISTIC_POC`
 
 ## Clinician Summary
-For Unspecified governance review question, Sentinel found information sufficiency 0.1 with material gap strength 0.9 and decision weight 0.565. The main driver is: Home-plan feasibility is unresolved. The most useful next review input is: clarify support, follow-up, and return access This output is governance review support, not a clinical action recommendation.
+For Unspecified governance review question, Sentinel found that the current review record still depends on unresolved or weakly supported information before a governance reviewer should trust the posture. The main driver is: Home-plan feasibility is unresolved. The most useful next review input is: clarify support, follow-up, and return access This output is governance review support, not a clinical action recommendation.
 
 ## What Was Known
 - At decision time, home support and return access are still not established.

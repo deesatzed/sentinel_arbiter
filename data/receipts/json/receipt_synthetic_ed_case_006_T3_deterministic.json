@@ -96,7 +96,7 @@
   "decision_weight": 0.745,
   "signature_placeholder": "UNSIGNED_DETERMINISTIC_POC",
   "selected_review_question": null,
-  "clinician_summary": "For Unspecified governance review question, Sentinel found information sufficiency 0.1 with material gap strength 0.9 and decision weight 0.745. The main driver is: AI-derived decision driver needs verification or downgrade. The most useful next review input is: verify or downgrade AI-derived driver This output is governance review support, not a clinical action recommendation.",
+  "clinician_summary": "For Unspecified governance review question, Sentinel found that the current review record still depends on unresolved or weakly supported information before a governance reviewer should trust the posture. The main driver is: AI-derived decision driver needs verification or downgrade. The most useful next review input is: verify or downgrade AI-derived driver This output is governance review support, not a clinical action recommendation.",
   "human_summary_sections": {
     "what_was_known": [
       "At decision time, the weak AI-derived fact remains decision-critical and unverified."

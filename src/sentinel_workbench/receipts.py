@@ -168,9 +168,8 @@ def build_clinician_summary(
     next_input = would_change[0] if would_change else "No next-best information item was ranked above the materiality threshold."
     question_text = review_question_display(review_question)
     return (
-        f"For {question_text}, Sentinel found information sufficiency {graph.node_values['information_sufficiency']} "
-        f"with material gap strength {graph.node_values['material_gap_strength']} and decision weight "
-        f"{graph.node_values['decision_weight']}. The main driver is: {main_gap} "
+        f"For {question_text}, Sentinel found that the current review record still depends on unresolved or weakly supported information before a governance reviewer should trust the posture. "
+        f"The main driver is: {main_gap} "
         f"The most useful next review input is: {next_input} "
         "This output is governance review support, not a clinical action recommendation."
     )

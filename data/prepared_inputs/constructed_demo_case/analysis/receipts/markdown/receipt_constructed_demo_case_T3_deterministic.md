@@ -8,7 +8,7 @@
 - Signature placeholder: `UNSIGNED_DETERMINISTIC_POC`
 
 ## Clinician Summary
-For Disposition information sufficiency, Sentinel found information sufficiency 0.2 with material gap strength 0.8 and decision weight 0.53. The main driver is: Reviewer must confirm timepoint assignment, missing inputs, therapy response, and follow-up feasibility before analysis. The most useful next review input is: review and approve structured episode This output is governance review support, not a clinical action recommendation.
+For Disposition information sufficiency, Sentinel found that the current review record still depends on unresolved or weakly supported information before a governance reviewer should trust the posture. The main driver is: Reviewer must confirm timepoint assignment, missing inputs, therapy response, and follow-up feasibility before analysis. The most useful next review input is: review and approve structured episode This output is governance review support, not a clinical action recommendation.
 
 ## What Was Known
 - At decision time, home support and ability to return for reassessment remain unclear.

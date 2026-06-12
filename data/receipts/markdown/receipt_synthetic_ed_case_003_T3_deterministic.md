@@ -8,7 +8,7 @@
 - Signature placeholder: `UNSIGNED_DETERMINISTIC_POC`
 
 ## Clinician Summary
-For Unspecified governance review question, Sentinel found information sufficiency 0.2 with material gap strength 0.8 and decision weight 0.71. The main driver is: Therapy-response lane remains unexamined. The most useful next review input is: explain whether therapy-response observation would change review posture This output is governance review support, not a clinical action recommendation.
+For Unspecified governance review question, Sentinel found that the current review record still depends on unresolved or weakly supported information before a governance reviewer should trust the posture. The main driver is: Therapy-response lane remains unexamined. The most useful next review input is: explain whether therapy-response observation would change review posture This output is governance review support, not a clinical action recommendation.
 
 ## What Was Known
 - At decision time, the record has no therapy-response observation and no explanation for why the lane was not used.

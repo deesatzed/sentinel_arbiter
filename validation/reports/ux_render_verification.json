@@ -4,27 +4,38 @@
   "all_pass": true,
   "checked_surfaces": [
     "landing page",
-    "pre-process/node-audit page",
-    "process result/review page"
+    "pre-process/intake/methodology page",
+    "process result/deeper-dive page"
   ],
+  "browser_screenshot_capture": {
+    "status": "fallback_not_captured",
+    "reason": "Playwright/browser screenshot runtime was unavailable in the local Node tool environment; deterministic stdlib HTTP rendered-HTML verification was used instead."
+  },
   "checks": {
     "landing_has_first_screen_choice": true,
     "landing_has_responsive_viewport_and_grid": true,
     "prepare_has_node_audit_before_process": true,
     "prepare_has_ensemble_before_process": true,
+    "prepare_has_structured_intake_review": true,
+    "prepare_has_methodology_explorer": true,
+    "prepare_has_grouped_ensemble_contributions": true,
     "prepare_has_checkpoint_controls": true,
     "result_has_summary_first": true,
+    "result_has_plain_language_summary_cards": true,
     "result_has_deeper_dive_links": true,
+    "result_has_model_comparison_skip_panel": true,
     "result_has_validation_and_trace": true,
     "layout_breakage_guards_present": true,
     "forbidden_phrase_findings": true
   },
   "evidence": {
-    "review_question_selection": "Landing page renders both A/B review choices before Pre-process.",
-    "node_audit_methodology": "Pre-process page renders Node Audit Methodology before Process.",
-    "ensemble_contributions": "Pre-process page renders Ensemble Contributions before Process.",
-    "clinician_summary": "Result page renders Clinician Summary before deeper structured details.",
-    "deeper_dive": "Result page links receipt JSON and Markdown artifacts and shows validation/trace sections.",
-    "layout": "Viewport, responsive grid, fixed table layout, and overflow-wrap guards are present."
+    "review_question_selection": "Landing page renders both A/B review choices and sample-case selection before Pre-process.",
+    "structured_intake": "Pre-process page renders redaction status, structured clinical sections, and advanced JSON fallback.",
+    "node_audit_methodology": "Pre-process page renders a Methodology Explorer before Process.",
+    "ensemble_contributions": "Pre-process page renders grouped Ensemble Contributions before Process.",
+    "clinician_summary": "Result page renders Clinician Summary and summary cards before deeper structured details.",
+    "deeper_dive": "Result page links methodology, node evidence, ensemble, receipts, trace hashes, validation, and optional model comparison.",
+    "model_comparison": "Result page labels OpenRouter as skipped/comparison-only unless artifacts are generated separately.",
+    "layout": "Viewport, responsive grids, fixed table layout, and overflow-wrap guards are present."
   }
 }

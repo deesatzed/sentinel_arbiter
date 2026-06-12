@@ -90,7 +90,7 @@
   "decision_weight": 0.32,
   "signature_placeholder": "UNSIGNED_DETERMINISTIC_POC",
   "selected_review_question": null,
-  "clinician_summary": "For Unspecified governance review question, Sentinel found information sufficiency 1.0 with material gap strength 0.0 and decision weight 0.32. The main driver is: No material missing inputs were represented at this timepoint. The most useful next review input is: No next-best-information item was ranked above the materiality threshold. This output is governance review support, not a clinical action recommendation.",
+  "clinician_summary": "For Unspecified governance review question, Sentinel found that the current review record still depends on unresolved or weakly supported information before a governance reviewer should trust the posture. The main driver is: No material missing inputs were represented at this timepoint. The most useful next review input is: No next-best-information item was ranked above the materiality threshold. This output is governance review support, not a clinical action recommendation.",
   "human_summary_sections": {
     "what_was_known": [
       "At decision time, therapy response is documented and follow-up access is clear in the synthetic case."

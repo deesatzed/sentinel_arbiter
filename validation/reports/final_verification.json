@@ -1,12 +1,13 @@
 {
   "report_type": "final_verification",
-  "scope": "GOAL.md completeness-scan remediation",
+  "scope": "GOAL.md clinician review console v1",
   "all_pass": true,
   "pytest_passed": true,
   "case_validation_passed": true,
   "static_input_validation_passed": true,
   "evaluation_report_regenerated": true,
   "ux_verification_passed": true,
+  "pip_dry_run_passed": true,
   "git_diff_check_passed": true,
   "json_syntax_checks_passed": true,
   "commands": [
@@ -14,7 +15,7 @@
       "name": "pytest",
       "command": "python3 -m pytest -q",
       "exit_code": 0,
-      "stdout_tail": "........................................................................ [ 98%]\n.                                                                        [100%]\n73 passed in 3.60s",
+      "stdout_tail": "........................................................................ [ 93%]\n.....                                                                    [100%]\n77 passed in 5.15s",
       "stderr_tail": ""
     },
     {
@@ -44,6 +45,13 @@
       "exit_code": 0,
       "stdout_tail": "ux_render_verification_all_pass=True",
       "stderr_tail": ""
+    },
+    {
+      "name": "pip_dry_run",
+      "command": "python3 -m pip install -e . --dry-run --no-deps",
+      "exit_code": 0,
+      "stdout_tail": "Obtaining file:///Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\n  Checking if build backend supports build_editable: started\n  Checking if build backend supports build_editable: finished with status 'done'\n  Getting requirements to build editable: started\n  Getting requirements to build editable: finished with status 'done'\n  Preparing editable metadata (pyproject.toml): started\n  Preparing editable metadata (pyproject.toml): finished with status 'done'\nWould install sentinel-workbench-0.1.0",
+      "stderr_tail": "WARNING: Ignoring invalid distribution ~ecret-sweep (/Users/o2satz/miniforge3/envs/py313/lib/python3.13/site-packages)\nWARNING: Ignoring invalid distribution ~ecret-sweep (/Users/o2satz/miniforge3/envs/py313/lib/python3.13/site-packages)\nWARNING: Ignoring invalid distribution ~ecret-sweep (/Users/o2satz/miniforge3/envs/py313/lib/python3.13/site-packages)"
     },
     {
       "name": "git_diff_check",

@@ -51,6 +51,7 @@ def run_approved_demo(
         receipt_markdown_path=receipt_paths["markdown_path"],
         review_question=review_question,
     )
+    review_html = "\n".join(line.rstrip() for line in review_html.splitlines()) + "\n"
     findings = scan_forbidden_content(review_html, allow_safety_rule_lists=False)
     if findings:
         raise ValueError(f"review html forbidden content: {findings[0].phrase}")
@@ -125,6 +126,13 @@ def render_demo_review_html(
         )
     clinician_summary = receipt.clinician_summary
     review_question_label = review_question_display(receipt.selected_review_question)
+    main_gap = _first_item(receipt.human_summary_sections.get("what_was_missing", []))
+    next_input = _first_item(receipt.human_summary_sections.get("what_would_have_changed_the_discussion", []))
+    driver = _plain_driver(receipt)
+    node_cards = _node_methodology_cards(receipt)
+    node_evidence_rows = _node_evidence_rows(receipt)
+    grouped_contributions = _grouped_contribution_sections(receipt)
+    model_comparison_panel = _model_comparison_panel(prepared_dir)
 
     return f"""<!doctype html>
 <html lang="en">
@@ -143,6 +151,10 @@ def render_demo_review_html(
     th, td {{ border: 1px solid #d8dee6; padding: 7px; text-align: left; vertical-align: top; overflow-wrap: anywhere; font-size: 13px; }}
     th {{ background: #eef2f6; }}
     a {{ color: #005ea8; font-weight: 700; }}
+    .summary-grid, .nav-grid {{ display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }}
+    .summary-card, .method-card, .ensemble-card {{ border: 1px solid #d8dee6; border-radius: 6px; padding: 10px; background: #f8fafc; }}
+    .summary-card strong, .muted {{ display: block; color: #52616f; margin-top: 4px; }}
+    .badge {{ display: inline-block; padding: 2px 6px; border-radius: 4px; background: #e8f1fa; color: #0b4f71; font-weight: 700; }}
   </style>
 </head>
 <body>
@@ -156,6 +168,11 @@ def render_demo_review_html(
       <h2>Clinician Summary</h2>
       <p><strong>Review question:</strong> {_esc(review_question_label)}</p>
       <p>{_esc(clinician_summary)}</p>
+      <div class="summary-grid">
+        <div class="summary-card"><h3>What this means</h3><strong>{_esc(_what_this_means(receipt))}</strong></div>
+        <div class="summary-card"><h3>Main driver</h3><strong>{_esc(driver)}</strong></div>
+        <div class="summary-card"><h3>Most useful next review input</h3><strong>{_esc(next_input)}</strong></div>
+      </div>
       <p>This output is governance review support, not a clinical action recommendation.</p>
       <p><a href="#deeper-dive">Deeper Dive</a></p>
     </section>
@@ -171,17 +188,25 @@ def render_demo_review_html(
     </section>
     <section id="deeper-dive">
       <h2>Deeper Dive</h2>
-      <p>Review the structured episode, node audit tables, ensemble tables, receipts, trace hashes, and validation-linked artifacts below.</p>
-      <p><a href="{_esc(receipt_json_href)}">Open raw JSON receipt</a> <a href="{_esc(receipt_markdown_href)}">Open Markdown receipt</a></p>
+      <p>Review methodology, evidence, ensemble inputs, receipt artifacts, trace hashes, validation status, and optional comparison-only model output below.</p>
+      <nav class="nav-grid">
+        <a href="#methodology">Methodology</a>
+        <a href="#node-evidence">Node Evidence</a>
+        <a href="#ensemble-contributions">Ensemble Contributions</a>
+        <a href="#receipt-artifacts">Receipt Artifacts</a>
+        <a href="#trace-hashes">Trace Hashes</a>
+        <a href="#validation-status">Validation Status</a>
+        <a href="#model-comparison">Optional Model Comparison</a>
+      </nav>
     </section>
-    <section>
+    <section id="validation-status">
       <h2>Validation Status</h2>
       <table><tbody>
         <tr><th>Local validation report</th><td>{_esc(_validation_report_status())}</td></tr>
         <tr><th>Forbidden phrase scan</th><td>Passed for this rendered review page before write.</td></tr>
       </tbody></table>
     </section>
-    <section>
+    <section id="trace-hashes">
       <h2>Trace Hashes</h2>
       <table><thead><tr><th>Artifact</th><th>SHA-256 or value</th></tr></thead><tbody>{''.join(workflow_rows)}</tbody></table>
     </section>
@@ -193,15 +218,27 @@ def render_demo_review_html(
       <h2>Approved Structured Episode</h2>
       <pre>{_esc(approved_episode_text)}</pre>
     </section>
-    <section>
+    <section id="methodology">
       <h2>Node Audit Methodology</h2>
-      <table><thead><tr><th>Node</th><th>Dependent inputs</th><th>Value</th><th>Range</th><th>Median</th><th>Distribution</th><th>Confidence</th><th>Method</th><th>Evidence refs</th><th>Sensitivity</th></tr></thead><tbody>{''.join(node_rows)}</tbody></table>
+      {node_cards}
     </section>
-    <section>
+    <section id="node-evidence">
+      <h2>Node Evidence</h2>
+      <table><thead><tr><th>Node</th><th>Evidence</th><th>Quality</th><th>Limitations</th></tr></thead><tbody>{node_evidence_rows}</tbody></table>
+    </section>
+    <section id="ensemble-contributions">
       <h2>Ensemble Contributions</h2>
-      <table><thead><tr><th>Node</th><th>Contributor</th><th>Proposed value</th><th>Range</th><th>Disposition</th><th>Reason</th></tr></thead><tbody>{''.join(contribution_rows)}</tbody></table>
+      {grouped_contributions}
       <h3>Rejected ensemble inputs</h3>
       <table><thead><tr><th>Contributor</th><th>Source target</th><th>Disposition</th><th>Reason</th></tr></thead><tbody>{''.join(rejected_rows)}</tbody></table>
+    </section>
+    <section id="receipt-artifacts">
+      <h2>Receipt Artifacts</h2>
+      <p><a href="{_esc(receipt_json_href)}">Receipt JSON</a></p>
+      <p><a href="{_esc(receipt_markdown_href)}">Receipt Markdown</a></p>
+    </section>
+    <section id="model-comparison">
+      {model_comparison_panel}
     </section>
   </main>
 </body>
@@ -254,6 +291,119 @@ def _validation_report_status(path: str | Path = "validation/reports/latest.json
     if report.exists():
         return f"{report} available"
     return f"{report} not generated in this workspace"
+
+
+def _first_item(items: list[str]) -> str:
+    return items[0] if items else "No item cleared the display threshold."
+
+
+def _what_this_means(receipt: SentinelReceipt) -> str:
+    if receipt.final_posture == "OBTAIN_SPECIFIC_INFORMATION_FIRST":
+        return "The review is mainly constrained by missing or weak information that should be inspected before relying on the posture."
+    if receipt.final_posture == "PROCEED_WITH_UNCERTAINTY_DISCLOSURE":
+        return "The review can be discussed with explicit uncertainty, while the deeper dive keeps the limitations visible."
+    return "The deterministic review found no higher-priority information gap in this constructed local example."
+
+
+def _plain_driver(receipt: SentinelReceipt) -> str:
+    values = {key: float(value) for key, value in receipt.node_values.items() if isinstance(value, int | float)}
+    priority = [
+        ("material_gap_strength", "Unresolved material information gap"),
+        ("omission_risk", "Unresolved omission concern"),
+        ("commission_risk", "Overconfidence or low-added-value concern"),
+        ("ai_provenance_risk", "Weak AI provenance"),
+        ("therapy_response_relevance", "Unclear therapy response"),
+    ]
+    best_key, best_label = max(priority, key=lambda item: values.get(item[0], 0.0))
+    if values.get(best_key, 0.0) <= 0:
+        return "No single driver dominated the deterministic review."
+    return best_label
+
+
+def _node_methodology_cards(receipt: SentinelReceipt) -> str:
+    cards = []
+    for audit in receipt.node_audit_bundle.node_audits:
+        estimate = audit.estimate
+        evidence = "; ".join(item.quoted_or_structured_fact for item in audit.evidence[:3])
+        weak = [item.quoted_or_structured_fact for item in audit.evidence if item.quality in {"weak", "unknown"}]
+        weak_text = "; ".join(weak[:3]) if weak else "No weak direct evidence flagged for this node."
+        cards.append(
+            f"""
+            <article class="method-card">
+              <h3>{_esc(audit.node_id)}</h3>
+              <p><span class="badge">Plain-English Meaning</span> {_esc(audit.definition.question)}</p>
+              <p><strong>Dependent inputs</strong><span class="muted">{_esc(', '.join(audit.dependencies))}</span></p>
+              <p><strong>Evidence used</strong><span class="muted">{_esc(evidence)}</span></p>
+              <p><strong>Missing or weak evidence</strong><span class="muted">{_esc(weak_text)}</span></p>
+              <p><strong>Estimate</strong><span class="muted">value { _esc(estimate.value) }; range {_esc(estimate.range_min)} to {_esc(estimate.range_max)}; median {_esc(estimate.median)}; distribution {_esc(estimate.distribution_kind)}; confidence {_esc(estimate.confidence)}</span></p>
+              <p><strong>Method</strong><span class="muted">{_esc(estimate.method)}</span></p>
+              <p><strong>Sensitivity</strong><span class="muted">{_esc(audit.sensitivity_note)}</span></p>
+            </article>
+            """
+        )
+    return "".join(cards)
+
+
+def _node_evidence_rows(receipt: SentinelReceipt) -> str:
+    rows = []
+    for audit in receipt.node_audit_bundle.node_audits:
+        for evidence in audit.evidence:
+            rows.append(
+                "<tr>"
+                f"<td>{_esc(audit.node_id)}</td>"
+                f"<td>{_esc(evidence.quoted_or_structured_fact)}</td>"
+                f"<td>{_esc(evidence.quality)}</td>"
+                f"<td>{_esc('; '.join(evidence.limitations) or 'None recorded')}</td>"
+                "</tr>"
+            )
+    return "".join(rows)
+
+
+def _grouped_contribution_sections(receipt: SentinelReceipt) -> str:
+    by_node: dict[str, list[object]] = {}
+    for contribution in receipt.ensemble_contribution_bundle.contributions:
+        by_node.setdefault(contribution.node_id, []).append(contribution)
+    blocks = []
+    for node_id in sorted(by_node):
+        contributions = by_node[node_id]
+        accepted = sum(1 for item in contributions if item.disposition == "accepted")
+        downgraded = sum(1 for item in contributions if item.disposition == "downgraded")
+        rows = []
+        for contribution in contributions:
+            rows.append(
+                "<tr>"
+                f"<td>{_esc(contribution.contributor_role)}</td>"
+                f"<td>{_esc(contribution.proposed_value)}</td>"
+                f"<td>{_esc(f'{contribution.proposed_range_min} to {contribution.proposed_range_max}')}</td>"
+                f"<td>{_esc(contribution.disposition)}</td>"
+                f"<td>{_esc(contribution.disposition_reason)}</td>"
+                "</tr>"
+            )
+        blocks.append(
+            f"""
+            <article class="ensemble-card">
+              <h3>{_esc(node_id)}</h3>
+              <p>{accepted} accepted contributions; {downgraded} downgraded contributions. Model and static inputs remain comparison or contribution evidence only.</p>
+              <table><thead><tr><th>Contributor</th><th>Proposed value</th><th>Range</th><th>Disposition</th><th>Reason</th></tr></thead><tbody>{''.join(rows)}</tbody></table>
+            </article>
+            """
+        )
+    return "".join(blocks)
+
+
+def _model_comparison_panel(prepared_dir: Path) -> str:
+    comparison_report = prepared_dir / "analysis" / "model_comparison" / "comparison_report.md"
+    if comparison_report.exists():
+        return (
+            "<h2>Optional Model Comparison</h2>"
+            "<p>OpenRouter comparison-only output is available for this run. The deterministic graph remains the authority.</p>"
+            f"<p><a href=\"{_esc(comparison_report)}\">Open comparison report</a></p>"
+        )
+    return (
+        "<h2>Optional Model Comparison</h2>"
+        "<p>OpenRouter comparison skipped for this local app run. Configure `.env` and run the comparison harness to create comparison-only artifacts.</p>"
+        "<p>Any model output is comparison-only; the deterministic graph remains the authority and model output does not set graph values or final posture.</p>"
+    )
 
 
 def _esc(value: object) -> str:

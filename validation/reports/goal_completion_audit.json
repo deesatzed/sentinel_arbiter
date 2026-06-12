@@ -1,81 +1,109 @@
 {
   "report_type": "goal_completion_audit",
   "goal_file": "GOAL.md",
-  "goal_shape": "completeness_scan_remediation",
-  "supersedes_goal_shape": "25_item_clinician_facing_staged_demo",
-  "proof_item_count": 10,
-  "pass_count": 10,
+  "goal_shape": "clinician_review_console_v1",
+  "supersedes_goal_shape": "completeness_scan_remediation",
+  "proof_item_count": 14,
+  "pass_count": 14,
   "all_pass": true,
   "items": [
     {
       "id": 1,
-      "requirement": "README.md accurately states that the current goal-completion audit reports 25/25 and points to validation/reports/final_verification.json.",
+      "requirement": "Landing workflow explains both review questions, sample cases, paste/upload input, and local-demo boundary.",
       "verdict": "PASS",
-      "evidence_key": "README.md",
-      "evidence": "README states the completed prior milestone audit is 25/25 and links final verification evidence."
+      "evidence_key": "src/sentinel_workbench/local_app.py, validation/reports/ux_render_verification.json",
+      "evidence": "Landing includes both review questions, sample-case selection, paste/upload path, and local-demo boundary."
     },
     {
       "id": 2,
-      "requirement": "docs/18_deterministic_poc_status.md includes final-verification and goal-audit commands while preserving safety boundaries.",
+      "requirement": "Pre-process produces redaction status, structured clinical sections, advanced JSON fallback, inference status, and no raw unredacted artifact copy.",
       "verdict": "PASS",
-      "evidence_key": "docs/18_deterministic_poc_status.md",
-      "evidence": "Status document lists final-verification and goal-audit commands and keeps implemented/deferred/not-claimed boundaries."
+      "evidence_key": "src/sentinel_workbench/local_app.py, validation/reports/ux_render_verification.json",
+      "evidence": "Pre-process renders redaction status, structured clinical sections, advanced JSON fallback, and avoids raw input artifact copying."
     },
     {
       "id": 3,
-      "requirement": "sentinel_workbench.final_verification no longer leaves a plausible all-pass durable report if interrupted during bootstrap/self-verification.",
+      "requirement": "Node Audit Methodology is a methodology explorer for every graph node.",
       "verdict": "PASS",
-      "evidence_key": "src/sentinel_workbench/final_verification.py",
-      "evidence": "Final verification no longer writes a fake all-pass bootstrap report to the durable report path."
+      "evidence_key": "src/sentinel_workbench/local_app.py, validation/reports/ux_render_verification.json",
+      "evidence": "Methodology Explorer exposes plain-English node meaning, evidence, weak/missing evidence, estimates, methods, and sensitivity."
     },
     {
       "id": 4,
-      "requirement": "Tests cover the hardened final-verification behavior, including the non-bootstrap committed report requirement.",
+      "requirement": "Node-audit controls are functional, traceable, and preserve deterministic graph authority.",
       "verdict": "PASS",
-      "evidence_key": "tests/test_goal_completion_audit.py",
-      "evidence": "Tests require a non-bootstrap committed final-verification report and allow only explicit self-verification mode during the command run."
+      "evidence_key": "src/sentinel_workbench/local_app.py, tests/test_phase_g_local_demo_app.py",
+      "evidence": "Node-level reviewer actions are checkboxes, confirmed when changing methodology, and traced separately from graph authority."
     },
     {
       "id": 5,
-      "requirement": "A rendered-UX verification artifact exists for the local staged app and covers the required workflow surfaces.",
+      "requirement": "Ensemble Contributions are grouped by node and distinguish accepted, downgraded, and rejected inputs.",
       "verdict": "PASS",
       "evidence_key": "validation/reports/ux_render_verification.json",
-      "evidence": "UX verification report covers landing, pre-process, node audit, ensemble, result summary, deeper dive, and layout guards."
+      "evidence": "Ensemble contributions are grouped by node and expose accepted, downgraded, and rejected/unsupported inputs."
     },
     {
       "id": 6,
-      "requirement": "PROGRESS.md has a latest-status or supersession note for older chronological entries.",
+      "requirement": "Result page is summary-first, clinically readable, and keeps raw scores in deeper dive.",
       "verdict": "PASS",
-      "evidence_key": "PROGRESS.md",
-      "evidence": "Progress log has a latest-status note explaining that newer sections supersede older chronological pending/future-work entries."
+      "evidence_key": "src/sentinel_workbench/demo_run.py, validation/reports/ux_render_verification.json",
+      "evidence": "Result page is summary-first and uses plain-language summary cards before raw details."
     },
     {
       "id": 7,
-      "requirement": "OpenRouter documentation distinguishes implemented comparison harness from deferred app-integrated LLM mode and formal model-swap evaluation.",
+      "requirement": "Deeper Dive contains methodology, node evidence, ensemble, receipts, trace hashes, validation status, and optional model comparison.",
       "verdict": "PASS",
-      "evidence_key": "README.md",
-      "evidence": "OpenRouter docs separate the implemented comparison harness from deferred app-integrated LLM mode and formal model-swap evaluation."
+      "evidence_key": "src/sentinel_workbench/demo_run.py, validation/reports/ux_render_verification.json",
+      "evidence": "Deeper Dive navigation links methodology, node evidence, ensemble, receipt artifacts, trace hashes, validation, and model comparison."
     },
     {
       "id": 8,
-      "requirement": "The goal-completion audit is updated to the new remediation goal shape and is not mistaken for the completed 25-item milestone.",
+      "requirement": "OpenRouter is comparison-only with safe skip status and no secret echo.",
       "verdict": "PASS",
-      "evidence_key": "GOAL.md, validation/reports/goal_completion_audit.json",
-      "evidence": "Current audit shape is the ten-item completeness-scan remediation goal, not the prior 25-item milestone."
+      "evidence_key": "src/sentinel_workbench/openrouter_compare.py, validation/reports/ux_render_verification.json",
+      "evidence": "OpenRouter status is comparison-only, skips safely when absent, and does not echo secrets."
     },
     {
       "id": 9,
-      "requirement": "Final local verification commands pass.",
+      "requirement": "Release/readiness artifact exists with local-demo conditional-go boundaries.",
       "verdict": "PASS",
-      "evidence_key": "validation/reports/final_verification.json",
-      "evidence": "Final verification report records passing pytest, case validation, static input validation, evaluation regeneration, UX verification, JSON syntax, and git diff checks."
+      "evidence_key": "RELEASE_CHECKLIST.md",
+      "evidence": "Release checklist records local-demo Conditional Go, No-Go boundaries, evidence areas, risks, required fixes, and rollback."
     },
     {
       "id": 10,
-      "requirement": "Stale status claims and committed bootstrap markers are absent from current proof artifacts.",
+      "requirement": "Documentation explains setup, app use, sample cases, input, summary interpretation, deeper dive, OpenRouter comparison, and non-claims.",
+      "verdict": "PASS",
+      "evidence_key": "README.md, docs/18_deterministic_poc_status.md",
+      "evidence": "Documentation covers setup, app use, sample cases, input, summary interpretation, deeper dive, OpenRouter comparison, and non-claims."
+    },
+    {
+      "id": 11,
+      "requirement": "Tests cover the optimized UX, redaction, structured sections, node tracing, summary-first results, deeper dive, OpenRouter skip, and forbidden phrases.",
+      "verdict": "PASS",
+      "evidence_key": "tests/",
+      "evidence": "Tests cover local app happy path, structured sections, node tracing, summary-first result, deeper dive, OpenRouter skip/no-secret behavior, and forbidden-phrase scanning."
+    },
+    {
+      "id": 12,
+      "requirement": "Rendered UX verification artifact covers the optimized console surfaces and layout guards.",
+      "verdict": "PASS",
+      "evidence_key": "validation/reports/ux_render_verification.json",
+      "evidence": "Rendered UX verification all-pass report covers optimized console surfaces and layout guards."
+    },
+    {
+      "id": 13,
+      "requirement": "Final local verification commands pass.",
+      "verdict": "PASS",
+      "evidence_key": "validation/reports/final_verification.json",
+      "evidence": "Final verification report records passing pytest, case validation, static input validation, evaluation regeneration, UX verification, JSON syntax, pip dry-run, and git diff checks."
+    },
+    {
+      "id": 14,
+      "requirement": "Safety-boundary, unsafe-recommendation, and secret/raw-response inspections are clean.",
       "verdict": "PASS",
       "evidence_key": "README.md, docs/, PROGRESS.md, validation/reports/final_verification.json",
-      "evidence": "No stale current-state pending-audit claims or committed bootstrap markers remain."
+      "evidence": "Safety boundaries are present and no committed bootstrap marker or unsafe secret pattern is present in audited text."
     }
   ]
 }

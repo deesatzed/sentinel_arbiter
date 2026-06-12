@@ -1,29 +1,33 @@
 # 21 - GOAL.md Completion Audit
 
-Current audit maps the completeness-scan remediation `GOAL.md`. The prior 25-item clinician-facing staged-demo audit is superseded by this ten-item remediation audit.
+Current audit maps the `clinician_review_console_v1` `GOAL.md`. The prior completeness-scan remediation audit is superseded by this fourteen-item clinician-review-console audit.
 
-Goal shape: `completeness_scan_remediation`
-Supersedes: `25_item_clinician_facing_staged_demo`
-Proof items: 10
-Pass count: 10
+Goal shape: `clinician_review_console_v1`
+Supersedes: `completeness_scan_remediation`
+Proof items: 14
+Pass count: 14
 All pass: True
 
-Sentinel remains a local deterministic governance-review POC. This audit does not claim clinical safety, production readiness, regulatory compliance, or clinical outcome benefit.
+Sentinel remains a local deterministic governance-review POC. This audit does not claim clinical safety, production readiness, regulatory compliance, PHI readiness, or clinical outcome benefit.
 
-## Completeness-Scan Remediation Proof Of Done
+## Clinician Review Console Proof Of Done
 
 | # | Requirement | Verdict | Evidence Surface | Evidence |
 |---:|---|---|---|---|
-| 1 | README.md accurately states that the current goal-completion audit reports 25/25 and points to validation/reports/final_verification.json. | PASS | `README.md` | README states the completed prior milestone audit is 25/25 and links final verification evidence. |
-| 2 | docs/18_deterministic_poc_status.md includes final-verification and goal-audit commands while preserving safety boundaries. | PASS | `docs/18_deterministic_poc_status.md` | Status document lists final-verification and goal-audit commands and keeps implemented/deferred/not-claimed boundaries. |
-| 3 | sentinel_workbench.final_verification no longer leaves a plausible all-pass durable report if interrupted during bootstrap/self-verification. | PASS | `src/sentinel_workbench/final_verification.py` | Final verification no longer writes a fake all-pass bootstrap report to the durable report path. |
-| 4 | Tests cover the hardened final-verification behavior, including the non-bootstrap committed report requirement. | PASS | `tests/test_goal_completion_audit.py` | Tests require a non-bootstrap committed final-verification report and allow only explicit self-verification mode during the command run. |
-| 5 | A rendered-UX verification artifact exists for the local staged app and covers the required workflow surfaces. | PASS | `validation/reports/ux_render_verification.json` | UX verification report covers landing, pre-process, node audit, ensemble, result summary, deeper dive, and layout guards. |
-| 6 | PROGRESS.md has a latest-status or supersession note for older chronological entries. | PASS | `PROGRESS.md` | Progress log has a latest-status note explaining that newer sections supersede older chronological pending/future-work entries. |
-| 7 | OpenRouter documentation distinguishes implemented comparison harness from deferred app-integrated LLM mode and formal model-swap evaluation. | PASS | `README.md` | OpenRouter docs separate the implemented comparison harness from deferred app-integrated LLM mode and formal model-swap evaluation. |
-| 8 | The goal-completion audit is updated to the new remediation goal shape and is not mistaken for the completed 25-item milestone. | PASS | `GOAL.md, validation/reports/goal_completion_audit.json` | Current audit shape is the ten-item completeness-scan remediation goal, not the prior 25-item milestone. |
-| 9 | Final local verification commands pass. | PASS | `validation/reports/final_verification.json` | Final verification report records passing pytest, case validation, static input validation, evaluation regeneration, UX verification, JSON syntax, and git diff checks. |
-| 10 | Stale status claims and committed bootstrap markers are absent from current proof artifacts. | PASS | `README.md, docs/, PROGRESS.md, validation/reports/final_verification.json` | No stale current-state pending-audit claims or committed bootstrap markers remain. |
+| 1 | Landing workflow explains both review questions, sample cases, paste/upload input, and local-demo boundary. | PASS | `src/sentinel_workbench/local_app.py, validation/reports/ux_render_verification.json` | Landing includes both review questions, sample-case selection, paste/upload path, and local-demo boundary. |
+| 2 | Pre-process produces redaction status, structured clinical sections, advanced JSON fallback, inference status, and no raw unredacted artifact copy. | PASS | `src/sentinel_workbench/local_app.py, validation/reports/ux_render_verification.json` | Pre-process renders redaction status, structured clinical sections, advanced JSON fallback, and avoids raw input artifact copying. |
+| 3 | Node Audit Methodology is a methodology explorer for every graph node. | PASS | `src/sentinel_workbench/local_app.py, validation/reports/ux_render_verification.json` | Methodology Explorer exposes plain-English node meaning, evidence, weak/missing evidence, estimates, methods, and sensitivity. |
+| 4 | Node-audit controls are functional, traceable, and preserve deterministic graph authority. | PASS | `src/sentinel_workbench/local_app.py, tests/test_phase_g_local_demo_app.py` | Node-level reviewer actions are checkboxes, confirmed when changing methodology, and traced separately from graph authority. |
+| 5 | Ensemble Contributions are grouped by node and distinguish accepted, downgraded, and rejected inputs. | PASS | `validation/reports/ux_render_verification.json` | Ensemble contributions are grouped by node and expose accepted, downgraded, and rejected/unsupported inputs. |
+| 6 | Result page is summary-first, clinically readable, and keeps raw scores in deeper dive. | PASS | `src/sentinel_workbench/demo_run.py, validation/reports/ux_render_verification.json` | Result page is summary-first and uses plain-language summary cards before raw details. |
+| 7 | Deeper Dive contains methodology, node evidence, ensemble, receipts, trace hashes, validation status, and optional model comparison. | PASS | `src/sentinel_workbench/demo_run.py, validation/reports/ux_render_verification.json` | Deeper Dive navigation links methodology, node evidence, ensemble, receipt artifacts, trace hashes, validation, and model comparison. |
+| 8 | OpenRouter is comparison-only with safe skip status and no secret echo. | PASS | `src/sentinel_workbench/openrouter_compare.py, validation/reports/ux_render_verification.json` | OpenRouter status is comparison-only, skips safely when absent, and does not echo secrets. |
+| 9 | Release/readiness artifact exists with local-demo conditional-go boundaries. | PASS | `RELEASE_CHECKLIST.md` | Release checklist records local-demo Conditional Go, No-Go boundaries, evidence areas, risks, required fixes, and rollback. |
+| 10 | Documentation explains setup, app use, sample cases, input, summary interpretation, deeper dive, OpenRouter comparison, and non-claims. | PASS | `README.md, docs/18_deterministic_poc_status.md` | Documentation covers setup, app use, sample cases, input, summary interpretation, deeper dive, OpenRouter comparison, and non-claims. |
+| 11 | Tests cover the optimized UX, redaction, structured sections, node tracing, summary-first results, deeper dive, OpenRouter skip, and forbidden phrases. | PASS | `tests/` | Tests cover local app happy path, structured sections, node tracing, summary-first result, deeper dive, OpenRouter skip/no-secret behavior, and forbidden-phrase scanning. |
+| 12 | Rendered UX verification artifact covers the optimized console surfaces and layout guards. | PASS | `validation/reports/ux_render_verification.json` | Rendered UX verification all-pass report covers optimized console surfaces and layout guards. |
+| 13 | Final local verification commands pass. | PASS | `validation/reports/final_verification.json` | Final verification report records passing pytest, case validation, static input validation, evaluation regeneration, UX verification, JSON syntax, pip dry-run, and git diff checks. |
+| 14 | Safety-boundary, unsafe-recommendation, and secret/raw-response inspections are clean. | PASS | `README.md, docs/, PROGRESS.md, validation/reports/final_verification.json` | Safety boundaries are present and no committed bootstrap marker or unsafe secret pattern is present in audited text. |
 
 ## Verification Commands
 

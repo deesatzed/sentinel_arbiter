@@ -14,6 +14,7 @@ from sentinel_workbench.openrouter_compare import (
     compare_model_result,
     extract_json_object,
     load_openrouter_settings,
+    openrouter_comparison_status,
     write_comparison_report,
 )
 
@@ -43,6 +44,27 @@ def test_load_openrouter_settings_reads_numbered_models_without_printing_secret(
     assert settings.models == ["openai/gpt-4.1-mini", "anthropic/claude-sonnet-4"]
     assert "sk-or-test-secret" not in settings.safe_summary()
     assert "MODEL_1" in settings.safe_summary()
+
+
+def test_openrouter_comparison_status_skips_without_secret_and_does_not_echo_key(tmp_path):
+    missing = openrouter_comparison_status(tmp_path / ".env")
+
+    assert missing["available"] is False
+    assert missing["status"] == "skipped_missing_credentials"
+    assert "OpenRouter comparison skipped" in missing["message"]
+
+    env_path = tmp_path / ".env"
+    env_path.write_text(
+        "OPENROUTER_API_KEY=sk-or-test-secret\nMODEL_1=openai/gpt-4.1-mini\n",
+        encoding="utf-8",
+    )
+
+    configured = openrouter_comparison_status(env_path)
+
+    assert configured["available"] is True
+    assert configured["status"] == "configured"
+    assert "sk-or-test-secret" not in json.dumps(configured)
+    assert configured["model_count"] == 1
 
 
 def test_extract_json_object_accepts_fenced_or_plain_json():

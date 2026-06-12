@@ -17,7 +17,7 @@ The `GOAL.md` transparent-demo completion audit is saved in `docs/21_goal_comple
 - Constructed/deidentified-style input preparation with deterministic redaction and residual-risk reporting.
 - Reviewer approval artifacts for prepared constructed input.
 - Approved constructed-input deterministic analysis with receipt JSON, receipt Markdown, and review HTML output.
-- Local stdlib HTTP demo app for constructed text entry, redaction, editable structured episode review, approval, deterministic analysis, and output review.
+- Local stdlib HTTP clinician-review console for sample-case selection, constructed text entry, file upload, redaction status review, structured clinical section review, methodology exploration, ensemble contribution review, approval, deterministic analysis, and output review.
 - Deterministic graph metrics for information sufficiency, material gap strength, harm clock, information clock, recoverability, future correction opportunity, decision weight, AI provenance risk, commission risk, omission risk, therapy-response relevance, next-best-information ranking, preventability-opportunity score, and final posture.
 - First-class commission, omission, and therapy-response lanes.
 - Schema-backed node audits with dependencies, evidence, estimates, ranges, medians, distributions, confidence/method fields, and sensitivity notes.
@@ -27,13 +27,15 @@ The `GOAL.md` transparent-demo completion audit is saved in `docs/21_goal_comple
 - Validation report proof payloads for redaction gating, node audit completeness, ensemble contribution completeness, receipt completeness, workbench completeness, local app completeness, fixture categories, future leakage, schema validity, and forbidden phrase checks.
 - Static reviewer workbench at `data/workbench/index.html`, including node audit methodology and ensemble contribution panels.
 - Constructed-demo review output at `data/prepared_inputs/constructed_demo_case/analysis/review.html`.
+- Summary-first result page with deeper-dive navigation for methodology, node evidence, ensemble contributions, receipt artifacts, trace hashes, validation status, and optional comparison-only model output.
+- OpenRouter model comparison harness and local app skip/configuration status messaging. OpenRouter output is comparison-only and does not control graph values or final posture.
 - Safety scanners for forbidden disposition phrasing, named institution examples, credential-like strings, and basic PHI-like patterns.
 
 The deterministic graph computes Sentinel posture categories only. It does not generate clinical orders, diagnoses, prescribing instructions, clearance language, or patient-specific medical advice.
 
 ## Deferred
 
-- optional LLM prompt mode.
+- app-authoritative LLM prompt mode.
 - OpenEvidence or live evidence retrieval.
 - model-swap evaluation.
 - prompt-ablation evaluation.
@@ -45,6 +47,7 @@ The deterministic graph computes Sentinel posture categories only. It does not g
 - reviewer authentication or multi-user workflow.
 - production web application hardening.
 - calibration on larger synthetic or public-style case sets.
+- automatic browser screenshot capture when Browser/Playwright is unavailable; deterministic rendered-HTML verification is used instead.
 
 These items are intentionally deferred rather than partially implemented.
 

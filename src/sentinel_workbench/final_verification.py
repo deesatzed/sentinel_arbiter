@@ -36,13 +36,14 @@ def run_final_verification(
         "static_input_validation_passed": _command_passed(command_results, "static_input_validation"),
         "evaluation_report_regenerated": _command_passed(command_results, "evaluation_report"),
         "ux_verification_passed": _command_passed(command_results, "ux_render_verification"),
+        "pip_dry_run_passed": _command_passed(command_results, "pip_dry_run"),
         "git_diff_check_passed": _command_passed(command_results, "git_diff_check"),
         "json_syntax_checks_passed": json_check["passed"],
     }
     all_pass = all(flags.values()) and all(command["exit_code"] == 0 for command in command_results)
     report: dict[str, Any] = {
         "report_type": "final_verification",
-        "scope": "GOAL.md completeness-scan remediation",
+        "scope": "GOAL.md clinician review console v1",
         "all_pass": all_pass,
         **flags,
         "commands": command_results,
@@ -104,6 +105,7 @@ def _verification_commands() -> tuple[CommandSpec, ...]:
             ("python3", "-m", "sentinel_workbench.ux_verification"),
             pythonpath_env,
         ),
+        CommandSpec("pip_dry_run", ("python3", "-m", "pip", "install", "-e", ".", "--dry-run", "--no-deps")),
         CommandSpec("git_diff_check", ("git", "diff", "--check")),
     )
 

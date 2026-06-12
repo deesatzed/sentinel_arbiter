@@ -87,6 +87,25 @@ def load_openrouter_settings(env_path: str | Path = ".env") -> OpenRouterSetting
     return OpenRouterSettings(api_key=api_key, models=models)
 
 
+def openrouter_comparison_status(env_path: str | Path = ".env") -> dict[str, object]:
+    try:
+        settings = load_openrouter_settings(env_path)
+    except Exception:
+        return {
+            "available": False,
+            "status": "skipped_missing_credentials",
+            "message": "OpenRouter comparison skipped because local credentials or MODEL_N settings are not available.",
+            "comparison_only": True,
+        }
+    return {
+        "available": True,
+        "status": "configured",
+        "message": settings.safe_summary(),
+        "model_count": len(settings.models),
+        "comparison_only": True,
+    }
+
+
 def build_model_prompt(
     *,
     episode: DecisionEpisode,

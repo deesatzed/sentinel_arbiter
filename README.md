@@ -255,9 +255,27 @@ Then open:
 http://127.0.0.1:8765
 ```
 
-The local app now starts with the staged reviewer flow from `GOAL.md`: choose either Disposition Information Sufficiency or AI Response Use Sufficiency, paste constructed/deidentified-style text or upload a local text file, click `Pre-process`, review Node Audit Methodology and Ensemble Contributions, choose `OK`, `Adjust`, or `Re-check Selected Nodes`, confirm any methodology-changing checkpoint, click `Process`, then read a clinician-facing summary before opening the deeper-dive artifacts. The default app workspace is `.sentinel_local_demo/`, which is gitignored.
+The local app now starts with the clinician-review console flow from `GOAL.md`: choose either Disposition Information Sufficiency or AI Response Use Sufficiency, optionally select a built-in sample case, paste constructed/deidentified-style text or upload a local text file, click `Pre-process`, review redaction status and structured clinical sections, inspect the Methodology Explorer and grouped Ensemble Contributions, choose `OK`, `Adjust`, or `Re-check Selected Nodes`, confirm any methodology-changing checkpoint, click `Process`, then read a summary-first clinician-facing result before opening deeper-dive artifacts. The default app workspace is `.sentinel_local_demo/`, which is gitignored.
+
+The result page starts with three plain-language cards: what the result means, the main driver, and the most useful next review input. `Deeper Dive` links expose methodology, node evidence, ensemble contributions, receipt artifacts, trace hashes, validation status, and an optional model-comparison panel.
 
 Adjustment and re-check checkpoints are saved separately from generated facts in `node_audit_review_manifest.json`. The deterministic graph remains the final posture authority.
+
+Local app usage checklist:
+
+1. Start the app with the command above and open `http://127.0.0.1:8765`.
+2. Pick a review question.
+3. Use `Sample Case` to load the constructed demo or a synthetic fixture, or paste constructed/deidentified-style text, or upload a local text file.
+4. Click `Pre-process`.
+5. Review redaction status, structured clinical sections, Methodology Explorer, and grouped Ensemble Contributions.
+6. Select `OK`, `Adjust`, or `Re-check Selected Nodes`; confirm any methodology-changing action.
+7. Click `Process`.
+8. Read `What this means`, `Main driver`, and `Most useful next review input` before opening `Deeper Dive`.
+9. Use `Deeper Dive` for method details, node evidence, ensemble contributions, receipts, trace hashes, validation status, and optional OpenRouter comparison.
+
+Boundary: Sentinel output is governance review support only. It is not a clinical action recommendation.
+
+Not claimed: this local demo is not production, not PHI-ready, not clinically validated, not regulatory-cleared, and not a source of patient-care instructions.
 
 ## OpenRouter model comparison
 
@@ -288,6 +306,8 @@ PYTHONPATH=src python3 -m sentinel_workbench.openrouter_compare \
 ```
 
 The report is written to `artifacts/model_comparison/challenging_case/comparison_report.md`. The `artifacts/` directory is gitignored because it can contain raw model responses.
+
+In the local app, OpenRouter appears only as an optional comparison panel. If comparison artifacts are absent, the panel states that OpenRouter comparison was skipped. If comparison artifacts are generated separately, they remain comparison-only; they do not set graph values, final posture, or clinical meaning.
 
 ## Validation report coverage
 

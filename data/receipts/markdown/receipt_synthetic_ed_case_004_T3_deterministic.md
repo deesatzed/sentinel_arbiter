@@ -8,7 +8,7 @@
 - Signature placeholder: `UNSIGNED_DETERMINISTIC_POC`
 
 ## Clinician Summary
-For Unspecified governance review question, Sentinel found information sufficiency 0.25 with material gap strength 0.75 and decision weight 0.5125. The main driver is: Specific hospital-based added value remains unresolved. The most useful next review input is: identify the information, monitoring, or therapy target This output is governance review support, not a clinical action recommendation.
+For Unspecified governance review question, Sentinel found that the current review record still depends on unresolved or weakly supported information before a governance reviewer should trust the posture. The main driver is: Specific hospital-based added value remains unresolved. The most useful next review input is: identify the information, monitoring, or therapy target This output is governance review support, not a clinical action recommendation.
 
 ## What Was Known
 - At decision time, the hospital-based path still lacks a documented specific added-value target.

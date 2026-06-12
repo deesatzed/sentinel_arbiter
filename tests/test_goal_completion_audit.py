@@ -13,7 +13,7 @@ def _self_verification_running() -> bool:
     return os.environ.get("SENTINEL_FINAL_VERIFICATION_RUNNING") == "1"
 
 
-def test_goal_completion_audit_maps_current_remediation_goal(tmp_path):
+def test_goal_completion_audit_maps_current_clinician_review_console_goal(tmp_path):
     if _self_verification_running():
         return
     report_json = tmp_path / "goal_completion_audit.json"
@@ -32,14 +32,14 @@ def test_goal_completion_audit_maps_current_remediation_goal(tmp_path):
     payload = json.loads(report_json.read_text(encoding="utf-8"))
     markdown = report_md.read_text(encoding="utf-8")
 
-    assert payload["goal_shape"] == "completeness_scan_remediation"
-    assert payload["supersedes_goal_shape"] == "25_item_clinician_facing_staged_demo"
-    assert payload["proof_item_count"] == 10
-    assert payload["pass_count"] == 10
+    assert payload["goal_shape"] == "clinician_review_console_v1"
+    assert payload["supersedes_goal_shape"] == "completeness_scan_remediation"
+    assert payload["proof_item_count"] == 14
+    assert payload["pass_count"] == 14
     assert payload["all_pass"] is True
-    assert [item["id"] for item in payload["items"]] == list(range(1, 11))
-    assert "ten-item remediation audit" in markdown
-    assert "Completeness-Scan Remediation Proof Of Done" in markdown
+    assert [item["id"] for item in payload["items"]] == list(range(1, 15))
+    assert "fourteen-item clinician-review-console audit" in markdown
+    assert "Clinician Review Console Proof Of Done" in markdown
     assert "ux_render_verification" in markdown
     assert scan_forbidden_content(markdown, allow_safety_rule_lists=False) == []
 
@@ -49,11 +49,11 @@ def test_checked_in_goal_completion_audit_is_not_stale():
         return
     text = (ROOT / "docs" / "21_goal_completion_audit.md").read_text(encoding="utf-8")
 
-    assert "completeness_scan_remediation" in text
-    assert "Proof items: 10" in text
-    assert "Pass count: 10" in text
+    assert "clinician_review_console_v1" in text
+    assert "Proof items: 14" in text
+    assert "Pass count: 14" in text
     assert "All pass: True" in text
-    assert "25-item clinician-facing staged-demo audit is superseded" in text
+    assert "completeness-scan remediation audit is superseded" in text
     assert "24 static-artifact passes" not in text
     assert "item 25 pending" not in text
 
@@ -66,7 +66,7 @@ def test_final_verification_report_closes_current_goal_without_bootstrap_marker(
     )
 
     assert report["report_type"] == "final_verification"
-    assert report["scope"] == "GOAL.md completeness-scan remediation"
+    assert report["scope"] == "GOAL.md clinician review console v1"
     assert "bootstrap" not in report
     assert report["all_pass"] is True
     assert report["pytest_passed"] is True
@@ -74,6 +74,7 @@ def test_final_verification_report_closes_current_goal_without_bootstrap_marker(
     assert report["static_input_validation_passed"] is True
     assert report["evaluation_report_regenerated"] is True
     assert report["ux_verification_passed"] is True
+    assert report["pip_dry_run_passed"] is True
     assert report["json_syntax_checks_passed"] is True
     assert report["git_diff_check_passed"] is True
     assert report["goal_audit_all_pass_after_regeneration"] is True
@@ -103,9 +104,14 @@ def test_ux_render_verification_artifact_covers_required_surfaces():
         "landing_has_responsive_viewport_and_grid",
         "prepare_has_node_audit_before_process",
         "prepare_has_ensemble_before_process",
+        "prepare_has_structured_intake_review",
+        "prepare_has_methodology_explorer",
+        "prepare_has_grouped_ensemble_contributions",
         "prepare_has_checkpoint_controls",
         "result_has_summary_first",
+        "result_has_plain_language_summary_cards",
         "result_has_deeper_dive_links",
+        "result_has_model_comparison_skip_panel",
         "result_has_validation_and_trace",
         "layout_breakage_guards_present",
         "forbidden_phrase_findings",
