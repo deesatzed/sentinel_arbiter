@@ -43,7 +43,7 @@ def run_final_verification(
     all_pass = all(flags.values()) and all(command["exit_code"] == 0 for command in command_results)
     report: dict[str, Any] = {
         "report_type": "final_verification",
-        "scope": "GOAL.md clinician review console v1",
+        "scope": "GOAL.md browser UX remediation v1",
         "all_pass": all_pass,
         **flags,
         "commands": command_results,

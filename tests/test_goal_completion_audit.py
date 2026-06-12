@@ -13,7 +13,7 @@ def _self_verification_running() -> bool:
     return os.environ.get("SENTINEL_FINAL_VERIFICATION_RUNNING") == "1"
 
 
-def test_goal_completion_audit_maps_current_clinician_review_console_goal(tmp_path):
+def test_goal_completion_audit_maps_current_browser_ux_remediation_goal(tmp_path):
     if _self_verification_running():
         return
     report_json = tmp_path / "goal_completion_audit.json"
@@ -25,6 +25,7 @@ def test_goal_completion_audit_maps_current_clinician_review_console_goal(tmp_pa
         evaluation_report_path=ROOT / "validation" / "reports" / "latest.json",
         final_verification_path=ROOT / "validation" / "reports" / "final_verification.json",
         ux_verification_path=ROOT / "validation" / "reports" / "ux_render_verification.json",
+        browser_verification_path=ROOT / "validation" / "reports" / "browser_ux_verification.json",
         goal_path=ROOT / "GOAL.md",
         status_doc_path=ROOT / "docs" / "18_deterministic_poc_status.md",
     )
@@ -32,15 +33,16 @@ def test_goal_completion_audit_maps_current_clinician_review_console_goal(tmp_pa
     payload = json.loads(report_json.read_text(encoding="utf-8"))
     markdown = report_md.read_text(encoding="utf-8")
 
-    assert payload["goal_shape"] == "clinician_review_console_v1"
-    assert payload["supersedes_goal_shape"] == "completeness_scan_remediation"
-    assert payload["proof_item_count"] == 14
-    assert payload["pass_count"] == 14
+    assert payload["goal_shape"] == "browser_ux_remediation_v1"
+    assert payload["supersedes_goal_shape"] == "clinician_review_console_v1"
+    assert payload["proof_item_count"] == 10
+    assert payload["pass_count"] == 10
     assert payload["all_pass"] is True
-    assert [item["id"] for item in payload["items"]] == list(range(1, 15))
-    assert "fourteen-item clinician-review-console audit" in markdown
-    assert "Clinician Review Console Proof Of Done" in markdown
+    assert [item["id"] for item in payload["items"]] == list(range(1, 11))
+    assert "browser-UX remediation audit" in markdown
+    assert "Browser UX Remediation Proof Of Done" in markdown
     assert "ux_render_verification" in markdown
+    assert "browser_ux_verification" in markdown
     assert scan_forbidden_content(markdown, allow_safety_rule_lists=False) == []
 
 
@@ -49,11 +51,11 @@ def test_checked_in_goal_completion_audit_is_not_stale():
         return
     text = (ROOT / "docs" / "21_goal_completion_audit.md").read_text(encoding="utf-8")
 
-    assert "clinician_review_console_v1" in text
-    assert "Proof items: 14" in text
-    assert "Pass count: 14" in text
+    assert "browser_ux_remediation_v1" in text
+    assert "Proof items: 10" in text
+    assert "Pass count: 10" in text
     assert "All pass: True" in text
-    assert "completeness-scan remediation audit is superseded" in text
+    assert "clinician-review-console audit is superseded" in text
     assert "24 static-artifact passes" not in text
     assert "item 25 pending" not in text
 
@@ -66,7 +68,7 @@ def test_final_verification_report_closes_current_goal_without_bootstrap_marker(
     )
 
     assert report["report_type"] == "final_verification"
-    assert report["scope"] == "GOAL.md clinician review console v1"
+    assert report["scope"] == "GOAL.md browser UX remediation v1"
     assert "bootstrap" not in report
     assert report["all_pass"] is True
     assert report["pytest_passed"] is True
@@ -118,3 +120,18 @@ def test_ux_render_verification_artifact_covers_required_surfaces():
     }
     assert required_checks <= set(checks)
     assert all(checks[item] is True for item in required_checks)
+
+
+def test_browser_ux_verification_artifact_closes_failed_17_of_23_run():
+    report = json.loads(
+        (ROOT / "validation" / "reports" / "browser_ux_verification.json").read_text(encoding="utf-8")
+    )
+
+    assert report["reportType"] == "browser_ux_verification"
+    assert report["goalShape"] == "browser_ux_remediation_v1"
+    assert report["overallPass"] is True
+    assert report["passCount"] == 23
+    assert report["failCount"] == 0
+    assert report["expectedPassCount"] == 23
+    assert len(report["screenshots"]) >= 4
+    assert all(not item["ok"] for item in report["artifactRouteTraversal"]["traversal"])

@@ -1,9 +1,10 @@
 import json
 from pathlib import Path
+import re
 import threading
 import tomllib
 from urllib.error import HTTPError
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urljoin
 from urllib.request import Request, urlopen
 
 from sentinel_workbench.approval import approve_prepared_input
@@ -81,6 +82,14 @@ def _post_multipart(url: str, fields: dict[str, str], files: dict[str, tuple[str
         return response.read().decode("utf-8")
 
 
+def _http_status(url: str) -> int:
+    try:
+        with urlopen(url, timeout=5) as response:
+            return response.status
+    except HTTPError as exc:
+        return exc.code
+
+
 def test_run_approved_demo_writes_receipts_review_html_and_workflow_refs(tmp_path):
     prepared = prepare_constructed_text(
         raw_text=_constructed_text(),
@@ -117,8 +126,8 @@ def test_run_approved_demo_writes_receipts_review_html_and_workflow_refs(tmp_pat
     assert "Node Audit Methodology" in html
     assert "Ensemble Contributions" in html
     assert "Receipt JSON" in html
-    assert 'href="receipts/json/' in html
-    assert 'href="receipts/markdown/' in html
+    assert 'href="/artifacts/constructed_run_case/receipts/json/' in html
+    assert 'href="/artifacts/constructed_run_case/receipts/markdown/' in html
     assert "Validation Status" in html
     assert "Trace Hashes" in html
     assert "approval_trace_sha256" in html
@@ -236,6 +245,43 @@ def test_local_demo_landing_exposes_sample_cases_and_demo_boundary(tmp_path):
         thread.join(timeout=5)
 
 
+def test_local_demo_sample_selection_overrides_default_textarea_in_browser_form(tmp_path):
+    server = create_demo_server(
+        host="127.0.0.1",
+        port=0,
+        workspace_dir=tmp_path,
+        static_inputs_path=STATIC_INPUTS,
+    )
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    base_url = f"http://{server.server_address[0]}:{server.server_address[1]}"
+    try:
+        browser_normalized_default = _constructed_text().replace("\n", "\r\n")
+        prepare_html = _post_multipart(
+            f"{base_url}/prepare",
+            fields={
+                "episode_id": "constructed_local_demo",
+                "title": "",
+                "review_question": "disposition_information_sufficiency",
+                "sample_case": "synthetic_ed_case_001",
+                "clinical_text": browser_normalized_default,
+            },
+            files={},
+        )
+
+        prepared_dir = tmp_path / "prepared_inputs" / "synthetic_ed_case_001"
+        manifest = json.loads((prepared_dir / "run_manifest.json").read_text(encoding="utf-8"))
+        assert manifest["selected_review_question"] == "disposition_information_sufficiency"
+        assert manifest["input_mode"] == "sample_case"
+        assert manifest["sample_case"] == "synthetic_ed_case_001"
+        assert "Synthetic ED disposition replay with material missing input" in prepare_html
+        assert "not decisive in this constructed demo" not in prepare_html
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=5)
+
+
 def test_local_demo_preprocess_uses_clinician_sections_methodology_explorer_and_node_checkboxes(tmp_path):
     server = create_demo_server(
         host="127.0.0.1",
@@ -340,6 +386,58 @@ def test_local_demo_result_has_navigable_deeper_dive_and_comparison_skip_panel(t
         assert "OpenRouter comparison skipped" in review_html
         assert "comparison-only" in review_html
         assert "deterministic graph remains the authority" in review_html.lower()
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=5)
+
+
+def test_local_demo_serves_result_receipt_links_and_blocks_traversal(tmp_path):
+    server = create_demo_server(
+        host="127.0.0.1",
+        port=0,
+        workspace_dir=tmp_path,
+        static_inputs_path=STATIC_INPUTS,
+    )
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    base_url = f"http://{server.server_address[0]}:{server.server_address[1]}"
+    try:
+        _post_form(
+            f"{base_url}/prepare",
+            {
+                "episode_id": "receipt_links_case",
+                "title": "Receipt links case",
+                "review_question": "disposition_information_sufficiency",
+                "clinical_text": _constructed_text(),
+            },
+        )
+        prepared_dir = tmp_path / "prepared_inputs" / "receipt_links_case"
+        draft_json = (prepared_dir / "draft_episode.json").read_text(encoding="utf-8")
+
+        review_html = _post_form(
+            f"{base_url}/approve-and-run",
+            {
+                "prepared_dir": str(prepared_dir),
+                "review_question": "disposition_information_sufficiency",
+                "node_audit_checkpoint": "ok",
+                "reviewer_id": "reviewer_receipts",
+                "approval_note": "Receipt link review.",
+                "approved_episode_json": draft_json,
+            },
+        )
+
+        hrefs = re.findall(r'href="([^"]+receipt_links_case[^"]+)"', review_html)
+        assert any(href.endswith(".json") for href in hrefs)
+        assert any(href.endswith(".md") for href in hrefs)
+        for href in hrefs:
+            with urlopen(urljoin(base_url + "/", href), timeout=5) as response:
+                body = response.read().decode("utf-8")
+            assert response.status == 200
+            assert body.strip()
+
+        assert _http_status(f"{base_url}/artifacts/../GOAL.md") in {400, 403, 404}
+        assert _http_status(f"{base_url}/artifacts/%2e%2e/GOAL.md") in {400, 403, 404}
     finally:
         server.shutdown()
         server.server_close()

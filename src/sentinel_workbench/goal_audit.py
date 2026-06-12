@@ -7,20 +7,16 @@ from typing import Any
 
 
 GOAL_PROOF_ITEMS: tuple[str, ...] = (
-    "Landing workflow explains both review questions, sample cases, paste/upload input, and local-demo boundary.",
-    "Pre-process produces redaction status, structured clinical sections, advanced JSON fallback, inference status, and no raw unredacted artifact copy.",
-    "Node Audit Methodology is a methodology explorer for every graph node.",
-    "Node-audit controls are functional, traceable, and preserve deterministic graph authority.",
-    "Ensemble Contributions are grouped by node and distinguish accepted, downgraded, and rejected inputs.",
-    "Result page is summary-first, clinically readable, and keeps raw scores in deeper dive.",
-    "Deeper Dive contains methodology, node evidence, ensemble, receipts, trace hashes, validation status, and optional model comparison.",
-    "OpenRouter is comparison-only with safe skip status and no secret echo.",
-    "Release/readiness artifact exists with local-demo conditional-go boundaries.",
-    "Documentation explains setup, app use, sample cases, input, summary interpretation, deeper dive, OpenRouter comparison, and non-claims.",
-    "Tests cover the optimized UX, redaction, structured sections, node tracing, summary-first results, deeper dive, OpenRouter skip, and forbidden phrases.",
-    "Rendered UX verification artifact covers the optimized console surfaces and layout guards.",
+    "Chrome DevTools browser workflow passes 23/23 and saves a durable browser UX report.",
+    "Sample-case selection works in the normal reviewer path without manually clearing default text.",
+    "Landing input UX makes sample, pasted text, and uploaded file precedence clear.",
+    "Receipt JSON and Markdown links work in the live local browser and artifact serving blocks traversal.",
+    "Result-page Deeper Dive remains navigable and summary-first.",
+    "Node audit OK, Adjust, and Re-check behavior remains functional and traceable.",
+    "Safety and provenance boundaries remain intact.",
+    "Regression tests cover the two browser-discovered failures.",
+    "Documentation and status artifacts describe the remediated browser behavior.",
     "Final local verification commands pass.",
-    "Safety-boundary, unsafe-recommendation, and secret/raw-response inspections are clean.",
 )
 
 
@@ -31,61 +27,57 @@ def generate_goal_completion_audit(
     evaluation_report_path: str | Path = "validation/reports/latest.json",
     final_verification_path: str | Path = "validation/reports/final_verification.json",
     ux_verification_path: str | Path = "validation/reports/ux_render_verification.json",
+    browser_verification_path: str | Path = "validation/reports/browser_ux_verification.json",
     goal_path: str | Path = "GOAL.md",
     status_doc_path: str | Path = "docs/18_deterministic_poc_status.md",
     readme_path: str | Path = "README.md",
     progress_path: str | Path = "PROGRESS.md",
-    final_verification_source_path: str | Path = "src/sentinel_workbench/final_verification.py",
     tests_path: str | Path = "tests/test_goal_completion_audit.py",
     local_app_tests_path: str | Path = "tests/test_phase_g_local_demo_app.py",
-    openrouter_tests_path: str | Path = "tests/test_openrouter_compare.py",
     release_checklist_path: str | Path = "RELEASE_CHECKLIST.md",
+    decisions_path: str | Path = "DECISIONS.md",
     local_app_source_path: str | Path = "src/sentinel_workbench/local_app.py",
     demo_run_source_path: str | Path = "src/sentinel_workbench/demo_run.py",
-    openrouter_source_path: str | Path = "src/sentinel_workbench/openrouter_compare.py",
 ) -> dict[str, object]:
-    # Keep the evaluation report read as a freshness/syntax guard for the
-    # deterministic demo proof surface, even though this remediation audit is
-    # mostly documentation and verification-tooling focused.
     _read_json(evaluation_report_path)
     final_verification = _read_json_if_present(final_verification_path)
     ux_verification = _read_json_if_present(ux_verification_path)
+    browser_verification = _read_json_if_present(browser_verification_path)
     goal_text = _read_text(goal_path)
     status_text = _read_text(status_doc_path)
     readme_text = _read_text(readme_path)
     progress_text = _read_text(progress_path)
-    final_verification_source = _read_text(final_verification_source_path)
     tests_text = _read_text(tests_path)
     local_app_tests = _read_text(local_app_tests_path)
-    openrouter_tests = _read_text(openrouter_tests_path)
     release_checklist = _read_text(release_checklist_path)
+    decisions_text = _read_text(decisions_path)
     local_app_source = _read_text(local_app_source_path)
     demo_run_source = _read_text(demo_run_source_path)
-    openrouter_source = _read_text(openrouter_source_path)
+
     items = _build_items(
         goal_text=goal_text,
         status_text=status_text,
         readme_text=readme_text,
         progress_text=progress_text,
-        final_verification_source=final_verification_source,
         tests_text=tests_text,
         local_app_tests=local_app_tests,
-        openrouter_tests=openrouter_tests,
         release_checklist=release_checklist,
+        decisions_text=decisions_text,
         local_app_source=local_app_source,
         demo_run_source=demo_run_source,
-        openrouter_source=openrouter_source,
         final_verification=final_verification,
         ux_verification=ux_verification,
+        browser_verification=browser_verification,
         final_verification_path=str(final_verification_path),
         ux_verification_path=str(ux_verification_path),
+        browser_verification_path=str(browser_verification_path),
     )
     pass_count = sum(1 for item in items if item["verdict"] == "PASS")
     payload = {
         "report_type": "goal_completion_audit",
         "goal_file": str(goal_path),
-        "goal_shape": "clinician_review_console_v1",
-        "supersedes_goal_shape": "completeness_scan_remediation",
+        "goal_shape": "browser_ux_remediation_v1",
+        "supersedes_goal_shape": "clinician_review_console_v1",
         "proof_item_count": len(items),
         "pass_count": pass_count,
         "all_pass": pass_count == len(items),
@@ -106,112 +98,85 @@ def _build_items(
     status_text: str,
     readme_text: str,
     progress_text: str,
-    final_verification_source: str,
     tests_text: str,
     local_app_tests: str,
-    openrouter_tests: str,
     release_checklist: str,
+    decisions_text: str,
     local_app_source: str,
     demo_run_source: str,
-    openrouter_source: str,
     final_verification: dict[str, Any],
     ux_verification: dict[str, Any],
+    browser_verification: dict[str, Any],
     final_verification_path: str,
     ux_verification_path: str,
+    browser_verification_path: str,
 ) -> list[dict[str, object]]:
     checks: tuple[tuple[bool, str, str], ...] = (
         (
-            _ux_checks_true(ux_verification, "landing_has_first_screen_choice")
-            and "Sample Case" in local_app_source
-            and "constructed_demo_case" in local_app_source
-            and "Local demo only" in local_app_source,
-            "src/sentinel_workbench/local_app.py, validation/reports/ux_render_verification.json",
-            "Landing includes both review questions, sample-case selection, paste/upload path, and local-demo boundary.",
+            _browser_verification_complete(browser_verification),
+            browser_verification_path,
+            "Browser UX verification records 23 passing workflow checks, zero failures, screenshots, and blocked traversal evidence.",
         ),
         (
-            _ux_checks_true(ux_verification, "prepare_has_structured_intake_review")
-            and "Structured Clinical Sections" in local_app_source
-            and "Advanced JSON Edit" in local_app_source
-            and "raw_input.txt" not in demo_run_source,
-            "src/sentinel_workbench/local_app.py, validation/reports/ux_render_verification.json",
-            "Pre-process renders redaction status, structured clinical sections, advanced JSON fallback, and avoids raw input artifact copying.",
+            "test_local_demo_sample_selection_overrides_default_textarea_in_browser_form" in local_app_tests
+            and "_is_default_constructed_text" in local_app_source
+            and _browser_result_pass(browser_verification, "sample case preprocess workflow"),
+            "src/sentinel_workbench/local_app.py, tests/test_phase_g_local_demo_app.py, validation/reports/browser_ux_verification.json",
+            "Browser-style sample selection now records sample_case mode and renders the selected synthetic sample.",
         ),
         (
-            _ux_checks_true(ux_verification, "prepare_has_methodology_explorer")
-            and "Plain-English Meaning" in local_app_source
-            and "Missing or Weak Evidence" in local_app_source,
-            "src/sentinel_workbench/local_app.py, validation/reports/ux_render_verification.json",
-            "Methodology Explorer exposes plain-English node meaning, evidence, weak/missing evidence, estimates, methods, and sensitivity.",
+            "Edited pasted text takes precedence over the sample" in local_app_source
+            and "use the selected sample case" in (readme_text + status_text).lower()
+            and _browser_result_pass(browser_verification, "landing_desktop: landing essentials"),
+            "src/sentinel_workbench/local_app.py, README.md, docs/18_deterministic_poc_status.md",
+            "Landing copy explains sample, pasted text, and upload precedence.",
         ),
         (
-            _ux_checks_true(ux_verification, "prepare_has_checkpoint_controls")
-            and "node_audit_review_manifest.json" in local_app_source
-            and 'type="checkbox" name="selected_node_ids"' in local_app_source
+            "test_local_demo_serves_result_receipt_links_and_blocks_traversal" in local_app_tests
+            and "_resolve_local_artifact" in local_app_source
+            and '"/artifacts/' in demo_run_source
+            and _receipt_link_checks_pass(browser_verification)
+            and _artifact_traversal_blocked(browser_verification),
+            "src/sentinel_workbench/local_app.py, src/sentinel_workbench/demo_run.py, tests/test_phase_g_local_demo_app.py",
+            "Receipt JSON/Markdown links use a scoped artifact route and traversal probes return non-OK responses.",
+        ),
+        (
+            _ux_verification_complete(ux_verification)
+            and _browser_result_pass(browser_verification, "sample_result: result/deeper-dive content")
+            and _browser_result_pass(browser_verification, "sample result: anchor #methodology")
+            and _browser_result_pass(browser_verification, "sample result: anchor #ensemble-contributions"),
+            f"{ux_verification_path}, {browser_verification_path}",
+            "Deeper Dive navigation and summary-first result checks remain green in rendered and browser verification.",
+        ),
+        (
+            _browser_result_pass(browser_verification, "adjust without confirmation is blocked")
+            and _browser_result_pass(browser_verification, "adjust_confirmed_result: result/deeper-dive content")
+            and _browser_result_pass(browser_verification, "recheck_result: result/deeper-dive content")
+            and _browser_result_pass(browser_verification, "recheck trace visible in result hashes")
             and "graph_authority_preserved" in local_app_source,
-            "src/sentinel_workbench/local_app.py, tests/test_phase_g_local_demo_app.py",
-            "Node-level reviewer actions are checkboxes, confirmed when changing methodology, and traced separately from graph authority.",
+            "src/sentinel_workbench/local_app.py, validation/reports/browser_ux_verification.json",
+            "OK, Adjust, and Re-check workflow behavior remains traceable and graph authority stays separate.",
         ),
         (
-            _ux_checks_true(ux_verification, "prepare_has_grouped_ensemble_contributions")
-            and "Grouped Ensemble Contributions" in local_app_source
-            and "Rejected or unsupported inputs" in local_app_source,
-            ux_verification_path,
-            "Ensemble contributions are grouped by node and expose accepted, downgraded, and rejected/unsupported inputs.",
+            _safety_inspection_clean(readme_text, status_text, progress_text, release_checklist)
+            and "OpenRouter remains comparison-only" in goal_text,
+            "GOAL.md, README.md, docs/, PROGRESS.md, RELEASE_CHECKLIST.md",
+            "Local deterministic governance-review boundaries and comparison-only model boundaries remain documented.",
         ),
         (
-            _ux_checks_true(ux_verification, "result_has_summary_first", "result_has_plain_language_summary_cards")
-            and "What this means" in demo_run_source
-            and "Main driver" in demo_run_source
-            and "Most useful next review input" in demo_run_source,
-            "src/sentinel_workbench/demo_run.py, validation/reports/ux_render_verification.json",
-            "Result page is summary-first and uses plain-language summary cards before raw details.",
+            _tests_cover_browser_goal(local_app_tests, tests_text),
+            "tests/test_phase_g_local_demo_app.py, tests/test_goal_completion_audit.py",
+            "Regression tests cover sample precedence, live receipt links, traversal blocking, and durable browser report shape.",
         ),
         (
-            _ux_checks_true(ux_verification, "result_has_deeper_dive_links", "result_has_validation_and_trace")
-            and "id=\"methodology\"" in demo_run_source
-            and "id=\"node-evidence\"" in demo_run_source
-            and "id=\"model-comparison\"" in demo_run_source,
-            "src/sentinel_workbench/demo_run.py, validation/reports/ux_render_verification.json",
-            "Deeper Dive navigation links methodology, node evidence, ensemble, receipt artifacts, trace hashes, validation, and model comparison.",
-        ),
-        (
-            _ux_checks_true(ux_verification, "result_has_model_comparison_skip_panel")
-            and "openrouter_comparison_status" in openrouter_source
-            and "settings.safe_summary()" in openrouter_source
-            and "Bearer {settings.api_key}" in openrouter_source,
-            "src/sentinel_workbench/openrouter_compare.py, validation/reports/ux_render_verification.json",
-            "OpenRouter status is comparison-only, skips safely when absent, and does not echo secrets.",
-        ),
-        (
-            _release_checklist_complete(release_checklist),
-            "RELEASE_CHECKLIST.md",
-            "Release checklist records local-demo Conditional Go, No-Go boundaries, evidence areas, risks, required fixes, and rollback.",
-        ),
-        (
-            _docs_cover_new_user(readme_text, status_text),
-            "README.md, docs/18_deterministic_poc_status.md",
-            "Documentation covers setup, app use, sample cases, input, summary interpretation, deeper dive, OpenRouter comparison, and non-claims.",
-        ),
-        (
-            _tests_cover_console_goal(local_app_tests, openrouter_tests, tests_text),
-            "tests/",
-            "Tests cover local app happy path, structured sections, node tracing, summary-first result, deeper dive, OpenRouter skip/no-secret behavior, and forbidden-phrase scanning.",
-        ),
-        (
-            _ux_verification_complete(ux_verification),
-            ux_verification_path,
-            "Rendered UX verification all-pass report covers optimized console surfaces and layout guards.",
+            _docs_cover_browser_remediation(readme_text, status_text, progress_text, decisions_text, release_checklist),
+            "README.md, docs/18_deterministic_poc_status.md, PROGRESS.md, DECISIONS.md, RELEASE_CHECKLIST.md",
+            "Docs and progress artifacts describe corrected sample input semantics, artifact links, browser verification, and readiness impact.",
         ),
         (
             _final_verification_complete(final_verification),
             final_verification_path,
-            "Final verification report records passing pytest, case validation, static input validation, evaluation regeneration, UX verification, JSON syntax, pip dry-run, and git diff checks.",
-        ),
-        (
-            _safety_inspection_clean(readme_text, status_text, progress_text)
-            and "bootstrap" not in json.dumps(final_verification),
-            "README.md, docs/, PROGRESS.md, validation/reports/final_verification.json",
-            "Safety boundaries are present and no committed bootstrap marker or unsafe secret pattern is present in audited text.",
+            "Final verification report records passing pytest, validation commands, UX verification, JSON syntax, pip dry-run, and git diff checks.",
         ),
     )
 
@@ -229,34 +194,45 @@ def _build_items(
     return items
 
 
-def _status_doc_complete(text: str) -> bool:
-    required = (
-        "## Implemented Deterministic POC",
-        "## Deferred",
-        "## Required Before Real Clinical, Prospective, Or Production Use",
-        "## Not Claimed",
-        "PYTHONPATH=src python3 -m sentinel_workbench.final_verification",
-        "PYTHONPATH=src python3 -m sentinel_workbench.goal_audit",
+def _browser_verification_complete(report: dict[str, Any]) -> bool:
+    return (
+        report.get("reportType") == "browser_ux_verification"
+        and report.get("goalShape") == "browser_ux_remediation_v1"
+        and report.get("overallPass") is True
+        and report.get("passCount") == 23
+        and report.get("failCount") == 0
+        and report.get("expectedPassCount") == 23
+        and len(report.get("screenshots", [])) >= 4
+        and _artifact_traversal_blocked(report)
     )
-    return all(item in text for item in required)
 
 
-def _final_verification_source_hardened(text: str) -> bool:
-    forbidden = (
-        "_write_bootstrap_report",
-        "bootstrap_for_self_verification",
-        '"bootstrap": True',
-    )
-    return all(item not in text for item in forbidden) and "SENTINEL_FINAL_VERIFICATION_RUNNING" in text
+def _browser_result_pass(report: dict[str, Any], name: str) -> bool:
+    results = report.get("results")
+    if not isinstance(results, list):
+        return False
+    return any(_dict(item).get("name") == name and _dict(item).get("pass") is True for item in results)
 
 
-def _tests_cover_hardened_final_verification(text: str) -> bool:
-    required = (
-        "SENTINEL_FINAL_VERIFICATION_RUNNING",
-        'assert "bootstrap" not in report',
-        "test_final_verification_source_does_not_write_bootstrap_report",
-    )
-    return all(item in text for item in required)
+def _receipt_link_checks_pass(report: dict[str, Any]) -> bool:
+    results = report.get("results")
+    if not isinstance(results, list):
+        return False
+    receipt_checks = [
+        _dict(item)
+        for item in results
+        if str(_dict(item).get("name", "")).endswith(": receipt artifact links fetch")
+    ]
+    if len(receipt_checks) < 5:
+        return False
+    return all(item.get("pass") is True for item in receipt_checks)
+
+
+def _artifact_traversal_blocked(report: dict[str, Any]) -> bool:
+    traversal = _dict(report.get("artifactRouteTraversal")).get("traversal")
+    if not isinstance(traversal, list) or not traversal:
+        return False
+    return all(_dict(item).get("ok") is False for item in traversal)
 
 
 def _ux_verification_complete(report: dict[str, Any]) -> bool:
@@ -285,16 +261,6 @@ def _ux_verification_complete(report: dict[str, Any]) -> bool:
     )
 
 
-def _openrouter_docs_clear(text: str) -> bool:
-    required = (
-        "implemented comparison harness",
-        "comparison-only model artifacts",
-        "app-integrated LLM mode remains deferred",
-        "formal model-swap evaluation remains deferred",
-    )
-    return all(item in text for item in required)
-
-
 def _final_verification_complete(report: dict[str, Any]) -> bool:
     required_checks = (
         "pytest_passed",
@@ -309,7 +275,7 @@ def _final_verification_complete(report: dict[str, Any]) -> bool:
     commands = report.get("commands")
     return (
         report.get("report_type") == "final_verification"
-        and report.get("scope") == "GOAL.md clinician review console v1"
+        and report.get("scope") == "GOAL.md browser UX remediation v1"
         and report.get("all_pass") is True
         and all(report.get(key) is True for key in required_checks)
         and isinstance(commands, list)
@@ -319,58 +285,39 @@ def _final_verification_complete(report: dict[str, Any]) -> bool:
     )
 
 
-def _ux_checks_true(report: dict[str, Any], *names: str) -> bool:
-    checks = _dict(report.get("checks"))
-    return report.get("all_pass") is True and all(checks.get(name) is True for name in names)
-
-
-def _release_checklist_complete(text: str) -> bool:
-    required = (
-        "Conditional Go for local deterministic demo use",
-        "No-Go for real clinical",
-        "Known Blockers",
-        "Accepted Risks",
-        "Required Fixes Before Release",
-        "Rollback Plan",
-    )
-    return all(item in text for item in required)
-
-
-def _docs_cover_new_user(readme_text: str, status_text: str) -> bool:
-    required = (
-        "PYTHONPATH=src python3 -m sentinel_workbench.local_app",
-        "Sample Case",
-        "paste constructed/deidentified-style text",
-        "upload a local text file",
-        "What this means",
-        "Deeper Dive",
-        "OpenRouter",
-        "not app authority",
-    )
-    docs = readme_text + "\n" + status_text
-    return all(item in docs for item in required)
-
-
-def _tests_cover_console_goal(local_app_tests: str, openrouter_tests: str, tests_text: str) -> bool:
+def _tests_cover_browser_goal(local_app_tests: str, tests_text: str) -> bool:
     required_local = (
-        "test_local_demo_landing_exposes_sample_cases_and_demo_boundary",
-        "test_local_demo_preprocess_uses_clinician_sections_methodology_explorer_and_node_checkboxes",
-        "test_local_demo_result_has_navigable_deeper_dive_and_comparison_skip_panel",
+        "test_local_demo_sample_selection_overrides_default_textarea_in_browser_form",
+        "test_local_demo_serves_result_receipt_links_and_blocks_traversal",
+        "test_local_demo_accepts_uploaded_constructed_text_file_for_preprocess",
+        "test_local_demo_records_adjustment_and_recheck_manifest_before_processing",
         "scan_forbidden_content",
     )
-    required_openrouter = (
-        "test_openrouter_comparison_status_skips_without_secret_and_does_not_echo_key",
-        "assert configured[\"model_count\"] == 1",
-    )
     required_audit = (
-        "clinician_review_console_v1",
-        "test_ux_render_verification_artifact_covers_required_surfaces",
+        "browser_ux_remediation_v1",
+        "test_browser_ux_verification_artifact_closes_failed_17_of_23_run",
     )
-    return (
-        all(item in local_app_tests for item in required_local)
-        and all(item in openrouter_tests for item in required_openrouter)
-        and all(item in tests_text for item in required_audit)
+    return all(item in local_app_tests for item in required_local) and all(item in tests_text for item in required_audit)
+
+
+def _docs_cover_browser_remediation(
+    readme_text: str,
+    status_text: str,
+    progress_text: str,
+    decisions_text: str,
+    release_checklist: str,
+) -> bool:
+    docs = "\n".join((readme_text, status_text, progress_text, decisions_text, release_checklist))
+    docs_lower = docs.lower()
+    required = (
+        "browser_ux_remediation_v1",
+        "23/23",
+        "/artifacts/",
+        "browser_ux_verification.json",
+        "Receipt JSON",
+        "Receipt Markdown",
     )
+    return all(item in docs for item in required) and "edited pasted text takes precedence over the sample" in docs_lower
 
 
 def _safety_inspection_clean(*texts: str) -> bool:
@@ -381,32 +328,25 @@ def _safety_inspection_clean(*texts: str) -> bool:
         "not production",
     )
     forbidden = (
-        "safe for discharge",
-        "medical clearance",
-        "cleared for discharge",
-        "should prescribe",
-        "start medication",
-        "place an order",
+        "safe to discharge",
+        "unsafe to discharge",
+        "should admit",
+        "should discharge",
+        "medically cleared",
+        "appropriate for discharge",
+        "inappropriate for discharge",
+        "recommended pathway",
+        "preferred pathway",
         "sk-or-",
     )
     return all(item in combined for item in boundaries) and all(item not in combined for item in forbidden)
-
-
-def _stale_claim_scan_clean(*texts: str) -> bool:
-    stale = (
-        "24 static-artifact passes",
-        "item 25 pending",
-        "leaves item 25 pending",
-    )
-    combined = "\n".join(texts)
-    return all(item not in combined for item in stale)
 
 
 def _render_markdown(payload: dict[str, object]) -> str:
     lines = [
         "# 21 - GOAL.md Completion Audit",
         "",
-        "Current audit maps the `clinician_review_console_v1` `GOAL.md`. The prior completeness-scan remediation audit is superseded by this fourteen-item clinician-review-console audit.",
+        "Current audit maps the `browser_ux_remediation_v1` `GOAL.md`. The prior clinician-review-console audit is superseded by this ten-item browser-UX remediation audit.",
         "",
         f"Goal shape: `{payload['goal_shape']}`",
         f"Supersedes: `{payload['supersedes_goal_shape']}`",
@@ -416,7 +356,7 @@ def _render_markdown(payload: dict[str, object]) -> str:
         "",
         "Sentinel remains a local deterministic governance-review POC. This audit does not claim clinical safety, production readiness, regulatory compliance, PHI readiness, or clinical outcome benefit.",
         "",
-        "## Clinician Review Console Proof Of Done",
+        "## Browser UX Remediation Proof Of Done",
         "",
         "| # | Requirement | Verdict | Evidence Surface | Evidence |",
         "|---:|---|---|---|---|",
@@ -432,13 +372,14 @@ def _render_markdown(payload: dict[str, object]) -> str:
             "## Verification Commands",
             "",
             "```bash",
-            "python3 -m pytest -q",
-            "PYTHONPATH=src python3 -m sentinel_workbench.validate data/cases",
-            "PYTHONPATH=src python3 -m sentinel_workbench.static_inputs --static-inputs data/static_inputs/static_inputs.json --case-dir data/cases",
-            "PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts",
-            "PYTHONPATH=src python3 -m sentinel_workbench.ux_verification",
-            "PYTHONPATH=src python3 -m sentinel_workbench.final_verification",
-            "PYTHONPATH=src python3 -m sentinel_workbench.goal_audit --out-json validation/reports/goal_completion_audit.json --out-markdown docs/21_goal_completion_audit.md",
+            ".venv/bin/python -m pytest -q",
+            "PYTHONPATH=src .venv/bin/python -m sentinel_workbench.validate data/cases",
+            "PYTHONPATH=src .venv/bin/python -m sentinel_workbench.static_inputs --static-inputs data/static_inputs/static_inputs.json --case-dir data/cases",
+            "PYTHONPATH=src .venv/bin/python -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts",
+            "PYTHONPATH=src .venv/bin/python -m sentinel_workbench.ux_verification",
+            "PATH=\"$PWD/.venv/bin:$PATH\" PYTHONPATH=src .venv/bin/python -m sentinel_workbench.final_verification",
+            "PATH=\"$PWD/.venv/bin:$PATH\" PYTHONPATH=src .venv/bin/python -m sentinel_workbench.goal_audit --out-json validation/reports/goal_completion_audit.json --out-markdown docs/21_goal_completion_audit.md",
+            ".venv/bin/python -m pip install -e . --dry-run --no-deps",
             "git diff --check",
             "```",
             "",
@@ -475,6 +416,7 @@ def main() -> None:
     parser.add_argument("--evaluation-report", default="validation/reports/latest.json")
     parser.add_argument("--final-verification", default="validation/reports/final_verification.json")
     parser.add_argument("--ux-verification", default="validation/reports/ux_render_verification.json")
+    parser.add_argument("--browser-verification", default="validation/reports/browser_ux_verification.json")
     parser.add_argument("--goal", default="GOAL.md")
     parser.add_argument("--status-doc", default="docs/18_deterministic_poc_status.md")
     args = parser.parse_args()
@@ -484,6 +426,7 @@ def main() -> None:
         evaluation_report_path=args.evaluation_report,
         final_verification_path=args.final_verification,
         ux_verification_path=args.ux_verification,
+        browser_verification_path=args.browser_verification,
         goal_path=args.goal,
         status_doc_path=args.status_doc,
     )

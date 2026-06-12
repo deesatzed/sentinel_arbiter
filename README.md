@@ -257,7 +257,9 @@ http://127.0.0.1:8765
 
 The local app now starts with the clinician-review console flow from `GOAL.md`: choose either Disposition Information Sufficiency or AI Response Use Sufficiency, optionally select a built-in sample case, paste constructed/deidentified-style text or upload a local text file, click `Pre-process`, review redaction status and structured clinical sections, inspect the Methodology Explorer and grouped Ensemble Contributions, choose `OK`, `Adjust`, or `Re-check Selected Nodes`, confirm any methodology-changing checkpoint, click `Process`, then read a summary-first clinician-facing result before opening deeper-dive artifacts. The default app workspace is `.sentinel_local_demo/`, which is gitignored.
 
-The result page starts with three plain-language cards: what the result means, the main driver, and the most useful next review input. `Deeper Dive` links expose methodology, node evidence, ensemble contributions, receipt artifacts, trace hashes, validation status, and an optional model-comparison panel.
+Input precedence is explicit in `browser_ux_remediation_v1`: use the selected sample case as the starting point. Edited pasted text takes precedence over the sample; uploaded files are used when the text box is empty. Browser-style line ending changes in the default textarea no longer cause a selected sample to be ignored.
+
+The result page starts with three plain-language cards: what the result means, the main driver, and the most useful next review input. `Deeper Dive` links expose methodology, node evidence, ensemble contributions, receipt artifacts, trace hashes, validation status, and an optional model-comparison panel. Receipt JSON and Receipt Markdown links are served through a local read-only `/artifacts/` route scoped to generated demo artifacts.
 
 Adjustment and re-check checkpoints are saved separately from generated facts in `node_audit_review_manifest.json`. The deterministic graph remains the final posture authority.
 
@@ -265,13 +267,15 @@ Local app usage checklist:
 
 1. Start the app with the command above and open `http://127.0.0.1:8765`.
 2. Pick a review question.
-3. Use `Sample Case` to load the constructed demo or a synthetic fixture, or paste constructed/deidentified-style text, or upload a local text file.
+3. Use `Sample Case` to load the constructed demo or a synthetic fixture. To use custom text, edit or replace the text box. To use a local file, leave the text box empty and upload a text file.
 4. Click `Pre-process`.
 5. Review redaction status, structured clinical sections, Methodology Explorer, and grouped Ensemble Contributions.
 6. Select `OK`, `Adjust`, or `Re-check Selected Nodes`; confirm any methodology-changing action.
 7. Click `Process`.
 8. Read `What this means`, `Main driver`, and `Most useful next review input` before opening `Deeper Dive`.
 9. Use `Deeper Dive` for method details, node evidence, ensemble contributions, receipts, trace hashes, validation status, and optional OpenRouter comparison.
+
+Browser verification for this remediation pass is saved in `validation/reports/browser_ux_verification.json`. It records `23/23` passing Chrome DevTools workflow checks, including sample selection, paste, upload, receipt links, node actions, mobile layout, OpenRouter skip, and residual-risk quarantine.
 
 Boundary: Sentinel output is governance review support only. It is not a clinical action recommendation.
 

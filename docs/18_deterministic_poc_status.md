@@ -1,10 +1,10 @@
 # 18 - Deterministic POC Status
 
-Date: 2026-06-11
+Date: 2026-06-12
 
 This document separates the implemented local deterministic Sentinel POC from deferred work and from requirements that would be necessary before any real clinical, prospective, or production use.
 
-The `GOAL.md` transparent-demo completion audit is saved in `docs/21_goal_completion_audit.md`.
+The active `GOAL.md` browser-UX remediation audit is saved in `docs/21_goal_completion_audit.md`.
 
 ## Implemented Deterministic POC
 
@@ -18,6 +18,7 @@ The `GOAL.md` transparent-demo completion audit is saved in `docs/21_goal_comple
 - Reviewer approval artifacts for prepared constructed input.
 - Approved constructed-input deterministic analysis with receipt JSON, receipt Markdown, and review HTML output.
 - Local stdlib HTTP clinician-review console for sample-case selection, constructed text entry, file upload, redaction status review, structured clinical section review, methodology exploration, ensemble contribution review, approval, deterministic analysis, and output review.
+- Corrected `browser_ux_remediation_v1` input precedence: use the selected sample case as the starting point; edited pasted text takes precedence over the sample; uploaded files are used when the text box is empty.
 - Deterministic graph metrics for information sufficiency, material gap strength, harm clock, information clock, recoverability, future correction opportunity, decision weight, AI provenance risk, commission risk, omission risk, therapy-response relevance, next-best-information ranking, preventability-opportunity score, and final posture.
 - First-class commission, omission, and therapy-response lanes.
 - Schema-backed node audits with dependencies, evidence, estimates, ranges, medians, distributions, confidence/method fields, and sensitivity notes.
@@ -28,6 +29,8 @@ The `GOAL.md` transparent-demo completion audit is saved in `docs/21_goal_comple
 - Static reviewer workbench at `data/workbench/index.html`, including node audit methodology and ensemble contribution panels.
 - Constructed-demo review output at `data/prepared_inputs/constructed_demo_case/analysis/review.html`.
 - Summary-first result page with deeper-dive navigation for methodology, node evidence, ensemble contributions, receipt artifacts, trace hashes, validation status, and optional comparison-only model output.
+- Live local receipt links are served through the scoped read-only `/artifacts/` route for Receipt JSON and Receipt Markdown generated under the local demo workspace.
+- Chrome DevTools browser verification is saved in `validation/reports/browser_ux_verification.json` and records `23/23` passing checks with screenshots under `validation/reports/browser_ux_screenshots/`.
 - OpenRouter model comparison harness and local app skip/configuration status messaging. OpenRouter output is comparison-only and does not control graph values or final posture.
 - Safety scanners for forbidden disposition phrasing, named institution examples, credential-like strings, and basic PHI-like patterns.
 
@@ -47,7 +50,7 @@ The deterministic graph computes Sentinel posture categories only. It does not g
 - reviewer authentication or multi-user workflow.
 - production web application hardening.
 - calibration on larger synthetic or public-style case sets.
-- automatic browser screenshot capture when Browser/Playwright is unavailable; deterministic rendered-HTML verification is used instead.
+- production-grade browser automation packaging; current Chrome DevTools verification is a local evidence artifact, not a deployed test service.
 
 These items are intentionally deferred rather than partially implemented.
 

@@ -1,0 +1,694 @@
+{
+  "reportType": "browser_ux_verification",
+  "goalShape": "browser_ux_remediation_v1",
+  "runId": "1781273576243",
+  "baseUrl": "http://127.0.0.1:8770",
+  "chromeDebugUrl": "http://127.0.0.1:9223",
+  "generatedAt": "2026-06-12T14:13:17.898Z",
+  "overallPass": true,
+  "passCount": 23,
+  "failCount": 0,
+  "expectedPassCount": 23,
+  "results": [
+    {
+      "name": "landing_desktop: landing essentials",
+      "pass": true,
+      "details": {
+        "questionA": true,
+        "questionB": true,
+        "sampleCase": true,
+        "sampleCount": 8,
+        "constructedSample": true,
+        "syntheticSamples": 7,
+        "paste": true,
+        "upload": true,
+        "precedenceText": true,
+        "boundary": true,
+        "preProcess": true,
+        "noOverflow": true,
+        "screenshot": "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/landing_desktop_1781273576243.png"
+      }
+    },
+    {
+      "name": "landing_mobile: landing essentials",
+      "pass": true,
+      "details": {
+        "questionA": true,
+        "questionB": true,
+        "sampleCase": true,
+        "sampleCount": 8,
+        "constructedSample": true,
+        "syntheticSamples": 7,
+        "paste": true,
+        "upload": true,
+        "precedenceText": true,
+        "boundary": true,
+        "preProcess": true,
+        "noOverflow": true,
+        "screenshot": "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/landing_mobile_1781273576243.png"
+      }
+    },
+    {
+      "name": "required review question blocks preprocess",
+      "pass": true,
+      "details": {
+        "stayedOnLanding": true,
+        "reviewQuestionMissing": true,
+        "activeRequired": true,
+        "noOverflow": true
+      }
+    },
+    {
+      "name": "sample case preprocess workflow",
+      "pass": true,
+      "details": {
+        "path": "/prepare",
+        "h1": "Pre-processed For Reviewer",
+        "selectedQuestion": true,
+        "intakeReview": true,
+        "redactionStatus": true,
+        "redactedInput": true,
+        "structuredSections": true,
+        "editableSections": true,
+        "methodology": true,
+        "nodeCards": 13,
+        "nodeCheckboxes": 26,
+        "ensemble": true,
+        "contributionTable": true,
+        "processReview": true,
+        "ok": true,
+        "adjust": true,
+        "recheck": true,
+        "confirm": true,
+        "advancedJson": true,
+        "inputModeText": "Input Mode\nsample_case",
+        "hasSyntheticTitle": true,
+        "noOverflow": true,
+        "screenshot": "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/sample_preprocess_1781273576243.png"
+      }
+    },
+    {
+      "name": "sample_result: result/deeper-dive content",
+      "pass": true,
+      "details": {
+        "path": "/approve-and-run",
+        "runComplete": true,
+        "clinicianSummary": true,
+        "summaryBeforeRunSummary": true,
+        "summaryNotNodeIdDriven": true,
+        "whatThisMeans": true,
+        "mainDriver": true,
+        "nextInput": true,
+        "boundary": true,
+        "deeperDive": true,
+        "navMethodology": true,
+        "navNodeEvidence": true,
+        "navEnsemble": true,
+        "navReceipts": true,
+        "navTrace": true,
+        "navValidation": true,
+        "navModel": true,
+        "methodologySection": true,
+        "nodeEvidenceSection": true,
+        "ensembleSection": true,
+        "receiptSection": true,
+        "traceSection": true,
+        "validationSection": true,
+        "modelSection": true,
+        "receiptJsonLink": "/artifacts/synthetic_ed_case_001/receipts/json/receipt_synthetic_ed_case_001_T3_deterministic.json",
+        "receiptMarkdownLink": "/artifacts/synthetic_ed_case_001/receipts/markdown/receipt_synthetic_ed_case_001_T3_deterministic.md",
+        "receiptLinksUseArtifactRoute": true,
+        "openRouterSkip": true,
+        "comparisonOnly": true,
+        "noOverflow": true,
+        "receiptLinkStatuses": [
+          {
+            "href": "/artifacts/synthetic_ed_case_001/receipts/json/receipt_synthetic_ed_case_001_T3_deterministic.json",
+            "status": 200,
+            "ok": true,
+            "contentType": "application/json; charset=utf-8"
+          },
+          {
+            "href": "/artifacts/synthetic_ed_case_001/receipts/markdown/receipt_synthetic_ed_case_001_T3_deterministic.md",
+            "status": 200,
+            "ok": true,
+            "contentType": "text/markdown; charset=utf-8"
+          }
+        ],
+        "screenshot": "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/sample_result_1781273576243.png"
+      }
+    },
+    {
+      "name": "sample_result: receipt artifact links fetch",
+      "pass": true,
+      "details": {
+        "linkStatuses": [
+          {
+            "href": "/artifacts/synthetic_ed_case_001/receipts/json/receipt_synthetic_ed_case_001_T3_deterministic.json",
+            "status": 200,
+            "ok": true,
+            "contentType": "application/json; charset=utf-8"
+          },
+          {
+            "href": "/artifacts/synthetic_ed_case_001/receipts/markdown/receipt_synthetic_ed_case_001_T3_deterministic.md",
+            "status": 200,
+            "ok": true,
+            "contentType": "text/markdown; charset=utf-8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "sample result: anchor #methodology",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "sample result: anchor #ensemble-contributions",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "paste input preprocess workflow",
+      "pass": true,
+      "details": {
+        "path": "/prepare",
+        "h1": "Pre-processed For Reviewer",
+        "selectedQuestion": true,
+        "intakeReview": true,
+        "redactionStatus": true,
+        "redactedInput": true,
+        "structuredSections": true,
+        "editableSections": true,
+        "methodology": true,
+        "nodeCards": 13,
+        "nodeCheckboxes": 26,
+        "ensemble": true,
+        "contributionTable": true,
+        "processReview": true,
+        "ok": true,
+        "adjust": true,
+        "recheck": true,
+        "confirm": true,
+        "advancedJson": true,
+        "inputModeText": "Input Mode\npasted_text",
+        "hasSyntheticTitle": false,
+        "noOverflow": true,
+        "screenshot": "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/paste_preprocess_1781273576243.png"
+      }
+    },
+    {
+      "name": "paste_result: result/deeper-dive content",
+      "pass": true,
+      "details": {
+        "path": "/approve-and-run",
+        "runComplete": true,
+        "clinicianSummary": true,
+        "summaryBeforeRunSummary": true,
+        "summaryNotNodeIdDriven": true,
+        "whatThisMeans": true,
+        "mainDriver": true,
+        "nextInput": true,
+        "boundary": true,
+        "deeperDive": true,
+        "navMethodology": true,
+        "navNodeEvidence": true,
+        "navEnsemble": true,
+        "navReceipts": true,
+        "navTrace": true,
+        "navValidation": true,
+        "navModel": true,
+        "methodologySection": true,
+        "nodeEvidenceSection": true,
+        "ensembleSection": true,
+        "receiptSection": true,
+        "traceSection": true,
+        "validationSection": true,
+        "modelSection": true,
+        "receiptJsonLink": "/artifacts/browser_paste_1781273576243/receipts/json/receipt_browser_paste_1781273576243_T3_deterministic.json",
+        "receiptMarkdownLink": "/artifacts/browser_paste_1781273576243/receipts/markdown/receipt_browser_paste_1781273576243_T3_deterministic.md",
+        "receiptLinksUseArtifactRoute": true,
+        "openRouterSkip": true,
+        "comparisonOnly": true,
+        "noOverflow": true,
+        "receiptLinkStatuses": [
+          {
+            "href": "/artifacts/browser_paste_1781273576243/receipts/json/receipt_browser_paste_1781273576243_T3_deterministic.json",
+            "status": 200,
+            "ok": true,
+            "contentType": "application/json; charset=utf-8"
+          },
+          {
+            "href": "/artifacts/browser_paste_1781273576243/receipts/markdown/receipt_browser_paste_1781273576243_T3_deterministic.md",
+            "status": 200,
+            "ok": true,
+            "contentType": "text/markdown; charset=utf-8"
+          }
+        ],
+        "screenshot": "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/paste_result_1781273576243.png"
+      }
+    },
+    {
+      "name": "paste_result: receipt artifact links fetch",
+      "pass": true,
+      "details": {
+        "linkStatuses": [
+          {
+            "href": "/artifacts/browser_paste_1781273576243/receipts/json/receipt_browser_paste_1781273576243_T3_deterministic.json",
+            "status": 200,
+            "ok": true,
+            "contentType": "application/json; charset=utf-8"
+          },
+          {
+            "href": "/artifacts/browser_paste_1781273576243/receipts/markdown/receipt_browser_paste_1781273576243_T3_deterministic.md",
+            "status": 200,
+            "ok": true,
+            "contentType": "text/markdown; charset=utf-8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "file upload preprocess workflow",
+      "pass": true,
+      "details": {
+        "path": "/prepare",
+        "h1": "Pre-processed For Reviewer",
+        "selectedQuestion": true,
+        "intakeReview": true,
+        "redactionStatus": true,
+        "redactedInput": true,
+        "structuredSections": true,
+        "editableSections": true,
+        "methodology": true,
+        "nodeCards": 13,
+        "nodeCheckboxes": 26,
+        "ensemble": true,
+        "contributionTable": true,
+        "processReview": true,
+        "ok": true,
+        "adjust": true,
+        "recheck": true,
+        "confirm": true,
+        "advancedJson": true,
+        "inputModeText": "Input Mode\nuploaded_file",
+        "hasSyntheticTitle": false,
+        "noOverflow": true,
+        "screenshot": "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/upload_preprocess_1781273576243.png"
+      }
+    },
+    {
+      "name": "adjust without confirmation is blocked",
+      "pass": true,
+      "details": {
+        "validationError": true,
+        "requiresConfirmation": true,
+        "noOverflow": true,
+        "screenshot": "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/adjust_blocked_1781273576243.png"
+      }
+    },
+    {
+      "name": "adjust_confirmed_result: result/deeper-dive content",
+      "pass": true,
+      "details": {
+        "path": "/approve-and-run",
+        "runComplete": true,
+        "clinicianSummary": true,
+        "summaryBeforeRunSummary": true,
+        "summaryNotNodeIdDriven": true,
+        "whatThisMeans": true,
+        "mainDriver": true,
+        "nextInput": true,
+        "boundary": true,
+        "deeperDive": true,
+        "navMethodology": true,
+        "navNodeEvidence": true,
+        "navEnsemble": true,
+        "navReceipts": true,
+        "navTrace": true,
+        "navValidation": true,
+        "navModel": true,
+        "methodologySection": true,
+        "nodeEvidenceSection": true,
+        "ensembleSection": true,
+        "receiptSection": true,
+        "traceSection": true,
+        "validationSection": true,
+        "modelSection": true,
+        "receiptJsonLink": "/artifacts/browser_adjust_confirmed_1781273576243/receipts/json/receipt_browser_adjust_confirmed_1781273576243_T3_deterministic.json",
+        "receiptMarkdownLink": "/artifacts/browser_adjust_confirmed_1781273576243/receipts/markdown/receipt_browser_adjust_confirmed_1781273576243_T3_deterministic.md",
+        "receiptLinksUseArtifactRoute": true,
+        "openRouterSkip": true,
+        "comparisonOnly": true,
+        "noOverflow": true,
+        "receiptLinkStatuses": [
+          {
+            "href": "/artifacts/browser_adjust_confirmed_1781273576243/receipts/json/receipt_browser_adjust_confirmed_1781273576243_T3_deterministic.json",
+            "status": 200,
+            "ok": true,
+            "contentType": "application/json; charset=utf-8"
+          },
+          {
+            "href": "/artifacts/browser_adjust_confirmed_1781273576243/receipts/markdown/receipt_browser_adjust_confirmed_1781273576243_T3_deterministic.md",
+            "status": 200,
+            "ok": true,
+            "contentType": "text/markdown; charset=utf-8"
+          }
+        ],
+        "screenshot": "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/adjust_confirmed_result_1781273576243.png"
+      }
+    },
+    {
+      "name": "adjust_confirmed_result: receipt artifact links fetch",
+      "pass": true,
+      "details": {
+        "linkStatuses": [
+          {
+            "href": "/artifacts/browser_adjust_confirmed_1781273576243/receipts/json/receipt_browser_adjust_confirmed_1781273576243_T3_deterministic.json",
+            "status": 200,
+            "ok": true,
+            "contentType": "application/json; charset=utf-8"
+          },
+          {
+            "href": "/artifacts/browser_adjust_confirmed_1781273576243/receipts/markdown/receipt_browser_adjust_confirmed_1781273576243_T3_deterministic.md",
+            "status": 200,
+            "ok": true,
+            "contentType": "text/markdown; charset=utf-8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "recheck_result: result/deeper-dive content",
+      "pass": true,
+      "details": {
+        "path": "/approve-and-run",
+        "runComplete": true,
+        "clinicianSummary": true,
+        "summaryBeforeRunSummary": true,
+        "summaryNotNodeIdDriven": true,
+        "whatThisMeans": true,
+        "mainDriver": true,
+        "nextInput": true,
+        "boundary": true,
+        "deeperDive": true,
+        "navMethodology": true,
+        "navNodeEvidence": true,
+        "navEnsemble": true,
+        "navReceipts": true,
+        "navTrace": true,
+        "navValidation": true,
+        "navModel": true,
+        "methodologySection": true,
+        "nodeEvidenceSection": true,
+        "ensembleSection": true,
+        "receiptSection": true,
+        "traceSection": true,
+        "validationSection": true,
+        "modelSection": true,
+        "receiptJsonLink": "/artifacts/browser_recheck_1781273576243/receipts/json/receipt_browser_recheck_1781273576243_T3_deterministic.json",
+        "receiptMarkdownLink": "/artifacts/browser_recheck_1781273576243/receipts/markdown/receipt_browser_recheck_1781273576243_T3_deterministic.md",
+        "receiptLinksUseArtifactRoute": true,
+        "openRouterSkip": true,
+        "comparisonOnly": true,
+        "noOverflow": true,
+        "receiptLinkStatuses": [
+          {
+            "href": "/artifacts/browser_recheck_1781273576243/receipts/json/receipt_browser_recheck_1781273576243_T3_deterministic.json",
+            "status": 200,
+            "ok": true,
+            "contentType": "application/json; charset=utf-8"
+          },
+          {
+            "href": "/artifacts/browser_recheck_1781273576243/receipts/markdown/receipt_browser_recheck_1781273576243_T3_deterministic.md",
+            "status": 200,
+            "ok": true,
+            "contentType": "text/markdown; charset=utf-8"
+          }
+        ],
+        "screenshot": "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/recheck_result_1781273576243.png"
+      }
+    },
+    {
+      "name": "recheck_result: receipt artifact links fetch",
+      "pass": true,
+      "details": {
+        "linkStatuses": [
+          {
+            "href": "/artifacts/browser_recheck_1781273576243/receipts/json/receipt_browser_recheck_1781273576243_T3_deterministic.json",
+            "status": 200,
+            "ok": true,
+            "contentType": "application/json; charset=utf-8"
+          },
+          {
+            "href": "/artifacts/browser_recheck_1781273576243/receipts/markdown/receipt_browser_recheck_1781273576243_T3_deterministic.md",
+            "status": 200,
+            "ok": true,
+            "contentType": "text/markdown; charset=utf-8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "recheck trace visible in result hashes",
+      "pass": true,
+      "details": {
+        "path": "/approve-and-run",
+        "runComplete": true,
+        "clinicianSummary": true,
+        "summaryBeforeRunSummary": true,
+        "summaryNotNodeIdDriven": true,
+        "whatThisMeans": true,
+        "mainDriver": true,
+        "nextInput": true,
+        "boundary": true,
+        "deeperDive": true,
+        "navMethodology": true,
+        "navNodeEvidence": true,
+        "navEnsemble": true,
+        "navReceipts": true,
+        "navTrace": true,
+        "navValidation": true,
+        "navModel": true,
+        "methodologySection": true,
+        "nodeEvidenceSection": true,
+        "ensembleSection": true,
+        "receiptSection": true,
+        "traceSection": true,
+        "validationSection": true,
+        "modelSection": true,
+        "receiptJsonLink": "/artifacts/browser_recheck_1781273576243/receipts/json/receipt_browser_recheck_1781273576243_T3_deterministic.json",
+        "receiptMarkdownLink": "/artifacts/browser_recheck_1781273576243/receipts/markdown/receipt_browser_recheck_1781273576243_T3_deterministic.md",
+        "receiptLinksUseArtifactRoute": true,
+        "openRouterSkip": true,
+        "comparisonOnly": true,
+        "noOverflow": true,
+        "receiptLinkStatuses": [
+          {
+            "href": "/artifacts/browser_recheck_1781273576243/receipts/json/receipt_browser_recheck_1781273576243_T3_deterministic.json",
+            "status": 200,
+            "ok": true,
+            "contentType": "application/json; charset=utf-8"
+          },
+          {
+            "href": "/artifacts/browser_recheck_1781273576243/receipts/markdown/receipt_browser_recheck_1781273576243_T3_deterministic.md",
+            "status": 200,
+            "ok": true,
+            "contentType": "text/markdown; charset=utf-8"
+          }
+        ],
+        "screenshot": "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/recheck_result_1781273576243.png"
+      }
+    },
+    {
+      "name": "mobile preprocess layout",
+      "pass": true,
+      "details": {
+        "path": "/prepare",
+        "h1": "Pre-processed For Reviewer",
+        "selectedQuestion": true,
+        "intakeReview": true,
+        "redactionStatus": true,
+        "redactedInput": true,
+        "structuredSections": true,
+        "editableSections": true,
+        "methodology": true,
+        "nodeCards": 13,
+        "nodeCheckboxes": 26,
+        "ensemble": true,
+        "contributionTable": true,
+        "processReview": true,
+        "ok": true,
+        "adjust": true,
+        "recheck": true,
+        "confirm": true,
+        "advancedJson": true,
+        "inputModeText": "Input Mode\npasted_text",
+        "hasSyntheticTitle": false,
+        "noOverflow": true
+      }
+    },
+    {
+      "name": "mobile_result: result/deeper-dive content",
+      "pass": true,
+      "details": {
+        "path": "/approve-and-run",
+        "runComplete": true,
+        "clinicianSummary": true,
+        "summaryBeforeRunSummary": true,
+        "summaryNotNodeIdDriven": true,
+        "whatThisMeans": true,
+        "mainDriver": true,
+        "nextInput": true,
+        "boundary": true,
+        "deeperDive": true,
+        "navMethodology": true,
+        "navNodeEvidence": true,
+        "navEnsemble": true,
+        "navReceipts": true,
+        "navTrace": true,
+        "navValidation": true,
+        "navModel": true,
+        "methodologySection": true,
+        "nodeEvidenceSection": true,
+        "ensembleSection": true,
+        "receiptSection": true,
+        "traceSection": true,
+        "validationSection": true,
+        "modelSection": true,
+        "receiptJsonLink": "/artifacts/browser_mobile_1781273576243/receipts/json/receipt_browser_mobile_1781273576243_T3_deterministic.json",
+        "receiptMarkdownLink": "/artifacts/browser_mobile_1781273576243/receipts/markdown/receipt_browser_mobile_1781273576243_T3_deterministic.md",
+        "receiptLinksUseArtifactRoute": true,
+        "openRouterSkip": true,
+        "comparisonOnly": true,
+        "noOverflow": true,
+        "receiptLinkStatuses": [
+          {
+            "href": "/artifacts/browser_mobile_1781273576243/receipts/json/receipt_browser_mobile_1781273576243_T3_deterministic.json",
+            "status": 200,
+            "ok": true,
+            "contentType": "application/json; charset=utf-8"
+          },
+          {
+            "href": "/artifacts/browser_mobile_1781273576243/receipts/markdown/receipt_browser_mobile_1781273576243_T3_deterministic.md",
+            "status": 200,
+            "ok": true,
+            "contentType": "text/markdown; charset=utf-8"
+          }
+        ],
+        "screenshot": "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/mobile_result_1781273576243.png"
+      }
+    },
+    {
+      "name": "mobile_result: receipt artifact links fetch",
+      "pass": true,
+      "details": {
+        "linkStatuses": [
+          {
+            "href": "/artifacts/browser_mobile_1781273576243/receipts/json/receipt_browser_mobile_1781273576243_T3_deterministic.json",
+            "status": 200,
+            "ok": true,
+            "contentType": "application/json; charset=utf-8"
+          },
+          {
+            "href": "/artifacts/browser_mobile_1781273576243/receipts/markdown/receipt_browser_mobile_1781273576243_T3_deterministic.md",
+            "status": 200,
+            "ok": true,
+            "contentType": "text/markdown; charset=utf-8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mobile result layout",
+      "pass": true,
+      "details": {
+        "path": "/approve-and-run",
+        "runComplete": true,
+        "clinicianSummary": true,
+        "summaryBeforeRunSummary": true,
+        "summaryNotNodeIdDriven": true,
+        "whatThisMeans": true,
+        "mainDriver": true,
+        "nextInput": true,
+        "boundary": true,
+        "deeperDive": true,
+        "navMethodology": true,
+        "navNodeEvidence": true,
+        "navEnsemble": true,
+        "navReceipts": true,
+        "navTrace": true,
+        "navValidation": true,
+        "navModel": true,
+        "methodologySection": true,
+        "nodeEvidenceSection": true,
+        "ensembleSection": true,
+        "receiptSection": true,
+        "traceSection": true,
+        "validationSection": true,
+        "modelSection": true,
+        "receiptJsonLink": "/artifacts/browser_mobile_1781273576243/receipts/json/receipt_browser_mobile_1781273576243_T3_deterministic.json",
+        "receiptMarkdownLink": "/artifacts/browser_mobile_1781273576243/receipts/markdown/receipt_browser_mobile_1781273576243_T3_deterministic.md",
+        "receiptLinksUseArtifactRoute": true,
+        "openRouterSkip": true,
+        "comparisonOnly": true,
+        "noOverflow": true,
+        "receiptLinkStatuses": [
+          {
+            "href": "/artifacts/browser_mobile_1781273576243/receipts/json/receipt_browser_mobile_1781273576243_T3_deterministic.json",
+            "status": 200,
+            "ok": true,
+            "contentType": "application/json; charset=utf-8"
+          },
+          {
+            "href": "/artifacts/browser_mobile_1781273576243/receipts/markdown/receipt_browser_mobile_1781273576243_T3_deterministic.md",
+            "status": 200,
+            "ok": true,
+            "contentType": "text/markdown; charset=utf-8"
+          }
+        ],
+        "screenshot": "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/mobile_result_1781273576243.png"
+      }
+    },
+    {
+      "name": "residual-risk quarantine path",
+      "pass": true,
+      "details": {
+        "inputQuarantined": true,
+        "residualRiskReport": true,
+        "reportsSSN": true,
+        "noOverflow": true,
+        "screenshot": "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/quarantine_1781273576243.png"
+      }
+    }
+  ],
+  "findings": [],
+  "screenshots": [
+    "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/landing_desktop_1781273576243.png",
+    "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/landing_mobile_1781273576243.png",
+    "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/sample_preprocess_1781273576243.png",
+    "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/sample_result_1781273576243.png",
+    "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/paste_preprocess_1781273576243.png",
+    "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/paste_result_1781273576243.png",
+    "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/upload_preprocess_1781273576243.png",
+    "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/adjust_blocked_1781273576243.png",
+    "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/adjust_confirmed_result_1781273576243.png",
+    "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/recheck_result_1781273576243.png",
+    "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/mobile_result_1781273576243.png",
+    "/Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff/validation/reports/browser_ux_screenshots/quarantine_1781273576243.png"
+  ],
+  "artifactRouteTraversal": {
+    "traversal": [
+      {
+        "path": "/artifacts/../GOAL.md",
+        "status": 404,
+        "ok": false
+      },
+      {
+        "path": "/artifacts/%2e%2e/GOAL.md",
+        "status": 404,
+        "ok": false
+      }
+    ]
+  }
+}

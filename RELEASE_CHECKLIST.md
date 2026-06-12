@@ -2,7 +2,7 @@
 
 ## Release Scope
 
-Local-only Sentinel clinician-review demo for synthetic and constructed/deidentified-style inputs. Scope includes the stdlib local reviewer console, deterministic preprocessing, methodology explorer, grouped ensemble contribution review, summary-first result page, deeper-dive artifacts, rendered-HTML UX verification, and optional OpenRouter comparison status.
+Local-only Sentinel clinician-review demo for synthetic and constructed/deidentified-style inputs. Scope includes the stdlib local reviewer console, deterministic preprocessing, methodology explorer, grouped ensemble contribution review, summary-first result page, deeper-dive artifacts, rendered-HTML UX verification, Chrome DevTools browser UX verification, scoped local receipt artifact links, and optional OpenRouter comparison status.
 
 This is not a production release, clinical-use release, PHI-ready release, or regulatory release.
 
@@ -17,13 +17,13 @@ No-Go for real clinical, prospective, PHI, production, patient-facing, or autono
 | Area | Status | Evidence | Notes |
 |---|---|---|---|
 | Build | PASS | `python3 -m pip install -e . --dry-run --no-deps` | Local package metadata is installable without pulling dependencies in dry-run mode. |
-| Tests | PASS | `python3 -m pytest -q` | Must be rerun before claiming final goal completion. |
+| Tests | PASS | `.venv/bin/python -m pytest -q` | Current browser remediation run passed 79 tests before final report regeneration. |
 | Lint/Typecheck | PARTIAL | `git diff --check` | No dedicated lint/typecheck tool is configured. |
 | Security | CONDITIONAL | `.env` is gitignored; secret grep required by `GOAL.md` | No auth, network hardening, or production controls. |
 | Privacy | CONDITIONAL | Redaction and residual-risk gates; raw input not copied into review artifacts | Not PHI-ready; use constructed/deidentified-style text only. |
 | Environment Variables | PASS FOR LOCAL DEMO | Deterministic path requires no secrets | OpenRouter comparison needs local `.env`; secrets must not be committed or printed. |
-| Documentation | IN PROGRESS | `README.md`, `docs/18_deterministic_poc_status.md`, `docs/22_local_app_ux_verification.md` | README explains run/use/interpretation boundaries. |
-| Error Handling | PARTIAL | HTTP validation errors and quarantine path | Local demo handles common validation failures; not production-grade. |
+| Documentation | PASS FOR LOCAL DEMO | `README.md`, `docs/18_deterministic_poc_status.md`, `docs/22_local_app_ux_verification.md` | README explains input precedence, local receipt links, and interpretation boundaries. |
+| Error Handling | PARTIAL | HTTP validation errors, quarantine path, artifact traversal blocking | Local demo handles common validation failures; not production-grade. |
 | Logging | PARTIAL | Artifact hashes, approval traces, manifests, receipts | No centralized production logging. |
 | Rollback | PASS FOR LOCAL DEMO | Git history and generated artifact paths | Revert app/docs changes and regenerate reports if needed. |
 
@@ -35,7 +35,7 @@ No-Go for real clinical, prospective, PHI, production, patient-facing, or autono
 - No production signing or key management.
 - No clinical calibration of scoring constants.
 - No formal human-factors study.
-- Browser screenshot capture is not yet required if deterministic rendered-HTML verification passes.
+- Browser automation is local evidence only; it is not a packaged production monitoring system.
 
 ## Accepted Risks
 
@@ -50,8 +50,9 @@ For local demo completion:
 
 - Keep all `GOAL.md` proof commands passing.
 - Keep `validation/reports/ux_render_verification.json` all-pass for the console UX.
+- Keep `validation/reports/browser_ux_verification.json` at `23/23` with `failCount=0` for `browser_ux_remediation_v1`.
 - Keep the safety-boundary and no-secret grep checks clean.
-- Regenerate `docs/21_goal_completion_audit.md` and `validation/reports/goal_completion_audit.json` for `clinician_review_console_v1`.
+- Regenerate `docs/21_goal_completion_audit.md` and `validation/reports/goal_completion_audit.json` for `browser_ux_remediation_v1`.
 
 Before any real clinical/prospective/production release:
 

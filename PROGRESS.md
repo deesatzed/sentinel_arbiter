@@ -2,29 +2,26 @@
 
 ## Latest Status - 2026-06-12
 
-The current `GOAL.md` is the `clinician_review_console_v1` contract. This section is the current status anchor and may supersede earlier chronological entries that describe now-completed items as pending or future work.
+The current `GOAL.md` is the `browser_ux_remediation_v1` contract. This section is the current status anchor and may supersede earlier chronological entries that describe now-completed items as pending or future work.
 
-The prior clinician-facing staged local demo milestone and the later completeness-scan remediation milestone are complete historical baselines. The active work now targets a clinician-optimized local review console: sample-case selection, structured intake review, methodology explorer, grouped ensemble contributions, functional node-level review actions, summary-first results, deeper-dive navigation, comparison-only OpenRouter status, release/readiness documentation, and refreshed verification for the new goal shape.
+The prior clinician-facing staged local demo milestone and the later completeness-scan remediation milestone are complete historical baselines. The active work now targets the live-browser gaps found after the console milestone: selected sample cases must not be ignored by stale default textarea text, and result Receipt JSON / Receipt Markdown links must work in the local app instead of returning `404`.
 
 ### Current Active Goal Progress
 
-- Replaced `GOAL.md` with the `clinician_review_console_v1` contract.
-- Added local app sample-case selection for the constructed demo case and synthetic fixture cases.
-- Added structured intake review panels for current-time facts, information gaps, therapy response, and follow-up feasibility.
-- Kept advanced JSON editing available as a fallback rather than the primary review surface.
-- Replaced the pre-process node table with a Methodology Explorer exposing plain-English meaning, dependent inputs, evidence used, missing/weak evidence, values, ranges, medians, distribution, confidence, method, sensitivity, and node checkboxes.
-- Grouped ensemble contributions by node and surfaced accepted, downgraded, and rejected/unsupported inputs.
-- Reworked the result page to show a summary-first clinician-facing section with "What this means", "Main driver", and "Most useful next review input".
-- Added deeper-dive navigation for methodology, node evidence, ensemble contributions, receipt artifacts, trace hashes, validation status, and optional model comparison.
-- Added an OpenRouter comparison skip/status helper that does not print secrets.
-- Regenerated `validation/reports/ux_render_verification.json` and `docs/22_local_app_ux_verification.md` for the upgraded console surfaces.
-- Added `RELEASE_CHECKLIST.md`.
+- Replaced `GOAL.md` with the `browser_ux_remediation_v1` contract.
+- Added regression coverage for browser-style sample selection with CRLF-normalized default textarea text.
+- Updated the local app so use the selected sample case remains the starting point when the textarea still contains the default demo text; edited pasted text takes precedence over the sample; uploaded files are used when the text box is empty.
+- Added a scoped read-only `/artifacts/` route for generated local demo Receipt JSON and Receipt Markdown links.
+- Added traversal blocking tests for the local artifact route.
+- Updated generated receipt links to use `/artifacts/{episode_id}/receipts/{json|markdown}/{filename}`.
+- Saved Chrome DevTools browser verification in `validation/reports/browser_ux_verification.json` with `23/23` passing checks, `failCount=0`, and screenshots under `validation/reports/browser_ux_screenshots/`.
+- Updated `README.md`, `docs/18_deterministic_poc_status.md`, `RELEASE_CHECKLIST.md`, and `DECISIONS.md` for the corrected input semantics and artifact-link behavior.
 
 ### Current Verification Evidence
 
-- `python3 -m pytest tests/test_phase_g_local_demo_app.py -q` passed: `9 passed`.
-- `python3 -m pytest tests/test_openrouter_compare.py -q` passed: `8 passed`.
-- `PYTHONPATH=src python3 -m sentinel_workbench.ux_verification` passed: `ux_render_verification_all_pass=True`.
+- `.venv/bin/python -m pytest tests/test_phase_g_local_demo_app.py -q` passed: `11 passed`.
+- `.venv/bin/python -m pytest -q` passed: `79 passed`.
+- Chrome DevTools browser verification passed: `overallPass=true`, `passCount=23`, `failCount=0` in `validation/reports/browser_ux_verification.json`.
 
 ## 2026-06-11 - Phase 0 Discovery And Scope Lock
 

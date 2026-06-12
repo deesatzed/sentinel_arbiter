@@ -6,7 +6,7 @@ import json
 import re
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, unquote, urlparse
 
 from .approval import approve_prepared_input
 from .constructed_intake import prepare_constructed_text
@@ -55,6 +55,9 @@ def create_demo_server(
             if path in {"/", "/index.html"}:
                 self._send_html(_index_page())
                 return
+            if path.startswith("/artifacts/"):
+                self._send_artifact(path, workspace)
+                return
             self.send_error(404, "Not found")
 
         def do_POST(self) -> None:  # noqa: N802
@@ -92,6 +95,18 @@ def create_demo_server(
             self.end_headers()
             self.wfile.write(encoded)
 
+        def _send_artifact(self, path: str, workspace: Path) -> None:
+            artifact_path, content_type = _resolve_local_artifact(path, workspace)
+            if artifact_path is None:
+                self.send_error(404, "Not found")
+                return
+            payload = artifact_path.read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", content_type)
+            self.send_header("Content-Length", str(len(payload)))
+            self.end_headers()
+            self.wfile.write(payload)
+
     return ThreadingHTTPServer((host, port), SentinelDemoHandler)
 
 
@@ -101,7 +116,7 @@ def _handle_prepare(fields: dict[str, str], workspace: Path, static_inputs_path:
     review_question = _require_review_question(fields.get("review_question", ""))
     clinical_text, input_mode, uploaded_filename = _clinical_text_from_fields(fields)
     sample_case = fields.get("sample_case", "")
-    if sample_case and (not clinical_text.strip() or clinical_text.strip() == DEFAULT_CONSTRUCTED_TEXT):
+    if sample_case and (not clinical_text.strip() or _is_default_constructed_text(clinical_text)):
         clinical_text, sample_title = _sample_case_text(sample_case)
         input_mode = "sample_case"
         if not fields.get("title", "").strip():
@@ -276,6 +291,7 @@ def _index_page() -> str:
               <label class="choice"><input type="radio" name="review_question" value="ai_response_use_sufficiency" required> <strong>B - AI Response Use Sufficiency</strong><span>Is there enough information to use this AI-generated response?</span></label>
             </div>
             <h2>Input</h2>
+            <p>Use the selected sample case as the starting point. Edited pasted text takes precedence over the sample; uploaded files are used when the text box is empty.</p>
             <label>Sample Case<select name="sample_case">{sample_options}</select></label>
             <label>Episode ID<input name="episode_id" value="constructed_local_demo"></label>
             <label>Title<input name="title" value="Constructed local demo"></label>
@@ -374,6 +390,50 @@ def _clinical_text_from_fields(fields: dict[str, str]) -> tuple[str, str, str | 
     if uploaded.strip():
         return uploaded, "uploaded_file", uploaded_filename
     return "", "missing", uploaded_filename
+
+
+def _is_default_constructed_text(value: str) -> bool:
+    return _normalize_form_text(value) == _normalize_form_text(DEFAULT_CONSTRUCTED_TEXT)
+
+
+def _normalize_form_text(value: str) -> str:
+    return "\n".join(value.replace("\r\n", "\n").replace("\r", "\n").strip().splitlines())
+
+
+def _resolve_local_artifact(path: str, workspace: Path) -> tuple[Path | None, str]:
+    parts = [unquote(part) for part in path.split("/") if part]
+    if len(parts) != 5 or parts[0] != "artifacts" or parts[2] != "receipts":
+        return None, "text/plain; charset=utf-8"
+    _, episode_id, _, kind, filename = parts
+    if kind not in {"json", "markdown"}:
+        return None, "text/plain; charset=utf-8"
+    try:
+        safe_episode_id = _safe_episode_id(episode_id)
+    except ValueError:
+        return None, "text/plain; charset=utf-8"
+    if safe_episode_id != episode_id or "/" in filename or "\\" in filename or filename in {"", ".", ".."}:
+        return None, "text/plain; charset=utf-8"
+    if kind == "json" and not filename.endswith(".json"):
+        return None, "text/plain; charset=utf-8"
+    if kind == "markdown" and not filename.endswith(".md"):
+        return None, "text/plain; charset=utf-8"
+    workspace_root = workspace.resolve()
+    artifact_path = (
+        workspace_root
+        / "prepared_inputs"
+        / safe_episode_id
+        / "analysis"
+        / "receipts"
+        / kind
+        / filename
+    )
+    try:
+        resolved = artifact_path.resolve(strict=True)
+        resolved.relative_to(workspace_root)
+    except (FileNotFoundError, ValueError):
+        return None, "text/plain; charset=utf-8"
+    content_type = "application/json; charset=utf-8" if kind == "json" else "text/markdown; charset=utf-8"
+    return resolved, content_type
 
 
 def _sample_case_options() -> str:

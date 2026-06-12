@@ -1,6 +1,6 @@
 {
   "report_type": "final_verification",
-  "scope": "GOAL.md clinician review console v1",
+  "scope": "GOAL.md browser UX remediation v1",
   "all_pass": true,
   "pytest_passed": true,
   "case_validation_passed": true,
@@ -15,7 +15,7 @@
       "name": "pytest",
       "command": "python3 -m pytest -q",
       "exit_code": 0,
-      "stdout_tail": "........................................................................ [ 93%]\n.....                                                                    [100%]\n77 passed in 5.15s",
+      "stdout_tail": "........................................................................ [ 90%]\n........                                                                 [100%]\n80 passed in 5.90s",
       "stderr_tail": ""
     },
     {
@@ -51,7 +51,7 @@
       "command": "python3 -m pip install -e . --dry-run --no-deps",
       "exit_code": 0,
       "stdout_tail": "Obtaining file:///Volumes/WS4TB/Sentinel_Arbiter/sentinel_codex_handoff\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\n  Checking if build backend supports build_editable: started\n  Checking if build backend supports build_editable: finished with status 'done'\n  Getting requirements to build editable: started\n  Getting requirements to build editable: finished with status 'done'\n  Preparing editable metadata (pyproject.toml): started\n  Preparing editable metadata (pyproject.toml): finished with status 'done'\nWould install sentinel-workbench-0.1.0",
-      "stderr_tail": "WARNING: Ignoring invalid distribution ~ecret-sweep (/Users/o2satz/miniforge3/envs/py313/lib/python3.13/site-packages)\nWARNING: Ignoring invalid distribution ~ecret-sweep (/Users/o2satz/miniforge3/envs/py313/lib/python3.13/site-packages)\nWARNING: Ignoring invalid distribution ~ecret-sweep (/Users/o2satz/miniforge3/envs/py313/lib/python3.13/site-packages)"
+      "stderr_tail": "[notice] A new release of pip is available: 25.2 -> 26.1.2\n[notice] To update, run: pip install --upgrade pip"
     },
     {
       "name": "git_diff_check",
@@ -63,7 +63,7 @@
   ],
   "json_syntax": {
     "passed": true,
-    "checked_count": 45,
+    "checked_count": 46,
     "errors": []
   },
   "goal_audit_all_pass_after_regeneration": true

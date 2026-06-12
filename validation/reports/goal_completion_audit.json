@@ -1,109 +1,81 @@
 {
   "report_type": "goal_completion_audit",
   "goal_file": "GOAL.md",
-  "goal_shape": "clinician_review_console_v1",
-  "supersedes_goal_shape": "completeness_scan_remediation",
-  "proof_item_count": 14,
-  "pass_count": 14,
+  "goal_shape": "browser_ux_remediation_v1",
+  "supersedes_goal_shape": "clinician_review_console_v1",
+  "proof_item_count": 10,
+  "pass_count": 10,
   "all_pass": true,
   "items": [
     {
       "id": 1,
-      "requirement": "Landing workflow explains both review questions, sample cases, paste/upload input, and local-demo boundary.",
+      "requirement": "Chrome DevTools browser workflow passes 23/23 and saves a durable browser UX report.",
       "verdict": "PASS",
-      "evidence_key": "src/sentinel_workbench/local_app.py, validation/reports/ux_render_verification.json",
-      "evidence": "Landing includes both review questions, sample-case selection, paste/upload path, and local-demo boundary."
+      "evidence_key": "validation/reports/browser_ux_verification.json",
+      "evidence": "Browser UX verification records 23 passing workflow checks, zero failures, screenshots, and blocked traversal evidence."
     },
     {
       "id": 2,
-      "requirement": "Pre-process produces redaction status, structured clinical sections, advanced JSON fallback, inference status, and no raw unredacted artifact copy.",
+      "requirement": "Sample-case selection works in the normal reviewer path without manually clearing default text.",
       "verdict": "PASS",
-      "evidence_key": "src/sentinel_workbench/local_app.py, validation/reports/ux_render_verification.json",
-      "evidence": "Pre-process renders redaction status, structured clinical sections, advanced JSON fallback, and avoids raw input artifact copying."
+      "evidence_key": "src/sentinel_workbench/local_app.py, tests/test_phase_g_local_demo_app.py, validation/reports/browser_ux_verification.json",
+      "evidence": "Browser-style sample selection now records sample_case mode and renders the selected synthetic sample."
     },
     {
       "id": 3,
-      "requirement": "Node Audit Methodology is a methodology explorer for every graph node.",
+      "requirement": "Landing input UX makes sample, pasted text, and uploaded file precedence clear.",
       "verdict": "PASS",
-      "evidence_key": "src/sentinel_workbench/local_app.py, validation/reports/ux_render_verification.json",
-      "evidence": "Methodology Explorer exposes plain-English node meaning, evidence, weak/missing evidence, estimates, methods, and sensitivity."
+      "evidence_key": "src/sentinel_workbench/local_app.py, README.md, docs/18_deterministic_poc_status.md",
+      "evidence": "Landing copy explains sample, pasted text, and upload precedence."
     },
     {
       "id": 4,
-      "requirement": "Node-audit controls are functional, traceable, and preserve deterministic graph authority.",
+      "requirement": "Receipt JSON and Markdown links work in the live local browser and artifact serving blocks traversal.",
       "verdict": "PASS",
-      "evidence_key": "src/sentinel_workbench/local_app.py, tests/test_phase_g_local_demo_app.py",
-      "evidence": "Node-level reviewer actions are checkboxes, confirmed when changing methodology, and traced separately from graph authority."
+      "evidence_key": "src/sentinel_workbench/local_app.py, src/sentinel_workbench/demo_run.py, tests/test_phase_g_local_demo_app.py",
+      "evidence": "Receipt JSON/Markdown links use a scoped artifact route and traversal probes return non-OK responses."
     },
     {
       "id": 5,
-      "requirement": "Ensemble Contributions are grouped by node and distinguish accepted, downgraded, and rejected inputs.",
+      "requirement": "Result-page Deeper Dive remains navigable and summary-first.",
       "verdict": "PASS",
-      "evidence_key": "validation/reports/ux_render_verification.json",
-      "evidence": "Ensemble contributions are grouped by node and expose accepted, downgraded, and rejected/unsupported inputs."
+      "evidence_key": "validation/reports/ux_render_verification.json, validation/reports/browser_ux_verification.json",
+      "evidence": "Deeper Dive navigation and summary-first result checks remain green in rendered and browser verification."
     },
     {
       "id": 6,
-      "requirement": "Result page is summary-first, clinically readable, and keeps raw scores in deeper dive.",
+      "requirement": "Node audit OK, Adjust, and Re-check behavior remains functional and traceable.",
       "verdict": "PASS",
-      "evidence_key": "src/sentinel_workbench/demo_run.py, validation/reports/ux_render_verification.json",
-      "evidence": "Result page is summary-first and uses plain-language summary cards before raw details."
+      "evidence_key": "src/sentinel_workbench/local_app.py, validation/reports/browser_ux_verification.json",
+      "evidence": "OK, Adjust, and Re-check workflow behavior remains traceable and graph authority stays separate."
     },
     {
       "id": 7,
-      "requirement": "Deeper Dive contains methodology, node evidence, ensemble, receipts, trace hashes, validation status, and optional model comparison.",
+      "requirement": "Safety and provenance boundaries remain intact.",
       "verdict": "PASS",
-      "evidence_key": "src/sentinel_workbench/demo_run.py, validation/reports/ux_render_verification.json",
-      "evidence": "Deeper Dive navigation links methodology, node evidence, ensemble, receipt artifacts, trace hashes, validation, and model comparison."
+      "evidence_key": "GOAL.md, README.md, docs/, PROGRESS.md, RELEASE_CHECKLIST.md",
+      "evidence": "Local deterministic governance-review boundaries and comparison-only model boundaries remain documented."
     },
     {
       "id": 8,
-      "requirement": "OpenRouter is comparison-only with safe skip status and no secret echo.",
+      "requirement": "Regression tests cover the two browser-discovered failures.",
       "verdict": "PASS",
-      "evidence_key": "src/sentinel_workbench/openrouter_compare.py, validation/reports/ux_render_verification.json",
-      "evidence": "OpenRouter status is comparison-only, skips safely when absent, and does not echo secrets."
+      "evidence_key": "tests/test_phase_g_local_demo_app.py, tests/test_goal_completion_audit.py",
+      "evidence": "Regression tests cover sample precedence, live receipt links, traversal blocking, and durable browser report shape."
     },
     {
       "id": 9,
-      "requirement": "Release/readiness artifact exists with local-demo conditional-go boundaries.",
+      "requirement": "Documentation and status artifacts describe the remediated browser behavior.",
       "verdict": "PASS",
-      "evidence_key": "RELEASE_CHECKLIST.md",
-      "evidence": "Release checklist records local-demo Conditional Go, No-Go boundaries, evidence areas, risks, required fixes, and rollback."
+      "evidence_key": "README.md, docs/18_deterministic_poc_status.md, PROGRESS.md, DECISIONS.md, RELEASE_CHECKLIST.md",
+      "evidence": "Docs and progress artifacts describe corrected sample input semantics, artifact links, browser verification, and readiness impact."
     },
     {
       "id": 10,
-      "requirement": "Documentation explains setup, app use, sample cases, input, summary interpretation, deeper dive, OpenRouter comparison, and non-claims.",
-      "verdict": "PASS",
-      "evidence_key": "README.md, docs/18_deterministic_poc_status.md",
-      "evidence": "Documentation covers setup, app use, sample cases, input, summary interpretation, deeper dive, OpenRouter comparison, and non-claims."
-    },
-    {
-      "id": 11,
-      "requirement": "Tests cover the optimized UX, redaction, structured sections, node tracing, summary-first results, deeper dive, OpenRouter skip, and forbidden phrases.",
-      "verdict": "PASS",
-      "evidence_key": "tests/",
-      "evidence": "Tests cover local app happy path, structured sections, node tracing, summary-first result, deeper dive, OpenRouter skip/no-secret behavior, and forbidden-phrase scanning."
-    },
-    {
-      "id": 12,
-      "requirement": "Rendered UX verification artifact covers the optimized console surfaces and layout guards.",
-      "verdict": "PASS",
-      "evidence_key": "validation/reports/ux_render_verification.json",
-      "evidence": "Rendered UX verification all-pass report covers optimized console surfaces and layout guards."
-    },
-    {
-      "id": 13,
       "requirement": "Final local verification commands pass.",
       "verdict": "PASS",
       "evidence_key": "validation/reports/final_verification.json",
-      "evidence": "Final verification report records passing pytest, case validation, static input validation, evaluation regeneration, UX verification, JSON syntax, pip dry-run, and git diff checks."
-    },
-    {
-      "id": 14,
-      "requirement": "Safety-boundary, unsafe-recommendation, and secret/raw-response inspections are clean.",
-      "verdict": "PASS",
-      "evidence_key": "README.md, docs/, PROGRESS.md, validation/reports/final_verification.json",
-      "evidence": "Safety boundaries are present and no committed bootstrap marker or unsafe secret pattern is present in audited text."
+      "evidence": "Final verification report records passing pytest, validation commands, UX verification, JSON syntax, pip dry-run, and git diff checks."
     }
   ]
 }

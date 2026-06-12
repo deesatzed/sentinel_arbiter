@@ -5,6 +5,7 @@ import html
 import json
 from dataclasses import dataclass
 from pathlib import Path
+from urllib.parse import quote
 
 from .approval import load_approved_episode, validate_approved_input
 from .receipts import SentinelReceipt, build_receipt, review_question_display, sha256_file, write_receipt
@@ -282,7 +283,8 @@ def _read_optional(path: Path) -> str:
 
 def _receipt_href(path: Path) -> str:
     if path.parent.parent.name == "receipts":
-        return f"receipts/{path.parent.name}/{path.name}"
+        prepared_dir = path.parent.parent.parent.parent
+        return f"/artifacts/{quote(prepared_dir.name)}/receipts/{quote(path.parent.name)}/{quote(path.name)}"
     return str(path)
 
 

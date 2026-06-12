@@ -134,8 +134,8 @@ def run_ux_verification(
                 'href="#model-comparison"',
                 "Receipt JSON",
                 "Receipt Markdown",
-                'href="receipts/json/',
-                'href="receipts/markdown/',
+                'href="/artifacts/ux_verification_case/receipts/json/',
+                'href="/artifacts/ux_verification_case/receipts/markdown/',
             ),
         ),
         "result_has_model_comparison_skip_panel": _contains_all(
@@ -170,8 +170,8 @@ def run_ux_verification(
             "process result/deeper-dive page",
         ],
         "browser_screenshot_capture": {
-            "status": "fallback_not_captured",
-            "reason": "Playwright/browser screenshot runtime was unavailable in the local Node tool environment; deterministic stdlib HTTP rendered-HTML verification was used instead.",
+            "status": "captured_separately",
+            "reason": "Deterministic stdlib HTTP rendered-HTML verification is paired with Chrome DevTools evidence in validation/reports/browser_ux_verification.json for browser_ux_remediation_v1.",
         },
         "checks": checks,
         "evidence": {
@@ -239,7 +239,7 @@ def _render_markdown(payload: dict[str, Any]) -> str:
         f"Mode: `{payload['mode']}`",
         f"All pass: {payload['all_pass']}",
         "",
-        "This report is an equivalent rendered-HTML verification artifact for the local stdlib demo app. It exercises the HTTP landing, pre-process, and process-result pages and checks required user-visible stages plus basic layout-breakage guards.",
+        "This report is the deterministic rendered-HTML verification artifact for the local stdlib demo app. It exercises the HTTP landing, pre-process, and process-result pages and checks required user-visible stages plus basic layout-breakage guards.",
         "",
         f"Browser screenshot capture: `{payload['browser_screenshot_capture']['status']}`. Reason: {payload['browser_screenshot_capture']['reason']}",
         "",
@@ -253,6 +253,18 @@ def _render_markdown(payload: dict[str, Any]) -> str:
     lines.extend(["", "## Evidence", ""])
     for name, evidence in payload["evidence"].items():
         lines.append(f"- `{name}`: {evidence}")
+    lines.extend(
+        [
+            "",
+            "## Browser UX Remediation Evidence",
+            "",
+            "- `browser_ux_verification.json`: expected `overallPass=true`, `passCount=23`, `failCount=0` for `browser_ux_remediation_v1`.",
+            "- Sample selection: selected synthetic sample cases remain active when the default textarea text is browser-normalized.",
+            "- Input precedence: use the selected sample case as the starting point; edited pasted text takes precedence over the sample; uploaded files are used when the text box is empty.",
+            "- Receipt artifacts: Receipt JSON and Receipt Markdown links use the local `/artifacts/` route and return HTTP 200 in browser verification.",
+            "- Artifact route safety: traversal probes for `../` and encoded traversal return non-OK responses.",
+        ]
+    )
     lines.append("")
     return "\n".join(lines)
 

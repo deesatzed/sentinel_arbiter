@@ -8,8 +8,8 @@
     "process result/deeper-dive page"
   ],
   "browser_screenshot_capture": {
-    "status": "fallback_not_captured",
-    "reason": "Playwright/browser screenshot runtime was unavailable in the local Node tool environment; deterministic stdlib HTTP rendered-HTML verification was used instead."
+    "status": "captured_separately",
+    "reason": "Deterministic stdlib HTTP rendered-HTML verification is paired with Chrome DevTools evidence in validation/reports/browser_ux_verification.json for browser_ux_remediation_v1."
   },
   "checks": {
     "landing_has_first_screen_choice": true,
