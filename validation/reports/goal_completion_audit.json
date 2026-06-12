@@ -1,184 +1,81 @@
 {
   "report_type": "goal_completion_audit",
   "goal_file": "GOAL.md",
-  "proof_item_count": 25,
-  "pass_count": 25,
+  "goal_shape": "completeness_scan_remediation",
+  "supersedes_goal_shape": "25_item_clinician_facing_staged_demo",
+  "proof_item_count": 10,
+  "pass_count": 10,
   "all_pass": true,
   "items": [
     {
       "id": 1,
-      "requirement": "A user can open the local app and choose either review question A or B before input is processed.",
+      "requirement": "README.md accurately states that the current goal-completion audit reports 25/25 and points to validation/reports/final_verification.json.",
       "verdict": "PASS",
-      "evidence_key": "local_app_completeness",
-      "evidence": "Local app exposes both review questions and requires Pre-process workflow."
+      "evidence_key": "README.md",
+      "evidence": "README states the completed prior milestone audit is 25/25 and links final verification evidence."
     },
     {
       "id": 2,
-      "requirement": "The selected review question is saved into the run manifest, receipts, and summary.",
+      "requirement": "docs/18_deterministic_poc_status.md includes final-verification and goal-audit commands while preserving safety boundaries.",
       "verdict": "PASS",
-      "evidence_key": "receipt_completeness, summary_completeness",
-      "evidence": "Selected review question is present in receipts and summary framing."
+      "evidence_key": "docs/18_deterministic_poc_status.md",
+      "evidence": "Status document lists final-verification and goal-audit commands and keeps implemented/deferred/not-claimed boundaries."
     },
     {
       "id": 3,
-      "requirement": "A user can paste redacted text or upload a constructed/deidentified local file and click Pre-process.",
+      "requirement": "sentinel_workbench.final_verification no longer leaves a plausible all-pass durable report if interrupted during bootstrap/self-verification.",
       "verdict": "PASS",
-      "evidence_key": "local_app_completeness",
-      "evidence": "Paste and upload paths are represented in the local app proof payload."
+      "evidence_key": "src/sentinel_workbench/final_verification.py",
+      "evidence": "Final verification no longer writes a fake all-pass bootstrap report to the durable report path."
     },
     {
       "id": 4,
-      "requirement": "A user can run a local CLI command with constructed text input and receive a redaction report plus draft structured episode.",
+      "requirement": "Tests cover the hardened final-verification behavior, including the non-bootstrap committed report requirement.",
       "verdict": "PASS",
-      "evidence_key": "redaction_gating",
-      "evidence": "Constructed input path emits a redaction report and prepared draft artifacts."
+      "evidence_key": "tests/test_goal_completion_audit.py",
+      "evidence": "Tests require a non-bootstrap committed final-verification report and allow only explicit self-verification mode during the command run."
     },
     {
       "id": 5,
-      "requirement": "Residual PII/PHI risk is detected and blocks or quarantines unsafe input.",
+      "requirement": "A rendered-UX verification artifact exists for the local staged app and covers the required workflow surfaces.",
       "verdict": "PASS",
-      "evidence_key": "redaction_gating",
-      "evidence": "Residual risk block and quarantine behavior are both checked."
+      "evidence_key": "validation/reports/ux_render_verification.json",
+      "evidence": "UX verification report covers landing, pre-process, node audit, ensemble, result summary, deeper dive, and layout guards."
     },
     {
       "id": 6,
-      "requirement": "A reviewer-approved structured episode can be saved and used for deterministic analysis.",
+      "requirement": "PROGRESS.md has a latest-status or supersession note for older chronological entries.",
       "verdict": "PASS",
-      "evidence_key": "local_app_completeness",
-      "evidence": "Approved structured episode can be run through the deterministic analysis endpoint."
+      "evidence_key": "PROGRESS.md",
+      "evidence": "Progress log has a latest-status note explaining that newer sections supersede older chronological pending/future-work entries."
     },
     {
       "id": 7,
-      "requirement": "Synthetic and constructed demo inputs validate against schemas.",
+      "requirement": "OpenRouter documentation distinguishes implemented comparison harness from deferred app-integrated LLM mode and formal model-swap evaluation.",
       "verdict": "PASS",
-      "evidence_key": "schema_validity, redaction_gating",
-      "evidence": "Synthetic case library and constructed demo artifact path validate."
+      "evidence_key": "README.md",
+      "evidence": "OpenRouter docs separate the implemented comparison harness from deferred app-integrated LLM mode and formal model-swap evaluation."
     },
     {
       "id": 8,
-      "requirement": "Hidden future facts cannot enter current-time node computation.",
+      "requirement": "The goal-completion audit is updated to the new remediation goal shape and is not mistaken for the completed 25-item milestone.",
       "verdict": "PASS",
-      "evidence_key": "future_leakage_failures",
-      "evidence": "Current validation report has zero future-leakage failures."
+      "evidence_key": "GOAL.md, validation/reports/goal_completion_audit.json",
+      "evidence": "Current audit shape is the ten-item completeness-scan remediation goal, not the prior 25-item milestone."
     },
     {
       "id": 9,
-      "requirement": "Every graph node has a NodeAudit or equivalent schema-backed audit object.",
+      "requirement": "Final local verification commands pass.",
       "verdict": "PASS",
-      "evidence_key": "node_audit_completeness",
-      "evidence": "Every graph node has a node audit."
+      "evidence_key": "validation/reports/final_verification.json",
+      "evidence": "Final verification report records passing pytest, case validation, static input validation, evaluation regeneration, UX verification, JSON syntax, and git diff checks."
     },
     {
       "id": 10,
-      "requirement": "Every node audit has dependencies, evidence refs, value, range, median, distribution kind, confidence, method, and sensitivity note.",
+      "requirement": "Stale status claims and committed bootstrap markers are absent from current proof artifacts.",
       "verdict": "PASS",
-      "evidence_key": "node_audit_completeness",
-      "evidence": "Node audits have required estimate, evidence, dependency, and sensitivity fields."
-    },
-    {
-      "id": 11,
-      "requirement": "The app displays Node Audit Methodology after pre-processing and before processing.",
-      "verdict": "PASS",
-      "evidence_key": "local_app_completeness",
-      "evidence": "Node Audit Methodology is visible before processing."
-    },
-    {
-      "id": 12,
-      "requirement": "A reviewer can choose OK, Adjust, or Re-check selected nodes; adjustments require confirmation before replacing generated methodology.",
-      "verdict": "PASS",
-      "evidence_key": "local_app_completeness",
-      "evidence": "OK, Adjust, and Re-check selected-node controls are present and traced."
-    },
-    {
-      "id": 13,
-      "requirement": "Every ensemble contribution is accepted, rejected, or downgraded with a reason.",
-      "verdict": "PASS",
-      "evidence_key": "ensemble_contribution_completeness",
-      "evidence": "Every ensemble contribution has a disposition and reason."
-    },
-    {
-      "id": 14,
-      "requirement": "The app displays Ensemble Contributions before Process.",
-      "verdict": "PASS",
-      "evidence_key": "local_app_completeness",
-      "evidence": "Ensemble Contributions are visible in the pre-process/review flow before Process."
-    },
-    {
-      "id": 15,
-      "requirement": "The graph computes final Sentinel posture from normalized typed node values.",
-      "verdict": "PASS",
-      "evidence_key": "expected_posture_agreement",
-      "evidence": "Graph posture is computed from deterministic typed fixture runs."
-    },
-    {
-      "id": 16,
-      "requirement": "Final posture remains one of the Sentinel posture categories, not a disposition recommendation.",
-      "verdict": "PASS",
-      "evidence_key": "forbidden_phrase_violations",
-      "evidence": "Forbidden disposition-language scan reports zero generated-artifact violations."
-    },
-    {
-      "id": 17,
-      "requirement": "The primary result is a clinician-readable governance summary of no more than one or two short paragraphs.",
-      "verdict": "PASS",
-      "evidence_key": "summary_completeness",
-      "evidence": "Primary clinician summary is concise and machine-checked."
-    },
-    {
-      "id": 18,
-      "requirement": "The primary summary explains what the result means for the selected review question and why, including the main uncertainty drivers.",
-      "verdict": "PASS",
-      "evidence_key": "summary_completeness",
-      "evidence": "Summary includes selected-question framing and governance boundary."
-    },
-    {
-      "id": 19,
-      "requirement": "A Deeper Dive button exposes node audit tables, ensemble tables, receipts, trace hashes, validation status, structured episode, and raw JSON/Markdown artifacts.",
-      "verdict": "PASS",
-      "evidence_key": "local_app_completeness",
-      "evidence": "Deeper Dive exposes trace hashes and raw JSON/Markdown receipt links."
-    },
-    {
-      "id": 20,
-      "requirement": "JSON receipts include selected review question, redaction, intake, node audit, ensemble, trace, graph, and signature-placeholder fields.",
-      "verdict": "PASS",
-      "evidence_key": "receipt_completeness",
-      "evidence": "JSON receipts include selected question and required audit fields."
-    },
-    {
-      "id": 21,
-      "requirement": "Human-readable receipts explain what was known, what was missing, what would have changed the discussion, what facility-based monitoring or treatment might add, what non-inpatient alternatives might add, commission concerns, omission concerns, therapy-response concerns, and why the graph selected the posture.",
-      "verdict": "PASS",
-      "evidence_key": "receipt_completeness",
-      "evidence": "Human-readable receipts include summary and deeper-dive sections."
-    },
-    {
-      "id": 22,
-      "requirement": "The workbench renders the redacted input, structured episode, node methodology, distributions, range, median, ensemble disagreement, graph posture, clinician summary, deeper-dive artifacts, receipts, and validation status.",
-      "verdict": "PASS",
-      "evidence_key": "workbench_completeness",
-      "evidence": "Workbench renders summary, methodology, receipts, validation status, and deeper-dive artifact index."
-    },
-    {
-      "id": 23,
-      "requirement": "Automated validation reports cover schema validity, future leakage, redaction gating, expected posture agreement on fixtures, omission detection, commission warning detection, therapy-response integration, next-best-information usefulness, node-audit completeness, receipt completeness, workbench completeness, app-flow completeness, summary completeness, and forbidden phrase violations.",
-      "verdict": "PASS",
-      "evidence_key": "validation/reports/latest.json",
-      "evidence": "Validation report covers schema, leakage, redaction, fixture agreement, detection categories, node audit, receipts, workbench, app flow, summary, and forbidden phrases."
-    },
-    {
-      "id": 24,
-      "requirement": "The project documents what is implemented, what is deferred, and what would be required before any real clinical, prospective, production, or live-evidence use.",
-      "verdict": "PASS",
-      "evidence_key": "docs/18_deterministic_poc_status.md",
-      "evidence": "Status document separates implemented, deferred, required-before-real-use, and not-claimed boundaries."
-    },
-    {
-      "id": 25,
-      "requirement": "Full local verification commands pass and git diff --check is clean.",
-      "verdict": "PASS",
-      "evidence_key": "validation/reports/final_verification.json",
-      "evidence": "Final verification report records passing local commands, JSON syntax checks, and git diff --check."
+      "evidence_key": "README.md, docs/, PROGRESS.md, validation/reports/final_verification.json",
+      "evidence": "No stale current-state pending-audit claims or committed bootstrap markers remain."
     }
   ]
 }

@@ -1,11 +1,12 @@
 {
   "report_type": "final_verification",
-  "scope": "GOAL.md clinician-facing staged local demo",
+  "scope": "GOAL.md completeness-scan remediation",
   "all_pass": true,
   "pytest_passed": true,
   "case_validation_passed": true,
   "static_input_validation_passed": true,
   "evaluation_report_regenerated": true,
+  "ux_verification_passed": true,
   "git_diff_check_passed": true,
   "json_syntax_checks_passed": true,
   "commands": [
@@ -13,7 +14,7 @@
       "name": "pytest",
       "command": "python3 -m pytest -q",
       "exit_code": 0,
-      "stdout_tail": ".......................................................................  [100%]\n71 passed in 3.64s",
+      "stdout_tail": "........................................................................ [ 98%]\n.                                                                        [100%]\n73 passed in 3.60s",
       "stderr_tail": ""
     },
     {
@@ -38,6 +39,13 @@
       "stderr_tail": ""
     },
     {
+      "name": "ux_render_verification",
+      "command": "python3 -m sentinel_workbench.ux_verification",
+      "exit_code": 0,
+      "stdout_tail": "ux_render_verification_all_pass=True",
+      "stderr_tail": ""
+    },
+    {
       "name": "git_diff_check",
       "command": "git diff --check",
       "exit_code": 0,
@@ -47,7 +55,7 @@
   ],
   "json_syntax": {
     "passed": true,
-    "checked_count": 44,
+    "checked_count": 45,
     "errors": []
   },
   "goal_audit_all_pass_after_regeneration": true

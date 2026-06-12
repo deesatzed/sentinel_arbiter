@@ -1,5 +1,11 @@
 # PROGRESS.md
 
+## Latest Status - 2026-06-12
+
+The current `GOAL.md` is a completeness-scan remediation contract. This section is the current status anchor and may supersede earlier chronological entries that describe now-completed items as pending or future work.
+
+The prior clinician-facing staged local demo milestone is complete and evidenced by the previous 25/25 audit and final verification report. The active work now targets documentation alignment, final-verification hardening, rendered UX evidence, OpenRouter/deferred-LLM wording, and a refreshed remediation-specific goal audit.
+
 ## 2026-06-11 - Phase 0 Discovery And Scope Lock
 
 ### Completed So Far
@@ -877,9 +883,8 @@
 
 ### Current State
 
-- The generated audit reports 24 static-artifact proof items as `PASS`.
-- Proof item 25 remains `PENDING` by design because final verification commands and a clean tracked diff must be proven live after all edits are complete.
-- The active goal remains open until item 25 is proven and the completion audit supports a full pass.
+- Superseded by the later final-verification section and by the 2026-06-12 latest-status anchor above.
+- At the time this section was written, the generated audit still required final live verification. That pending state is no longer current.
 
 ## 2026-06-11 - Final Verification Report Closes GOAL.md Audit
 

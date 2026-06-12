@@ -30,6 +30,7 @@ sentinel-workbench-local-demo = "sentinel_workbench.local_app:main"
 sentinel-workbench-openrouter-compare = "sentinel_workbench.openrouter_compare:main"
 sentinel-workbench-goal-audit = "sentinel_workbench.goal_audit:main"
 sentinel-workbench-final-verification = "sentinel_workbench.final_verification:main"
+sentinel-workbench-ux-verification = "sentinel_workbench.ux_verification:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

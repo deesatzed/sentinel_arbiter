@@ -261,7 +261,14 @@ Adjustment and re-check checkpoints are saved separately from generated facts in
 
 ## OpenRouter model comparison
 
-The OpenRouter harness is optional and comparison-only. Deterministic Sentinel remains the authority; model outputs are saved as local artifacts for review and are not used as final graph judgment.
+The OpenRouter integration is an implemented comparison harness, not app authority. Deterministic Sentinel remains the authority; comparison-only model artifacts are saved locally for review and are not used as final graph judgment.
+
+Current boundary:
+
+- implemented comparison harness: `sentinel_workbench.openrouter_compare`,
+- comparison-only model artifacts: written under gitignored `artifacts/model_comparison/`,
+- app-integrated LLM mode remains deferred,
+- formal model-swap evaluation remains deferred.
 
 Configure local `.env` values without committing secrets:
 
@@ -337,6 +344,9 @@ PYTHONPATH=src python3 -m sentinel_workbench.receipts --case-dir data/cases --st
 PYTHONPATH=src python3 -m sentinel_workbench.schema_export schemas/ed_decision_episode.schema.json
 PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts
 PYTHONPATH=src python3 -m sentinel_workbench.workbench --case-dir data/cases --receipt-dir data/receipts --report validation/reports/latest.json --out data/workbench/index.html
+PYTHONPATH=src python3 -m sentinel_workbench.ux_verification
+PYTHONPATH=src python3 -m sentinel_workbench.final_verification
+PYTHONPATH=src python3 -m sentinel_workbench.goal_audit --out-json validation/reports/goal_completion_audit.json --out-markdown docs/21_goal_completion_audit.md
 PYTHONPATH=src python3 -m sentinel_workbench.local_app --host 127.0.0.1 --port 8765
 python3 -m pip install -e . --dry-run --no-deps
 ```
@@ -349,4 +359,4 @@ Repository publishing notes are in `docs/19_repository_publishing.md`.
 
 The requirement-by-requirement transparent-demo completion audit is saved in `docs/21_goal_completion_audit.md`, with machine-readable output in `validation/reports/goal_completion_audit.json`.
 
-The current audit maps all 25 `GOAL.md` proof-of-done items. It reports 24 static-artifact passes and leaves item 25 pending until the final live verification command set and clean tracked diff are proven after the latest edits.
+The prior clinician-facing staged-demo audit reached 25/25 and is evidenced by `validation/reports/final_verification.json`. The current audit now maps the completeness-scan remediation `GOAL.md` and supersedes the prior 25-item milestone audit.

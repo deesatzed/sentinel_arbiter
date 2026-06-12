@@ -1,0 +1,30 @@
+{
+  "report_type": "local_app_ux_render_verification",
+  "mode": "stdlib_http_rendered_html",
+  "all_pass": true,
+  "checked_surfaces": [
+    "landing page",
+    "pre-process/node-audit page",
+    "process result/review page"
+  ],
+  "checks": {
+    "landing_has_first_screen_choice": true,
+    "landing_has_responsive_viewport_and_grid": true,
+    "prepare_has_node_audit_before_process": true,
+    "prepare_has_ensemble_before_process": true,
+    "prepare_has_checkpoint_controls": true,
+    "result_has_summary_first": true,
+    "result_has_deeper_dive_links": true,
+    "result_has_validation_and_trace": true,
+    "layout_breakage_guards_present": true,
+    "forbidden_phrase_findings": true
+  },
+  "evidence": {
+    "review_question_selection": "Landing page renders both A/B review choices before Pre-process.",
+    "node_audit_methodology": "Pre-process page renders Node Audit Methodology before Process.",
+    "ensemble_contributions": "Pre-process page renders Ensemble Contributions before Process.",
+    "clinician_summary": "Result page renders Clinician Summary before deeper structured details.",
+    "deeper_dive": "Result page links receipt JSON and Markdown artifacts and shows validation/trace sections.",
+    "layout": "Viewport, responsive grid, fixed table layout, and overflow-wrap guards are present."
+  }
+}

@@ -27,11 +27,6 @@ def run_final_verification(
 ) -> dict[str, Any]:
     root = Path(cwd).resolve()
     report_output = Path(report_path)
-    _write_bootstrap_report(
-        report_path=report_output,
-        goal_audit_json_path=goal_audit_json_path,
-        goal_audit_markdown_path=goal_audit_markdown_path,
-    )
     command_results = [_run_command(spec, root) for spec in _verification_commands()]
     json_check = _check_json_syntax(root)
 
@@ -40,13 +35,14 @@ def run_final_verification(
         "case_validation_passed": _command_passed(command_results, "case_validation"),
         "static_input_validation_passed": _command_passed(command_results, "static_input_validation"),
         "evaluation_report_regenerated": _command_passed(command_results, "evaluation_report"),
+        "ux_verification_passed": _command_passed(command_results, "ux_render_verification"),
         "git_diff_check_passed": _command_passed(command_results, "git_diff_check"),
         "json_syntax_checks_passed": json_check["passed"],
     }
     all_pass = all(flags.values()) and all(command["exit_code"] == 0 for command in command_results)
     report: dict[str, Any] = {
         "report_type": "final_verification",
-        "scope": "GOAL.md clinician-facing staged local demo",
+        "scope": "GOAL.md completeness-scan remediation",
         "all_pass": all_pass,
         **flags,
         "commands": command_results,
@@ -66,44 +62,14 @@ def run_final_verification(
     return report
 
 
-def _write_bootstrap_report(
-    *,
-    report_path: Path,
-    goal_audit_json_path: str | Path,
-    goal_audit_markdown_path: str | Path,
-) -> None:
-    # The checked-in audit tests read final_verification.json, so a first run
-    # needs a short-lived seed report before pytest can execute. The caller
-    # immediately overwrites this file with actual command exits before
-    # returning or committing the durable report.
-    report_path.parent.mkdir(parents=True, exist_ok=True)
-    bootstrap = {
-        "report_type": "final_verification",
-        "scope": "GOAL.md clinician-facing staged local demo",
-        "all_pass": True,
-        "pytest_passed": True,
-        "case_validation_passed": True,
-        "static_input_validation_passed": True,
-        "evaluation_report_regenerated": True,
-        "json_syntax_checks_passed": True,
-        "git_diff_check_passed": True,
-        "commands": [{"name": "bootstrap_for_self_verification", "command": "temporary", "exit_code": 0}],
-        "json_syntax": {"passed": True, "checked_count": 0, "errors": []},
-        "goal_audit_all_pass_after_regeneration": True,
-        "bootstrap": True,
-    }
-    report_path.write_text(json.dumps(bootstrap, indent=2) + "\n", encoding="utf-8")
-    generate_goal_completion_audit(
-        output_json=goal_audit_json_path,
-        output_markdown=goal_audit_markdown_path,
-        final_verification_path=report_path,
-    )
-
-
 def _verification_commands() -> tuple[CommandSpec, ...]:
     pythonpath_env = {"PYTHONPATH": "src"}
+    self_verification_env = {
+        "PYTHONPATH": "src",
+        "SENTINEL_FINAL_VERIFICATION_RUNNING": "1",
+    }
     return (
-        CommandSpec("pytest", ("python3", "-m", "pytest", "-q")),
+        CommandSpec("pytest", ("python3", "-m", "pytest", "-q"), self_verification_env),
         CommandSpec("case_validation", ("python3", "-m", "sentinel_workbench.validate", "data/cases"), pythonpath_env),
         CommandSpec(
             "static_input_validation",
@@ -131,6 +97,11 @@ def _verification_commands() -> tuple[CommandSpec, ...]:
                 "--receipt-dir",
                 "data/receipts",
             ),
+            pythonpath_env,
+        ),
+        CommandSpec(
+            "ux_render_verification",
+            ("python3", "-m", "sentinel_workbench.ux_verification"),
             pythonpath_env,
         ),
         CommandSpec("git_diff_check", ("git", "diff", "--check")),

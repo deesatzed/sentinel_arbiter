@@ -89,6 +89,9 @@ PYTHONPATH=src python3 -m sentinel_workbench.demo_run --prepared-dir data/prepar
 PYTHONPATH=src python3 -m sentinel_workbench.receipts --case-dir data/cases --static-inputs data/static_inputs/static_inputs.json --out data/receipts
 PYTHONPATH=src python3 -m sentinel_workbench.evaluate --case-dir data/cases --out validation/reports/latest.json --receipt-dir data/receipts
 PYTHONPATH=src python3 -m sentinel_workbench.workbench --case-dir data/cases --receipt-dir data/receipts --report validation/reports/latest.json --out data/workbench/index.html
+PYTHONPATH=src python3 -m sentinel_workbench.ux_verification
+PYTHONPATH=src python3 -m sentinel_workbench.final_verification
+PYTHONPATH=src python3 -m sentinel_workbench.goal_audit --out-json validation/reports/goal_completion_audit.json --out-markdown docs/21_goal_completion_audit.md
 PYTHONPATH=src python3 -m sentinel_workbench.schema_export schemas/ed_decision_episode.schema.json
 PYTHONPATH=src python3 -m sentinel_workbench.local_app --host 127.0.0.1 --port 8765
 python3 -m pip install -e . --dry-run --no-deps
